@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Leornian",
+  "version": "0.1.0",
+  "identifier": "app.leornian.desktop",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devUrl": "http://127.0.0.1:5178",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [{ "title": "Leornian", "width": 1280, "height": 880, "minWidth": 760, "minHeight": 600 }],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:8088 ipc: http://ipc.localhost; style-src 'self'; img-src 'self' data:"
+    }
+  },
+  "bundle": { "active": false, "icon": ["icons/icon.ico"] }
+}

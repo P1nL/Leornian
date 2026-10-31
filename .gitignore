@@ -1,0 +1,43 @@
+# Secrets / local configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# JavaScript / desktop builds
+node_modules/
+dist/
+build/
+target/
+.turbo/
+
+# Runtime data / tool outputs
+.runtime/
+.local/
+.archify/
+logs/
+*.log
+*.sqlite
+*.sqlite3
+*.db
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

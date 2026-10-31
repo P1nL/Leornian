@@ -1,0 +1,91 @@
+name: leornian
+
+x-backend: &backend
+  build:
+    context: ..
+    dockerfile: backend/Dockerfile
+  image: leornian-backend:dev
+  environment:
+    LEORNIAN_DATABASE_URL: postgresql://leornian:${LEORNIAN_POSTGRES_PASSWORD:?Set LEORNIAN_POSTGRES_PASSWORD in .env}@postgres:5432/leornian
+    LEORNIAN_BROKER_URL: redis://redis:6379/0
+    LEORNIAN_MODEL_ENABLED: ${LEORNIAN_MODEL_ENABLED:-false}
+    LEORNIAN_MODEL_BASE_URL: ${LEORNIAN_MODEL_BASE_URL:-}
+    LEORNIAN_MODEL_NAME: ${LEORNIAN_MODEL_NAME:-}
+    LEORNIAN_MODEL_API_KEY: ${LEORNIAN_MODEL_API_KEY:-}
+    LEORNIAN_RUNNER_TOKEN: ${LEORNIAN_RUNNER_TOKEN:-}
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: leornian
+      POSTGRES_PASSWORD: ${LEORNIAN_POSTGRES_PASSWORD:?Set LEORNIAN_POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: leornian
+    ports:
+      - "127.0.0.1:5448:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leornian -d leornian"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7.2.7
+    ports:
+      - "127.0.0.1:6388:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    <<: *backend
+    command: ["leornian-migrate"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *backend
+    ports:
+      - "127.0.0.1:8088:8088"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health/ready')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  worker:
+    <<: *backend
+    command: ["celery", "-A", "leornian.entrypoints.worker:app", "worker", "--loglevel=INFO", "--concurrency=2"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  relay:
+    <<: *backend
+    command: ["python", "-m", "leornian.platform.relay"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${LEORNIAN_SUBNET:-10.83.44.0/24}

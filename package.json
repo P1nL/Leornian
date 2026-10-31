@@ -1,0 +1,14 @@
+{
+  "name": "leornian",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.8.0",
+  "scripts": {
+    "dev": "pnpm --filter @leornian/desktop dev",
+    "build": "pnpm --filter @leornian/desktop build",
+    "check": "pnpm --filter @leornian/desktop check",
+    "test": "pnpm --filter @leornian/desktop test",
+    "contracts": "uv run --directory backend leornian-schema && pnpm --filter @leornian/api-contracts generate",
+    "desktop:dev": "pnpm --filter @leornian/desktop tauri dev"
+  }
+}
