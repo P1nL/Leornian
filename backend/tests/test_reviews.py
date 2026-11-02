@@ -4,6 +4,7 @@ from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
+from test_python_execution import owned_claim
 
 from leornian.bootstrap.journey import JourneyWorkflow
 from leornian.entrypoints.api import create_app
@@ -29,7 +30,7 @@ def review_setup(database, workflow, session):
     track = service.draft(session.token, goal.id)
     service.confirm(session.token, track.id, 1)
     service.submit(session.token, track.id, str(uuid4()), Submission(code="owned-review-code"))
-    claim = service.claim("test-runner")
+    claim = owned_claim(database, session, runner_id="test-runner")
     report = RunnerReport(
         claim_token=claim.claim_token,
         cases=[

@@ -161,6 +161,23 @@ class Lessons:
         ).fetchone()
         return GeneratedLesson(**row) if row else None
 
+    def for_node(self, actor, plan_id, revision, node_key):
+        row = self.connection.execute(
+            "SELECT "
+            + DOCUMENT_COLUMNS
+            + "WHERE r.actor_id=%s AND r.plan_id=%s AND r.plan_revision=%s AND r.node_key=%s "
+            "ORDER BY d.created_at DESC,d.id DESC LIMIT 1",
+            (actor.id, plan_id, revision, node_key),
+        ).fetchone()
+        return GeneratedLesson(**row) if row else None
+
+    def gate_context(self, actor):
+        rows = self.connection.execute(
+            "SELECT " + DOCUMENT_COLUMNS + "WHERE r.actor_id=%s ORDER BY d.created_at,d.id",
+            (actor.id,),
+        ).fetchall()
+        return [GeneratedLesson(**row).model_dump(mode="json") for row in rows]
+
     def list(self, actor: Actor) -> list[GeneratedLesson]:
         return [
             GeneratedLesson(**row)

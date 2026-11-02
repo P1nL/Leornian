@@ -2,15 +2,24 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from leornian.agent_runtime.contracts import Run
+from leornian.agent_runtime.contracts import Run, ToolActivity
 from leornian.modules.assessment.contracts import Attempt
+from leornian.modules.assessment.gate_contracts import GateSummary, Remediation
+from leornian.modules.assessment.python_contracts import PythonAttempt
+from leornian.modules.assessment.transfer_contracts import TransferSummary
 from leornian.modules.identity.contracts import Actor
 from leornian.modules.item_bank.contracts import Exercise
+from leornian.modules.item_bank.demand_contracts import SupplyDemand
+from leornian.modules.item_bank.supply_contracts import ChoiceResult, PackSummary
 from leornian.modules.knowledge.contracts import Source
-from leornian.modules.learning.contracts import GeneratedLesson, Goal, LearningPlan
+from leornian.modules.learning.contracts import GeneratedLesson, Goal, LearningPlan, NodeProgress
+from leornian.modules.learning.execution_contracts import ExecutionProgress
 from leornian.modules.learning.journey_contracts import Lesson, Track
 from leornian.modules.learning.review_contracts import ReviewCard
+from leornian.modules.tutor.artifact_contracts import ArtifactJob, ArtifactSummary
 from leornian.modules.tutor.contracts import Conversation, Turn
+from leornian.modules.tutor.deliveries import DeliveryTask
+from leornian.modules.tutor.evaluation_contracts import Evaluation
 from leornian.platform.jobs import Job
 from leornian.shared_kernel.contracts import Contract
 
@@ -28,6 +37,11 @@ class EventPayload(Contract):
     plan_id: UUID | None = None
     plan_revision: int | None = None
     lesson_id: UUID | None = None
+    pack_id: UUID | None = None
+    gate_id: UUID | None = None
+    transfer_id: UUID | None = None
+    artifact_id: UUID | None = None
+    artifact_job_id: UUID | None = None
 
 
 class PublicEvent(Contract):
@@ -61,6 +75,13 @@ class PublicEvent(Contract):
         "learning.dynamic_plan_drafted",
         "learning.dynamic_plan_confirmed",
         "learning.lesson_document_created",
+        "item_bank.updated",
+        "assessment.choice_recorded",
+        "assessment.remediation_updated",
+        "assessment.gate_updated",
+        "learning.node_completed",
+        "assessment.transfer_updated",
+        "tutor.artifact_updated",
     ]
     aggregate_id: UUID
     correlation_id: UUID
@@ -91,6 +112,20 @@ class Snapshot(Contract):
     reviews: list[ReviewCard] = []
     plans: list[LearningPlan] = []
     lessons: list[GeneratedLesson] = []
+    packs: list[PackSummary] = []
+    choice_results: list[ChoiceResult] = []
+    remediations: list[Remediation] = []
+    gates: list[GateSummary] = []
+    node_progress: list[NodeProgress] = []
+    transfers: list[TransferSummary] = []
+    supply_demands: list[SupplyDemand] = []
+    evaluations: list[Evaluation] = []
+    python_attempts: list[PythonAttempt] = []
+    execution_progress: list[ExecutionProgress] = []
+    delivery_tasks: list[DeliveryTask] = []
+    artifacts: list[ArtifactSummary] = []
+    artifact_jobs: list[ArtifactJob] = []
+    tool_activities: list[ToolActivity] = []
 
 
 class LessonView(Contract):

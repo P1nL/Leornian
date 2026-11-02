@@ -4,9 +4,16 @@ from leornian.agent_runtime.repository import Runs
 from leornian.delivery.contracts import ConversationTurns, EventPayload, PublicEvent, Snapshot
 from leornian.delivery.events import Events
 from leornian.modules.assessment.application import Assessment
+from leornian.modules.assessment.choices import Choices
+from leornian.modules.assessment.gates import Gates
+from leornian.modules.assessment.python_assessment import PythonAssessment
+from leornian.modules.assessment.remediation import Remediations
+from leornian.modules.assessment.transfers import Transfers
 from leornian.modules.identity.application import Identity
 from leornian.modules.identity.contracts import Session
 from leornian.modules.identity.infrastructure import PgIdentityStore
+from leornian.modules.item_bank.demands import Demands
+from leornian.modules.item_bank.supply import Packs
 from leornian.modules.knowledge.application import Knowledge
 from leornian.modules.learning.application import Learning
 from leornian.modules.learning.contracts import GoalInput
@@ -14,8 +21,12 @@ from leornian.modules.learning.infrastructure import PgGoalStore
 from leornian.modules.learning.journey import Journey
 from leornian.modules.learning.lessons import Lessons
 from leornian.modules.learning.planning import Plans
+from leornian.modules.learning.progress import Progress
 from leornian.modules.learning.reviews import Reviews
 from leornian.modules.tutor.application import Tutor
+from leornian.modules.tutor.artifacts import Artifacts
+from leornian.modules.tutor.deliveries import Deliveries
+from leornian.modules.tutor.evaluations import Evaluations
 from leornian.modules.tutor.infrastructure import PgTutorStore
 from leornian.platform.database import Database
 from leornian.platform.jobs import Accepted, Job, Jobs
@@ -68,12 +79,26 @@ class GoalWorkflow:
                     for item in conversations
                 ],
                 runs=Runs(connection).list(actor.id),
+                delivery_tasks=Deliveries(connection).page(actor, limit=100),
+                artifacts=Artifacts(connection).list(actor),
+                artifact_jobs=Artifacts(connection).jobs(actor),
+                tool_activities=Runs(connection).activities(actor.id),
                 tracks=Journey(connection).list(actor),
                 attempts=Assessment(connection).list(actor),
                 sources=Knowledge(connection).list(actor),
                 reviews=Reviews(connection).list(actor),
                 plans=Plans(connection).list(actor),
                 lessons=Lessons(connection).list(actor),
+                packs=Packs(connection).list(actor),
+                choice_results=Choices(connection).list(actor),
+                remediations=Remediations(connection).list(actor),
+                gates=Gates(connection).list(actor),
+                node_progress=Progress(connection).list(actor),
+                transfers=Transfers(connection).list(actor),
+                supply_demands=Demands(connection).list(actor),
+                evaluations=Evaluations(connection).list(actor),
+                python_attempts=PythonAssessment(connection).list(actor),
+                execution_progress=Progress(connection).python_list(actor),
             )
 
     def events(self, token: str, after: int) -> list[PublicEvent]:

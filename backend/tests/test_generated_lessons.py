@@ -76,6 +76,7 @@ def lesson_setup(database, workflow, session):
     workflow.process_goal(event["event_id"])
     goal = workflow.snapshot(session.token).goals[0]
     settings = Settings(
+        delivery_enabled=False,  # Preserve the historical single-stage Runtime regression contract.
         database_url=database.url,
         model_enabled=True,
         model_base_url="https://owned.invalid/v1",

@@ -121,6 +121,15 @@ def test_broker_failure_keeps_outbox_eligible_and_lost_wakeup_is_redispatched(
 ):
     accepted = submit(workflow, session)
     event = event_id(database, accepted.job_id)
+    # The isolated database intentionally retains prior test actors. This test owns
+    # one wakeup, so put that fixture first rather than assuming fewer than 50 old rows.
+    with database.transaction() as connection:
+        connection.execute(
+            "UPDATE platform.outbox SET created_at="
+            "(SELECT min(created_at)-interval '1 second' FROM platform.outbox) "
+            "WHERE event_id=%s",
+            (event,),
+        )
 
     def unavailable(_event):
         raise ConnectionError("broker unavailable")

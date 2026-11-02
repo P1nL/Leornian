@@ -4,7 +4,10 @@ from uuid import UUID
 
 from pydantic import Field, field_validator
 
+from leornian.modules.assessment.gate_contracts import ConceptCompletion
 from leornian.shared_kernel.contracts import Contract
+
+__all__ = ["Attempt", "Submission", "AssessmentResult", "ConceptCompletion"]
 
 
 class Submission(Contract):
@@ -34,3 +37,11 @@ class AssessmentResult(Contract):
     passed: bool
     passed_cases: int
     feedback: str
+
+
+class PythonCompletion(Contract):
+    gate_id: UUID
+    plan_id: UUID
+    plan_revision: int
+    node_key: str
+    policy_version: Literal["python-io-gate.v1"] = "python-io-gate.v1"

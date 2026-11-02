@@ -35,6 +35,13 @@ class Execution:
         )
         return {**row, "claim_token": claim_token}
 
+    def enqueue_python(self, actor, attempt_id, session_digest):
+        self.connection.execute(
+            "INSERT INTO execution.jobs(id,actor_id,python_input_ref,session_digest) "
+            "VALUES(%s,%s,%s,%s) ON CONFLICT(python_input_ref) DO NOTHING",
+            (uuid4(), actor.id, attempt_id, session_digest),
+        )
+
     def abandon(self, job_id: UUID, code: str) -> None:
         self.connection.execute(
             "UPDATE execution.jobs SET status = 'expired', report = %s, reported_at = now() "
@@ -44,7 +51,8 @@ class Execution:
 
     def reference(self, job_id: UUID) -> dict:
         row = self.connection.execute(
-            "SELECT id, actor_id, input_ref, session_digest FROM execution.jobs WHERE id = %s",
+            "SELECT id, actor_id, input_ref, python_input_ref,session_digest "
+            "FROM execution.jobs WHERE id = %s",
             (job_id,),
         ).fetchone()
         if row is None:
@@ -54,8 +62,23 @@ class Execution:
     def expired(self) -> list[dict]:
         return self.connection.execute(
             "SELECT * FROM execution.jobs WHERE status = 'running' AND lease_until < now() "
+            "AND input_ref IS NOT NULL "
             "ORDER BY lease_until LIMIT 25 FOR UPDATE SKIP LOCKED",
         ).fetchall()
+
+    def expired_python(self):
+        return self.connection.execute(
+            "SELECT id,actor_id,python_input_ref FROM execution.jobs WHERE status='running' "
+            "AND lease_until<now() AND python_input_ref IS NOT NULL "
+            "ORDER BY lease_until,id LIMIT 25"
+        ).fetchall()
+
+    def lock_expired_python(self, job_id):
+        return self.connection.execute(
+            "SELECT * FROM execution.jobs WHERE id=%s AND status='running' AND lease_until<now() "
+            "AND python_input_ref IS NOT NULL FOR UPDATE SKIP LOCKED",
+            (job_id,),
+        ).fetchone()
 
     def report(self, job_id: UUID, report: RunnerReport) -> tuple[dict, bool, bool]:
         row = self.connection.execute(

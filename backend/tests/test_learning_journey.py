@@ -3,6 +3,7 @@ from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
+from test_python_execution import owned_claim
 
 from leornian.bootstrap.journey import JourneyWorkflow
 from leornian.entrypoints.api import create_app
@@ -73,16 +74,16 @@ def test_wrong_then_correct_assessment_and_deduplication(database, workflow, ses
     with pytest.raises(BusinessError) as error:
         service.submit(session.token, track.id, key, Submission(code="print(6)"))
     assert error.value.code == "idempotency_conflict"
-    claim = service.claim("test-runner")
+    claim = owned_claim(database, session, runner_id="test-runner")
     assert claim and claim.code == data.code and not hasattr(claim, "expected")
-    assert service.claim("test-runner") is None
+    assert owned_claim(database, session, runner_id="test-runner") is None
     wrong = RunnerReport(claim_token=claim.claim_token, cases=outputs((0, 0, 0)))
     service.report(claim.job_id, wrong)
     service.report(claim.job_id, wrong)
     assert service.attempt(session.token, attempts[0].id).status == "not_passed"
     assert workflow.snapshot(session.token).tracks[0].status == "confirmed"
     correct = service.submit(session.token, track.id, str(uuid4()), Submission(code="correct"))
-    claim = service.claim("test-runner")
+    claim = owned_claim(database, session, runner_id="test-runner")
     report = RunnerReport(claim_token=claim.claim_token, cases=outputs())
     with ThreadPoolExecutor(max_workers=2) as pool:
         list(pool.map(lambda _: service.report(claim.job_id, report), range(2)))
@@ -111,7 +112,7 @@ def test_expired_execution_never_reexecutes_or_applies_late_result(
     service, track = journey
     service.confirm(session.token, track.id, 1)
     attempt = service.submit(session.token, track.id, str(uuid4()), Submission(code="print(0)"))
-    claim = service.claim("vanished-runner")
+    claim = owned_claim(database, session, runner_id="vanished-runner")
     with database.transaction() as connection:
         connection.execute(
             "UPDATE execution.jobs SET lease_until = now() - interval '1 minute' WHERE id = %s",
@@ -119,7 +120,7 @@ def test_expired_execution_never_reexecutes_or_applies_late_result(
         )
     service.expire_executions()
     assert service.attempt(session.token, attempt.id).status == "error"
-    assert service.claim("replacement-runner") is None
+    assert owned_claim(database, session, runner_id="replacement-runner") is None
     report = RunnerReport(claim_token=claim.claim_token, cases=outputs())
     service.report(claim.job_id, report)
     service.report(claim.job_id, report)
@@ -144,7 +145,7 @@ def test_wrong_claim_and_current_learner_revocation(database, workflow, session,
     service, track = journey
     service.confirm(session.token, track.id, 1)
     attempt = service.submit(session.token, track.id, str(uuid4()), Submission(code="print(0)"))
-    claim = service.claim("test-runner")
+    claim = owned_claim(database, session, runner_id="test-runner")
     with pytest.raises(BusinessError) as error:
         service.report(claim.job_id, RunnerReport(claim_token=uuid4(), cases=outputs()))
     assert error.value.code == "stale_version"
@@ -179,7 +180,7 @@ def test_inactive_queued_execution_does_not_block_queue(database, session, journ
         connection.execute(
             "UPDATE identity.learners SET active = false WHERE id = %s", (session.actor.id,)
         )
-    assert service.claim("test-runner") is None
+    assert owned_claim(database, session, runner_id="test-runner") is None
     with database.transaction() as connection:
         assert (
             connection.execute(
@@ -194,7 +195,9 @@ def test_revoked_originating_session_prevents_execution_effects(database, sessio
     service, track = journey
     service.confirm(session.token, track.id, 1)
     attempt = service.submit(session.token, track.id, str(uuid4()), Submission(code="print(0)"))
-    claim = service.claim("test-runner") if when == "before_report" else None
+    claim = (
+        owned_claim(database, session, runner_id="test-runner") if when == "before_report" else None
+    )
     with database.transaction() as connection:
         connection.execute(
             "UPDATE identity.sessions SET revoked_at = now() WHERE actor_id = %s",
@@ -203,7 +206,7 @@ def test_revoked_originating_session_prevents_execution_effects(database, sessio
     if claim:
         service.report(claim.job_id, RunnerReport(claim_token=claim.claim_token, cases=outputs()))
     else:
-        assert service.claim("test-runner") is None
+        assert owned_claim(database, session, runner_id="test-runner") is None
     with database.transaction() as connection:
         assert (
             connection.execute(

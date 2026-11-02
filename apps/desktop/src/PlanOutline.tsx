@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { explain, request } from "./api";
-import type { GeneratedLesson, LearningPlan, PlanRevision, Session, Source, TurnAccepted } from "./api";
+import type { ChoiceResult, GateSummary, GeneratedLesson, LearningPlan, NodeProgress, PackSummary, PlanRevision, Remediation, Session, Source, TransferSummary, TurnAccepted } from "./api";
 import { LessonReader } from "./LessonReader";
+import { PackPractice } from "./PackPractice";
+import type { PythonAttempt } from "./api";
 
 function RevisionBody({ revision }: { revision: PlanRevision }) {
   const document = revision.document;
@@ -33,14 +35,20 @@ function readPendingLesson(): PendingLesson | null {
   catch { return null; }
 }
 
-export function PlanOutline({ plan, session, sources, lessons, modelReady, hasActiveRun, busy, setBusy, onUpdated }: {
+export function PlanOutline({ plan, session, sources, lessons, packs = [], results = [],
+  remediations = [], gates = [], transfers = [], pythonAttempts = [], progress = [], examActive = false, modelReady, hasActiveRun, busy, setBusy, onUpdated }: {
   plan: LearningPlan; session: Session; sources: Source[]; busy: boolean;
   lessons: GeneratedLesson[]; modelReady: boolean; hasActiveRun: boolean;
+  packs?: PackSummary[]; results?: ChoiceResult[];
+  remediations?: Remediation[]; gates?: GateSummary[]; progress?: NodeProgress[]; examActive?: boolean;
+  transfers?: TransferSummary[];
+  pythonAttempts?: PythonAttempt[];
   setBusy: (busy: boolean) => void; onUpdated: () => void;
 }) {
   const [error, setError] = useState("");
   const [history, setHistory] = useState<PlanRevision[] | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyEnded, setHistoryEnded] = useState(false);
   const [nodeKey, setNodeKey] = useState("");
   const [instruction, setInstruction] = useState("");
   const confirmed = plan.active?.revision === plan.latest.revision;
@@ -95,6 +103,19 @@ export function PlanOutline({ plan, session, sources, lessons, modelReady, hasAc
     try {
       const revisions = await request<PlanRevision[]>(`/v1/plans/${plan.id}/revisions`, session.token);
       setHistory(revisions); setHistoryOpen(true);
+      setHistoryEnded(revisions.length < 20);
+    } catch (problem) { setError(explain(problem)); }
+    finally { setBusy(false); }
+  }
+
+  async function olderHistory() {
+    if (!history?.length) return;
+    setBusy(true); setError("");
+    try {
+      const before = history[history.length - 1].revision;
+      const older = await request<PlanRevision[]>(
+        `/v1/plans/${plan.id}/revisions?before=${before}&limit=20`, session.token);
+      setHistory([...history, ...older]); setHistoryEnded(older.length < 20);
     } catch (problem) { setError(explain(problem)); }
     finally { setBusy(false); }
   }
@@ -119,6 +140,8 @@ export function PlanOutline({ plan, session, sources, lessons, modelReady, hasAc
         onChange={(event) => { setNodeKey(event.target.value); setInstruction(""); setError(""); }}>
         {active.document.nodes.map((item) => <option key={item.key} value={item.key}>{item.title}</option>)}
       </select>
+      {progress.some((item) => item.plan_id === plan.id && item.plan_revision === active.revision && item.node_key === node.key) &&
+        <p className="concept-completed" role="status">本节点概念 Gate 已通过 · 不自动进入下一节点，也不代表编程执行能力已验证。</p>}
       {selectedLesson ? <LessonReader lesson={selectedLesson} sources={sources} />
         : <p className="empty">这个节点还没有课时正文。生成后会保存引用和版本，不会自动运行代码或创建评测结果。</p>}
       {documents.length > 1 && <details className="lesson-older"><summary>之前生成的正文 · {documents.length - 1} 份</summary>
@@ -127,12 +150,17 @@ export function PlanOutline({ plan, session, sources, lessons, modelReady, hasAc
       {!nodeSourcesCurrent && <p className="plan-version-note">这个节点还没有可用的精确来源。请添加并确认资料，修订路线中的引用后再生成课时。</p>}
       <label htmlFor={`lesson-instruction-${plan.id}`}>{selectedLesson ? "这次希望如何调整课时" : "这节课希望怎样讲解"}</label>
       <textarea id={`lesson-instruction-${plan.id}`} rows={2} value={instruction} maxLength={4000}
-        disabled={busy || hasActiveRun} onChange={(event) => setInstruction(event.target.value)}
+        disabled={busy || hasActiveRun || examActive} onChange={(event) => setInstruction(event.target.value)}
         placeholder="例如：先解释概念，再给一个小例子；我还不熟悉文件路径。" />
       <div className="form-footer"><p>仅生成带引用的正文和回想问题；不包含正式 Gate 或掌握度裁决。</p>
-        <button className="primary" disabled={busy || hasActiveRun || !modelReady || !nodeSourcesCurrent || !instruction.trim()}
+        <button className="primary" disabled={busy || hasActiveRun || examActive || !modelReady || !nodeSourcesCurrent || !instruction.trim()}
           onClick={() => void generateLesson()}>{hasActiveRun ? "等待当前回合结束" : selectedLesson ? "生成另一份正文" : "生成这个节点的课时"}</button>
       </div>
+      <PackPractice key={`${active.revision}:${node.key}`} planId={plan.id} revision={active.revision}
+        nodeKey={node.key} session={session} packs={packs} results={results}
+        remediations={remediations} gates={gates} transfers={transfers} pythonAttempts={pythonAttempts} lessonAvailable={Boolean(selectedLesson)} examActive={examActive}
+        sourcesCurrent={nodeSourcesCurrent} modelReady={modelReady} hasActiveRun={hasActiveRun}
+        onUpdated={onUpdated} />
     </section>}
     {historicalLessons.length > 0 && <details className="lesson-older"><summary>其他计划版本的历史课时 · {historicalLessons.length} 份</summary>
       <p className="plan-version-note">以下课时保留原计划和来源版本，不作为当前路线的进度或执行权限。</p>
@@ -141,7 +169,10 @@ export function PlanOutline({ plan, session, sources, lessons, modelReady, hasAc
     {historyOpen && history && <div className="plan-history">{history.map((revision) => <details key={revision.id}>
       <summary>版本 {revision.revision} · {revision.document.title}{plan.active?.revision === revision.revision ? " · 当前确认版本" : ""}</summary>
       <RevisionBody revision={revision} />
-    </details>)}</div>}
+    </details>)}
+      {!historyEnded && <button className="text-button" disabled={busy}
+        onClick={() => void olderHistory()}>加载更早路线版本</button>}
+    </div>}
     {error && <p className="error" role="alert">{error}</p>}
   </section>;
 }

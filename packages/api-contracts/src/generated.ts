@@ -4,6 +4,193 @@
  */
 
 export interface paths {
+    "/v1/conversations/{conversation_id}/artifact-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Artifact Request */
+        post: operations["artifact_request_v1_conversations__conversation_id__artifact_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/artifacts/{artifact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Artifact */
+        get: operations["artifact_v1_artifacts__artifact_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/artifact-jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Artifact Job */
+        get: operations["artifact_job_v1_artifact_jobs__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/artifact-jobs/{job_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Artifact */
+        post: operations["cancel_artifact_v1_artifact_jobs__job_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/artifact-jobs/{job_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Artifact */
+        post: operations["resume_artifact_v1_artifact_jobs__job_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/tools": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tool Activities */
+        get: operations["tool_activities_v1_runs__run_id__tools_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/delivery-tasks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Delivery Tasks */
+        get: operations["delivery_tasks_v1_delivery_tasks_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/delivery-tasks/{task_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Delivery Task */
+        get: operations["delivery_task_v1_delivery_tasks__task_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/delivery-tasks/{task_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Delivery */
+        post: operations["cancel_delivery_v1_delivery_tasks__task_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/delivery-tasks/{task_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Delivery */
+        post: operations["resume_delivery_v1_delivery_tasks__task_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teaching History */
+        get: operations["teaching_history_v1_conversations__conversation_id__history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health/ready": {
         parameters: {
             query?: never;
@@ -236,6 +423,533 @@ export interface paths {
         get: operations["get_generated_lesson_v1_lessons__lesson_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/plans/{plan_id}/pack-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Pack */
+        post: operations["request_pack_v1_plans__plan_id__pack_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Pack */
+        get: operations["get_pack_v1_packs__pack_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/remediations/{remediation_id}/question": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Remediation Question */
+        get: operations["remediation_question_v1_remediations__remediation_id__question_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/remediations/{remediation_id}/transfer-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Transfer */
+        post: operations["request_transfer_v1_remediations__remediation_id__transfer_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/python-attempts/{attempt_id}/transfer-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Execution Transfer */
+        post: operations["request_execution_transfer_v1_python_attempts__attempt_id__transfer_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/python-attempts/{attempt_id}/supply-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Execution Supply */
+        post: operations["request_execution_supply_v1_python_attempts__attempt_id__supply_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/remediations/{remediation_id}/supply-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Supply */
+        post: operations["request_supply_v1_remediations__remediation_id__supply_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/supply-demands/{demand_id}/revisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revise Supply */
+        post: operations["revise_supply_v1_supply_demands__demand_id__revisions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/evaluations/{evaluation_id}/run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Evaluation */
+        post: operations["request_evaluation_v1_evaluations__evaluation_id__run_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Pack */
+        post: operations["cancel_pack_v1_packs__pack_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/automation-resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Supply */
+        post: operations["resume_supply_v1_packs__pack_id__automation_resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/continue-review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Continue Python Review */
+        post: operations["continue_python_review_v1_packs__pack_id__continue_review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/execution-practice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Execution Practice */
+        get: operations["execution_practice_v1_packs__pack_id__execution_practice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/execution-remediation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execution Remediation */
+        post: operations["execution_remediation_v1_packs__pack_id__execution_remediation_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/execution-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execution Training Submission */
+        post: operations["execution_training_submission_v1_packs__pack_id__execution_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/execution-gate-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Execution Gate */
+        post: operations["request_execution_gate_v1_packs__pack_id__execution_gate_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}/execution-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Execution Gate Submission */
+        post: operations["execution_gate_submission_v1_concept_gates__gate_id__execution_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Transfer */
+        get: operations["get_transfer_v1_transfers__transfer_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/open": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Open Transfer */
+        post: operations["open_transfer_v1_transfers__transfer_id__open_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Transfer */
+        post: operations["submit_transfer_v1_transfers__transfer_id__submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/execution-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Execution Transfer */
+        post: operations["submit_execution_transfer_v1_transfers__transfer_id__execution_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Transfer */
+        post: operations["cancel_transfer_v1_transfers__transfer_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/gate-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Concept Gate */
+        post: operations["request_concept_gate_v1_packs__pack_id__gate_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Concept Gate */
+        get: operations["get_concept_gate_v1_concept_gates__gate_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Concept Gate */
+        post: operations["start_concept_gate_v1_concept_gates__gate_id__start_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}/submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Concept Gate */
+        post: operations["submit_concept_gate_v1_concept_gates__gate_id__submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Concept Gate */
+        post: operations["cancel_concept_gate_v1_concept_gates__gate_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish Pack */
+        post: operations["publish_pack_v1_packs__pack_id__publish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/review-format-correction": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Correct Pack Review Format */
+        post: operations["correct_pack_review_format_v1_packs__pack_id__review_format_correction_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/practice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Open Practice */
+        get: operations["open_practice_v1_packs__pack_id__practice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/answers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Choice */
+        post: operations["submit_choice_v1_packs__pack_id__answers_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -569,6 +1283,125 @@ export interface components {
              */
             valid_until: string;
         };
+        /** ArtifactDocument */
+        ArtifactDocument: {
+            /** Title */
+            title: string;
+            /** Sections */
+            sections: components["schemas"]["ArtifactSection"][];
+        };
+        /** ArtifactJob */
+        ArtifactJob: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Instruction */
+            instruction: string;
+            /** Status */
+            status: string;
+            /** Run Id */
+            run_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ArtifactRequestInput */
+        ArtifactRequestInput: {
+            /** Instruction */
+            instruction: string;
+            /**
+             * @default {
+             *       "kind": "goal"
+             *     }
+             */
+            focus: components["schemas"]["TeachingFocus"];
+            /** Artifact Id */
+            artifact_id?: string | null;
+            /**
+             * Expected Revision
+             * @default 0
+             */
+            expected_revision: number;
+        };
+        /** ArtifactSection */
+        ArtifactSection: {
+            /** Heading */
+            heading: string;
+            /** Text */
+            text: string;
+            /** Code */
+            code?: string | null;
+            /** Language */
+            language?: string | null;
+            /**
+             * Source Refs
+             * @default []
+             */
+            source_refs: components["schemas"]["SourceRef"][];
+        };
+        /** ArtifactSummary */
+        ArtifactSummary: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            focus: components["schemas"]["TeachingFocus"];
+            /** Revision */
+            revision: number;
+            /** Title */
+            title: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ArtifactView */
+        ArtifactView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            focus: components["schemas"]["TeachingFocus"];
+            /** Revision */
+            revision: number;
+            /** Title */
+            title: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            document: components["schemas"]["ArtifactDocument"];
+        };
         /** Attempt */
         Attempt: {
             /**
@@ -616,6 +1449,58 @@ export interface components {
              */
             outcome: "completed" | "timeout" | "output_limit" | "infrastructure_error";
         };
+        /** ChoiceInput */
+        ChoiceInput: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "remediation_1";
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+        };
+        /** ChoiceOption */
+        ChoiceOption: {
+            /**
+             * Key
+             * @enum {string}
+             */
+            key: "A" | "B" | "C" | "D";
+            /** Text */
+            text: string;
+        };
+        /** ChoiceResult */
+        ChoiceResult: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Slot */
+            slot: string;
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+            /** Correct */
+            correct: boolean;
+            /** Explanation */
+            explanation: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /** ConfirmDynamicPlan */
         ConfirmDynamicPlan: {
             /** Expected Revision */
@@ -662,12 +1547,108 @@ export interface components {
             /** Turns */
             turns: components["schemas"]["Turn"][];
         };
+        /** DeliveryResume */
+        DeliveryResume: {
+            /**
+             * Additional Instruction
+             * @default
+             */
+            additional_instruction: string;
+        };
+        /** DeliveryTask */
+        DeliveryTask: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "teaching" | "planning" | "lesson" | "artifact";
+            /** Status */
+            status: string;
+            /** Revision */
+            revision: number;
+            /** Repair Strategy */
+            repair_strategy: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Cancel Requested */
+            cancel_requested: boolean;
+            /**
+             * Can Resume
+             * @default false
+             */
+            can_resume: boolean;
+            /**
+             * Required Input
+             * @default []
+             */
+            required_input: string[];
+        };
         /** ErrorResponse */
         ErrorResponse: {
             /** Code */
             code: string;
             /** Message */
             message: string;
+        };
+        /** Evaluation */
+        Evaluation: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Source Kind
+             * @enum {string}
+             */
+            source_kind: "choice" | "transfer" | "python";
+            /**
+             * Source Id
+             * Format: uuid
+             */
+            source_id: string;
+            /** Correct */
+            correct: boolean;
+            /** Run Id */
+            run_id: string | null;
+            document: components["schemas"]["EvaluationDocument"] | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** EvaluationDocument */
+        EvaluationDocument: {
+            /** Recorded Correct */
+            recorded_correct: boolean;
+            /** Explanation */
+            explanation: string;
+            /** Reflection */
+            reflection: string;
         };
         /** EventPayload */
         EventPayload: {
@@ -731,6 +1712,31 @@ export interface components {
              * @default null
              */
             lesson_id: string | null;
+            /**
+             * Pack Id
+             * @default null
+             */
+            pack_id: string | null;
+            /**
+             * Gate Id
+             * @default null
+             */
+            gate_id: string | null;
+            /**
+             * Transfer Id
+             * @default null
+             */
+            transfer_id: string | null;
+            /**
+             * Artifact Id
+             * @default null
+             */
+            artifact_id: string | null;
+            /**
+             * Artifact Job Id
+             * @default null
+             */
+            artifact_job_id: string | null;
         };
         /** ExecutionClaim */
         ExecutionClaim: {
@@ -749,6 +1755,33 @@ export interface components {
             /** Inputs */
             inputs: number[][];
         };
+        /** ExecutionProgress */
+        ExecutionProgress: {
+            /**
+             * Gate Id
+             * Format: uuid
+             */
+            gate_id: string;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /**
+             * Policy Version
+             * @constant
+             */
+            policy_version: "python-io-gate.v1";
+            /**
+             * Completed At
+             * Format: date-time
+             */
+            completed_at: string;
+        };
         /** Exercise */
         Exercise: {
             /** Version */
@@ -761,6 +1794,128 @@ export interface components {
             starter_code: string;
             /** Provenance */
             provenance: string;
+        };
+        /** GateItemResult */
+        GateItemResult: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "assessment_1" | "assessment_2";
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+            /** Correct */
+            correct: boolean;
+            /** Explanation */
+            explanation: string;
+        };
+        /** GateProgram */
+        GateProgram: {
+            /** Code */
+            code: string;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "assessment_1" | "assessment_2";
+        };
+        /** GateRequest */
+        GateRequest: {
+            /** Expected Plan Revision */
+            expected_plan_revision: number;
+        };
+        /** GateSelection */
+        GateSelection: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "assessment_1" | "assessment_2";
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+        };
+        /** GateSubmission */
+        GateSubmission: {
+            /** Answers */
+            answers: components["schemas"]["GateSelection"][];
+        };
+        /** GateSummary */
+        GateSummary: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /**
+             * Lesson Id
+             * Format: uuid
+             */
+            lesson_id: string;
+            /**
+             * Policy Version
+             * @default concept-gate.v1
+             * @enum {string}
+             */
+            policy_version: "concept-gate.v1" | "python-io-gate.v1";
+            /** Relation Run Id */
+            relation_run_id: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "preparing" | "ready" | "in_progress" | "submitted" | "passed" | "not_passed" | "blocked" | "cancelled";
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Started At */
+            started_at: string | null;
+            /** Completed At */
+            completed_at: string | null;
+        };
+        /** GateView */
+        GateView: {
+            gate: components["schemas"]["GateSummary"];
+            /**
+             * Questions
+             * @default []
+             */
+            questions: (components["schemas"]["PublicQuestion"] | components["schemas"]["PythonQuestion"])[];
+            /**
+             * Results
+             * @default []
+             */
+            results: components["schemas"]["GateItemResult"][];
+            /**
+             * Allowed Actions
+             * @default []
+             */
+            allowed_actions: ("start" | "submit" | "cancel")[];
+            /** Blocked Reason */
+            blocked_reason?: string | null;
         };
         /** GeneratedLesson */
         GeneratedLesson: {
@@ -967,6 +2122,150 @@ export interface components {
              */
             protocol: "chat_completions";
         };
+        /** NodeProgress */
+        NodeProgress: {
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /**
+             * Evidence Gate Id
+             * Format: uuid
+             */
+            evidence_gate_id: string;
+            /**
+             * Completed At
+             * Format: date-time
+             */
+            completed_at: string;
+            /**
+             * Capability
+             * @default concept_choice
+             */
+            capability: string;
+        };
+        /** PackAccepted */
+        PackAccepted: {
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Status
+             * @default accepted
+             * @constant
+             */
+            status: "accepted";
+        };
+        /** PackRequest */
+        PackRequest: {
+            /** Expected Plan Revision */
+            expected_plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /** Instruction */
+            instruction: string;
+            /** Predecessor Id */
+            predecessor_id?: string | null;
+            /** Gate Feedback Id */
+            gate_feedback_id?: string | null;
+            /** Transfer Feedback Id */
+            transfer_feedback_id?: string | null;
+            /**
+             * Kind
+             * @default choice
+             * @enum {string}
+             */
+            kind: "choice" | "python_io";
+            /**
+             * Automatic
+             * @default true
+             */
+            automatic: boolean;
+        };
+        /** PackSummary */
+        PackSummary: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /** Revision */
+            revision: number;
+            /** Predecessor Id */
+            predecessor_id: string | null;
+            /** Gate Feedback Id */
+            gate_feedback_id?: string | null;
+            /** Transfer Feedback Id */
+            transfer_feedback_id?: string | null;
+            /** Supply Demand Id */
+            supply_demand_id?: string | null;
+            /**
+             * Kind
+             * @default choice
+             * @enum {string}
+             */
+            kind: "choice" | "python_io";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "authoring" | "blind_solving" | "qualifying" | "reviewing" | "changes_required" | "ready" | "published" | "failed" | "cancelled";
+            /** Reviewed Roles */
+            reviewed_roles: string[];
+            /** Passed Roles */
+            passed_roles: string[];
+            /** Blind Passed */
+            blind_passed: boolean | null;
+            /** Item Count */
+            item_count: number;
+            /** Pending Run Id */
+            pending_run_id?: string | null;
+            /** Pending Role */
+            pending_role?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Published At */
+            published_at: string | null;
+            /**
+             * Automatic
+             * @default false
+             */
+            automatic: boolean;
+            /** Automation Error */
+            automation_error?: string | null;
+            /** Supply Task Id */
+            supply_task_id?: string | null;
+            /** Automation Status */
+            automation_status?: ("running" | "waiting" | "completed" | "cancelled") | null;
+            /** Automation Action */
+            automation_action?: string | null;
+            /** Automation Reason */
+            automation_reason?: string | null;
+        };
         /** PlanDocument */
         PlanDocument: {
             /** Title */
@@ -988,9 +2287,15 @@ export interface components {
             objective: string;
             /** Estimated Minutes */
             estimated_minutes: number;
-            /** Prerequisite Keys */
+            /**
+             * Prerequisite Keys
+             * @default []
+             */
             prerequisite_keys: string[];
-            /** Source Refs */
+            /**
+             * Source Refs
+             * @default []
+             */
             source_refs: components["schemas"]["SourceRef"][];
         };
         /** PlanRevision */
@@ -1017,8 +2322,24 @@ export interface components {
         PlanningInput: {
             /** Text */
             text: string;
+            /**
+             * @default {
+             *       "kind": "goal"
+             *     }
+             */
+            focus: components["schemas"]["TeachingFocus"];
             /** Expected Revision */
             expected_revision: number;
+        };
+        /** PracticeSet */
+        PracticeSet: {
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Questions */
+            questions: components["schemas"]["PublicQuestion"][];
         };
         /** PublicEvent */
         PublicEvent: {
@@ -1033,7 +2354,7 @@ export interface components {
              * Event Type
              * @enum {string}
              */
-            event_type: "job.queued" | "goal.created" | "job.succeeded" | "job.failed" | "tutor.queued" | "tutor.running" | "tutor.tool_completed" | "tutor.succeeded" | "tutor.failed" | "tutor.cancelled" | "tutor.blocked_unknown" | "tutor.result_available" | "learning.plan_drafted" | "learning.plan_confirmed" | "assessment.queued" | "assessment.completed" | "learning.lesson_completed" | "knowledge.created" | "knowledge.revised" | "knowledge.admitted" | "knowledge.revoked" | "learning.review_scheduled" | "learning.review_recorded" | "learning.review_status_changed" | "learning.dynamic_plan_drafted" | "learning.dynamic_plan_confirmed" | "learning.lesson_document_created";
+            event_type: "job.queued" | "goal.created" | "job.succeeded" | "job.failed" | "tutor.queued" | "tutor.running" | "tutor.tool_completed" | "tutor.succeeded" | "tutor.failed" | "tutor.cancelled" | "tutor.blocked_unknown" | "tutor.result_available" | "learning.plan_drafted" | "learning.plan_confirmed" | "assessment.queued" | "assessment.completed" | "learning.lesson_completed" | "knowledge.created" | "knowledge.revised" | "knowledge.admitted" | "knowledge.revoked" | "learning.review_scheduled" | "learning.review_recorded" | "learning.review_status_changed" | "learning.dynamic_plan_drafted" | "learning.dynamic_plan_confirmed" | "learning.lesson_document_created" | "item_bank.updated" | "assessment.choice_recorded" | "assessment.remediation_updated" | "assessment.gate_updated" | "learning.node_completed" | "assessment.transfer_updated" | "tutor.artifact_updated";
             /**
              * Aggregate Id
              * Format: uuid
@@ -1058,6 +2379,144 @@ export interface components {
              */
             occurred_at: string;
             payload: components["schemas"]["EventPayload"];
+        };
+        /** PublicQuestion */
+        PublicQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Options */
+            options: components["schemas"]["ChoiceOption"][];
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+        };
+        /** PythonAttempt */
+        PythonAttempt: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Slot */
+            slot: string;
+            /** Gate Id */
+            gate_id: string | null;
+            /** Transfer Id */
+            transfer_id: string | null;
+            /** Code */
+            code: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "passed" | "not_passed" | "error";
+            /** Passed Cases */
+            passed_cases: number;
+            /**
+             * Total Cases
+             * @default 3
+             * @constant
+             */
+            total_cases: 3;
+            /** Feedback */
+            feedback: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Completed At */
+            completed_at: string | null;
+        };
+        /** PythonCase */
+        PythonCase: {
+            /** Input */
+            input: number[];
+            /** Expected */
+            expected: number;
+        };
+        /** PythonGateSubmission */
+        PythonGateSubmission: {
+            /** Programs */
+            programs: components["schemas"]["GateProgram"][];
+        };
+        /** PythonQuestion */
+        PythonQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /**
+             * Language
+             * @default python_io
+             * @constant
+             */
+            language: "python_io";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Starter Code */
+            starter_code: string;
+            sample: components["schemas"]["PythonCase"];
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+        };
+        /** PythonTraining */
+        PythonTraining: {
+            /** Code */
+            code: string;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "remediation_1";
+        };
+        /** Remediation */
+        Remediation: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Parent Result Id
+             * Format: uuid
+             */
+            parent_result_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "available" | "passed" | "not_passed";
+            /** Transfer Required */
+            transfer_required: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
         };
         /** ReviewCard */
         ReviewCard: {
@@ -1163,7 +2622,7 @@ export interface components {
              * @default teaching
              * @enum {string}
              */
-            purpose: "teaching" | "planning" | "lesson";
+            purpose: "teaching" | "planning" | "lesson" | "item_supply" | "gate" | "transfer" | "evaluation" | "artifact";
         };
         /** RunnerClaim */
         RunnerClaim: {
@@ -1253,6 +2712,76 @@ export interface components {
              * @default []
              */
             lessons: components["schemas"]["GeneratedLesson"][];
+            /**
+             * Packs
+             * @default []
+             */
+            packs: components["schemas"]["PackSummary"][];
+            /**
+             * Choice Results
+             * @default []
+             */
+            choice_results: components["schemas"]["ChoiceResult"][];
+            /**
+             * Remediations
+             * @default []
+             */
+            remediations: components["schemas"]["Remediation"][];
+            /**
+             * Gates
+             * @default []
+             */
+            gates: components["schemas"]["GateSummary"][];
+            /**
+             * Node Progress
+             * @default []
+             */
+            node_progress: components["schemas"]["NodeProgress"][];
+            /**
+             * Transfers
+             * @default []
+             */
+            transfers: components["schemas"]["TransferSummary"][];
+            /**
+             * Supply Demands
+             * @default []
+             */
+            supply_demands: components["schemas"]["SupplyDemand"][];
+            /**
+             * Evaluations
+             * @default []
+             */
+            evaluations: components["schemas"]["Evaluation"][];
+            /**
+             * Python Attempts
+             * @default []
+             */
+            python_attempts: components["schemas"]["PythonAttempt"][];
+            /**
+             * Execution Progress
+             * @default []
+             */
+            execution_progress: components["schemas"]["ExecutionProgress"][];
+            /**
+             * Delivery Tasks
+             * @default []
+             */
+            delivery_tasks: components["schemas"]["DeliveryTask"][];
+            /**
+             * Artifacts
+             * @default []
+             */
+            artifacts: components["schemas"]["ArtifactSummary"][];
+            /**
+             * Artifact Jobs
+             * @default []
+             */
+            artifact_jobs: components["schemas"]["ArtifactJob"][];
+            /**
+             * Tool Activities
+             * @default []
+             */
+            tool_activities: components["schemas"]["ToolActivity"][];
         };
         /** Source */
         Source: {
@@ -1334,6 +2863,104 @@ export interface components {
             /** Code */
             code: string;
         };
+        /** SupplyDemand */
+        SupplyDemand: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Remediation Id */
+            remediation_id: string | null;
+            /** Python Remediation Id */
+            python_remediation_id: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "choice" | "python_io";
+            /**
+             * Source Pack Id
+             * Format: uuid
+             */
+            source_pack_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Allowed Difficulties */
+            allowed_difficulties: number[];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            pack: components["schemas"]["PackSummary"];
+        };
+        /** SupplyRequest */
+        SupplyRequest: {
+            /** Expected Plan Revision */
+            expected_plan_revision: number;
+            /** Instruction */
+            instruction: string;
+            /**
+             * Automatic
+             * @default true
+             */
+            automatic: boolean;
+        };
+        /** SupplyRevision */
+        SupplyRevision: {
+            /** Expected Pack Revision */
+            expected_pack_revision: number;
+            /** Instruction */
+            instruction: string;
+            /** Transfer Feedback Id */
+            transfer_feedback_id?: string | null;
+        };
+        /** TeachingFocus */
+        TeachingFocus: {
+            /**
+             * Kind
+             * @default goal
+             * @enum {string}
+             */
+            kind: "goal" | "node" | "attempt";
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Expected Plan Revision */
+            expected_plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+            /** Lesson Id */
+            lesson_id?: string | null;
+            /** Assessment Receipt Id */
+            assessment_receipt_id?: string | null;
+        };
+        /** ToolActivity */
+        ToolActivity: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Name */
+            name: string;
+            /** Contract Version */
+            contract_version: number;
+            /** Outcome */
+            outcome: string;
+            /** Duration Ms */
+            duration_ms: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /** Track */
         Track: {
             /**
@@ -1382,6 +3009,99 @@ export interface components {
              */
             course_version: "python-even-sum.v1";
         };
+        /** TransferAnswer */
+        TransferAnswer: {
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+        };
+        /** TransferFeedback */
+        TransferFeedback: {
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+            /** Correct */
+            correct: boolean;
+            /** Explanation */
+            explanation: string;
+        };
+        /** TransferRequest */
+        TransferRequest: {
+            /** Expected Plan Revision */
+            expected_plan_revision: number;
+        };
+        /** TransferSummary */
+        TransferSummary: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Remediation Id */
+            remediation_id: string | null;
+            /** Python Remediation Id */
+            python_remediation_id: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "choice" | "python_io";
+            /**
+             * Source Pack Id
+             * Format: uuid
+             */
+            source_pack_id: string;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /** Relation Run Id */
+            relation_run_id: string | null;
+            /** Candidate Pack Id */
+            candidate_pack_id: string | null;
+            /** Candidate Slot */
+            candidate_slot: ("practice_1" | "practice_2") | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "preparing" | "ready" | "opened" | "submitted" | "passed" | "not_passed" | "error" | "blocked" | "cancelled";
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Opened At */
+            opened_at: string | null;
+            /** Completed At */
+            completed_at: string | null;
+        };
+        /** TransferView */
+        TransferView: {
+            transfer: components["schemas"]["TransferSummary"];
+            /** Question */
+            question?: components["schemas"]["PublicQuestion"] | components["schemas"]["PythonQuestion"] | null;
+            result?: components["schemas"]["TransferFeedback"] | null;
+            python_attempt?: components["schemas"]["PythonAttempt"] | null;
+            /**
+             * Allowed Actions
+             * @default []
+             */
+            allowed_actions: ("open" | "submit" | "cancel")[];
+            /** Blocked Reason */
+            blocked_reason?: string | null;
+        };
         /** Turn */
         Turn: {
             /**
@@ -1405,11 +3125,17 @@ export interface components {
              * @default teaching
              * @enum {string}
              */
-            purpose: "teaching" | "planning" | "lesson";
+            purpose: "teaching" | "planning" | "lesson" | "item_supply" | "evaluation";
             /** Plan Base Revision */
             plan_base_revision?: number | null;
             /** Lesson Request Id */
             lesson_request_id?: string | null;
+            /**
+             * @default {
+             *       "kind": "goal"
+             *     }
+             */
+            context_focus: components["schemas"]["TeachingFocus"];
         };
         /** TurnAccepted */
         TurnAccepted: {
@@ -1429,11 +3155,19 @@ export interface components {
              * Format: uuid
              */
             turn_id: string;
+            /** Delivery Task Id */
+            delivery_task_id?: string | null;
         };
         /** TurnInput */
         TurnInput: {
             /** Text */
             text: string;
+            /**
+             * @default {
+             *       "kind": "goal"
+             *     }
+             */
+            focus: components["schemas"]["TeachingFocus"];
         };
         /** ValidationError */
         ValidationError: {
@@ -1457,6 +3191,363 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    artifact_request_v1_conversations__conversation_id__artifact_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ArtifactRequestInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtifactJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    artifact_v1_artifacts__artifact_id__get: {
+        parameters: {
+            query?: {
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtifactView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    artifact_job_v1_artifact_jobs__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtifactJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_artifact_v1_artifact_jobs__job_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtifactJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_artifact_v1_artifact_jobs__job_id__resume_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtifactJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    tool_activities_v1_runs__run_id__tools_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ToolActivity"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delivery_tasks_v1_delivery_tasks_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryTask"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delivery_task_v1_delivery_tasks__task_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                task_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryTask"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_delivery_v1_delivery_tasks__task_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                task_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryTask"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_delivery_v1_delivery_tasks__task_id__resume_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                task_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliveryResume"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryTask"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teaching_history_v1_conversations__conversation_id__history_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Turn"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     readiness_health_ready_get: {
         parameters: {
             query?: never;
@@ -1774,7 +3865,10 @@ export interface operations {
     };
     get_plan_history_v1_plans__plan_id__revisions_get: {
         parameters: {
-            query?: never;
+            query?: {
+                before?: number | null;
+                limit?: number;
+            };
             header?: never;
             path: {
                 plan_id: string;
@@ -1893,6 +3987,1049 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["GeneratedLesson"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_pack_v1_plans__plan_id__pack_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PackRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackAccepted"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_pack_v1_packs__pack_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remediation_question_v1_remediations__remediation_id__question_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                remediation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicQuestion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_transfer_v1_remediations__remediation_id__transfer_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                remediation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransferRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_execution_transfer_v1_python_attempts__attempt_id__transfer_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransferRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_execution_supply_v1_python_attempts__attempt_id__supply_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SupplyRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupplyDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_supply_v1_remediations__remediation_id__supply_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                remediation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SupplyRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupplyDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revise_supply_v1_supply_demands__demand_id__revisions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SupplyRevision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupplyDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_evaluation_v1_evaluations__evaluation_id__run_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                evaluation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnAccepted"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_pack_v1_packs__pack_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_supply_v1_packs__pack_id__automation_resume_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    continue_python_review_v1_packs__pack_id__continue_review_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_practice_v1_packs__pack_id__execution_practice_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonQuestion"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_remediation_v1_packs__pack_id__execution_remediation_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonQuestion"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_training_submission_v1_packs__pack_id__execution_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PythonTraining"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_execution_gate_v1_packs__pack_id__execution_gate_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_gate_submission_v1_concept_gates__gate_id__execution_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PythonGateSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_transfer_v1_transfers__transfer_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    open_transfer_v1_transfers__transfer_id__open_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_transfer_v1_transfers__transfer_id__submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransferAnswer"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_execution_transfer_v1_transfers__transfer_id__execution_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Submission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_transfer_v1_transfers__transfer_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_concept_gate_v1_packs__pack_id__gate_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_concept_gate_v1_concept_gates__gate_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_concept_gate_v1_concept_gates__gate_id__start_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_concept_gate_v1_concept_gates__gate_id__submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GateSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_concept_gate_v1_concept_gates__gate_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    publish_pack_v1_packs__pack_id__publish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    correct_pack_review_format_v1_packs__pack_id__review_format_correction_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    open_practice_v1_packs__pack_id__practice_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PracticeSet"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_choice_v1_packs__pack_id__answers_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChoiceInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChoiceResult"];
                 };
             };
             /** @description Validation Error */

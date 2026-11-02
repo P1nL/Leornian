@@ -27,8 +27,22 @@ class Settings:
     model_api_key: str = field(
         default_factory=lambda: os.environ.get("LEORNIAN_MODEL_API_KEY", ""), repr=False
     )
+    model_thinking: str = field(
+        default_factory=lambda: os.environ.get("LEORNIAN_MODEL_THINKING", "")
+    )
+    model_stage_thinking: str = field(
+        default_factory=lambda: os.environ.get("LEORNIAN_MODEL_STAGE_THINKING", "{}")
+    )
     model_timeout: float = 40.0
     run_lease_seconds: int = 120
+    heartbeat_seconds: float = 20.0
+    delivery_enabled: bool = True
+    model_context_tokens: int = field(
+        default_factory=lambda: int(os.environ.get("LEORNIAN_MODEL_CONTEXT_TOKENS", "0"))
+    )
+    model_max_output_tokens: int = field(
+        default_factory=lambda: int(os.environ.get("LEORNIAN_MODEL_MAX_OUTPUT_TOKENS", "0"))
+    )
     runner_token: str = field(
         default_factory=lambda: os.environ.get("LEORNIAN_RUNNER_TOKEN", ""),
         repr=False,

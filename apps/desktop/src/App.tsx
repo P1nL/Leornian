@@ -41,6 +41,13 @@ const labels = {
   "learning.dynamic_plan_drafted": "动态计划新版本已保存，等待确认",
   "learning.dynamic_plan_confirmed": "已确认指定版本的学习路线",
   "learning.lesson_document_created": "节点课时正文与引用已保存，未判定学习完成",
+  "item_bank.updated": "节点题包状态已更新",
+  "assessment.choice_recorded": "概念练习作答已保存，不代表正式 Gate",
+  "assessment.remediation_updated": "补救任务状态已更新",
+  "assessment.gate_updated": "概念考核状态已更新",
+  "assessment.transfer_updated": "新情境后继状态已更新，不代表学习完成",
+  "learning.node_completed": "本节点概念 Gate 通过，已记录服务端证据",
+  "tutor.artifact_updated": "教学工件任务或版本已更新，不代表学习通过",
 };
 
 type Pending = { key: string; actorId: string; title: string; motivation: string };

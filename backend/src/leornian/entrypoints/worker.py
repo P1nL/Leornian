@@ -21,7 +21,7 @@ app.conf.update(
     worker_prefetch_multiplier=1,
     broker_connection_retry_on_startup=True,
     broker_connection_timeout=5,
-    broker_transport_options={"visibility_timeout": 60, "socket_timeout": 5},
+    broker_transport_options={"visibility_timeout": 3600, "socket_timeout": 5},
 )
 
 

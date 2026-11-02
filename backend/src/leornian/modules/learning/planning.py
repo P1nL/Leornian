@@ -109,14 +109,16 @@ class Plans:
         ).fetchall()
         return [self.get(actor, row["id"]) for row in rows]
 
-    def history(self, actor: Actor, plan_id: UUID) -> list[PlanRevision]:
+    def history(self, actor: Actor, plan_id: UUID, before=None, limit=20) -> list[PlanRevision]:
         self.get(actor, plan_id)
         return [
             PlanRevision(**row)
             for row in self.connection.execute(
                 "SELECT id, revision, predecessor_revision, document, sources, created_at "
-                "FROM learning.plan_revisions WHERE plan_id = %s ORDER BY revision DESC LIMIT 20",
-                (plan_id,),
+                "FROM learning.plan_revisions WHERE plan_id=%s "
+                + ("AND revision<%s " if before else "")
+                + "ORDER BY revision DESC LIMIT %s",
+                (plan_id, *((before,) if before else ()), limit),
             ).fetchall()
         ]
 

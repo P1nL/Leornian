@@ -54,7 +54,9 @@ def relay_runs_once(database: Database, publish: Callable[[UUID], None], seconds
 
 def main() -> None:
     # Composition belongs to entrypoints, not the shared relay implementation.
+    from leornian.bootstrap.automatic_supply import AutomaticSupply
     from leornian.bootstrap.journey import JourneyWorkflow
+    from leornian.bootstrap.tutor import TutorWorkflow
     from leornian.entrypoints.worker import create_goal, teach
 
     settings = Settings()
@@ -84,6 +86,10 @@ def main() -> None:
             if teaching:
                 logger.info("Published %s teaching coordination wakeups", teaching)
             JourneyWorkflow(database).expire_executions()
+            advanced = AutomaticSupply(database, settings).reconcile_once()
+            TutorWorkflow(database, settings).reconcile_deliveries()
+            if advanced:
+                logger.info("Advanced %s automatic item supply transitions", advanced)
         except Exception:
             logger.exception("Outbox delivery failed; rows remain eligible for another scan")
         stopped.wait(1)

@@ -45,7 +45,10 @@ class Events:
                 or payload.attempt_id
                 or payload.track_id
                 or payload.source_id
-                or payload.plan_id,
+                or payload.plan_id
+                or payload.pack_id
+                or payload.artifact_job_id
+                or payload.artifact_id,
                 causation_id,
                 Jsonb(payload.model_dump(mode="json")),
             ),

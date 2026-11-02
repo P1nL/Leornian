@@ -14,6 +14,12 @@ ErrorCode = Literal[
     "source_not_current",
     "invalid_plan_output",
     "invalid_lesson_output",
+    "invalid_item_output",
+    "invalid_gate_output",
+    "assessment_not_independent",
+    "invalid_transfer_output",
+    "no_transfer_candidate",
+    "supply_cancelled",
 ]
 
 

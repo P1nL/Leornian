@@ -12,6 +12,10 @@ x-backend: &backend
     LEORNIAN_MODEL_BASE_URL: ${LEORNIAN_MODEL_BASE_URL:-}
     LEORNIAN_MODEL_NAME: ${LEORNIAN_MODEL_NAME:-}
     LEORNIAN_MODEL_API_KEY: ${LEORNIAN_MODEL_API_KEY:-}
+    LEORNIAN_MODEL_THINKING: ${LEORNIAN_MODEL_THINKING:-}
+    LEORNIAN_MODEL_STAGE_THINKING: ${LEORNIAN_MODEL_STAGE_THINKING:-}
+    LEORNIAN_MODEL_CONTEXT_TOKENS: ${LEORNIAN_MODEL_CONTEXT_TOKENS:-0}
+    LEORNIAN_MODEL_MAX_OUTPUT_TOKENS: ${LEORNIAN_MODEL_MAX_OUTPUT_TOKENS:-0}
     LEORNIAN_RUNNER_TOKEN: ${LEORNIAN_RUNNER_TOKEN:-}
   restart: unless-stopped
 
@@ -66,6 +70,7 @@ services:
   worker:
     <<: *backend
     command: ["celery", "-A", "leornian.entrypoints.worker:app", "worker", "--loglevel=INFO", "--concurrency=2"]
+    stop_grace_period: 650s
     depends_on:
       migrate:
         condition: service_completed_successfully

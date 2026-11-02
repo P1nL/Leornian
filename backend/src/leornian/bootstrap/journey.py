@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from leornian.bootstrap.python_execution import PythonWorkflow
 from leornian.delivery.contracts import EventPayload
 from leornian.delivery.events import Events
 from leornian.modules.assessment.application import Assessment
@@ -86,46 +87,48 @@ class JourneyWorkflow:
     def claim(self, runner_id: str) -> ExecutionClaim | None:
         with self.database.transaction() as connection:
             work = Execution(connection).claim(runner_id)
-            if work is None:
-                return None
-            assessment = Assessment(connection)
-            try:
-                with connection.transaction():
-                    actor = Identity(
-                        PgIdentityStore(connection, lock_session=True)
-                    ).authenticate_digest(work["session_digest"] or "")
-                    if actor.id != work["actor_id"]:
-                        raise BusinessError("unauthorized", "Execution owner changed.")
-                    source = assessment.execution_input(actor, work["input_ref"])
-                    track = Journey(connection).get(actor, source["track_id"])
-                    if track.status == "draft" or track.revision != source["course_revision"]:
-                        raise BusinessError("stale_version", "Plan does not match this attempt.")
-            except BusinessError as error:
-                Execution(connection).abandon(work["id"], error.code)
-                assessment.fail(work["input_ref"], "执行前授权已失效。")
-                attempt = assessment.get(
-                    Actor(id=work["actor_id"], display_name=""), work["input_ref"]
-                )
-                self._event(
-                    connection,
-                    work["actor_id"],
-                    "assessment.completed",
-                    attempt.track_id,
-                    attempt.id,
-                )
-                return None
-            item = published_item(source["item_version"])
-            return ExecutionClaim(
-                job_id=work["id"],
-                claim_token=work["claim_token"],
-                code=source["code"],
-                inputs=item.execution_inputs,
+            return self.claim_in(connection, work)
+
+    @staticmethod
+    def claim_in(connection, work) -> ExecutionClaim | None:
+        if work is None:
+            return None
+        if work["python_input_ref"]:
+            return PythonWorkflow.claim_in(connection, work)
+        assessment = Assessment(connection)
+        try:
+            with connection.transaction():
+                actor = Identity(
+                    PgIdentityStore(connection, lock_session=True)
+                ).authenticate_digest(work["session_digest"] or "")
+                if actor.id != work["actor_id"]:
+                    raise BusinessError("unauthorized", "Execution owner changed.")
+                source = assessment.execution_input(actor, work["input_ref"])
+                track = Journey(connection).get(actor, source["track_id"])
+                if track.status == "draft" or track.revision != source["course_revision"]:
+                    raise BusinessError("stale_version", "Plan does not match this attempt.")
+        except BusinessError as error:
+            Execution(connection).abandon(work["id"], error.code)
+            assessment.fail(work["input_ref"], "执行前授权已失效。")
+            attempt = assessment.get(Actor(id=work["actor_id"], display_name=""), work["input_ref"])
+            JourneyWorkflow._event(
+                connection, work["actor_id"], "assessment.completed", attempt.track_id, attempt.id
             )
+            return None
+        item = published_item(source["item_version"])
+        return ExecutionClaim(
+            job_id=work["id"],
+            claim_token=work["claim_token"],
+            code=source["code"],
+            inputs=item.execution_inputs,
+        )
 
     def report(self, job_id: UUID, report: RunnerReport) -> None:
         with self.database.transaction() as connection:
             # The immutable reference permits consistent identity -> plan -> execution locking.
             existing = Execution(connection).reference(job_id)
+            if existing["python_input_ref"]:
+                return PythonWorkflow.report_in(connection, existing, job_id, report)
             owner = Actor(id=existing["actor_id"], display_name="")
             current = True
             try:
@@ -213,4 +216,4 @@ class JourneyWorkflow:
                 self._event(
                     connection, actor.id, "assessment.completed", attempt.track_id, attempt.id
                 )
-            return len(rows)
+        return len(rows) + PythonWorkflow(self.database).expire_executions()

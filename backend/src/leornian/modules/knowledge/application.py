@@ -141,7 +141,7 @@ class Knowledge:
         rows = self.connection.execute(
             "SELECT " + PROJECTION + JOIN + "WHERE s.actor_id = %s AND s.goal_id = %s "
             "AND s.admission = 'admitted' AND s.valid_until > now() "
-            "ORDER BY s.created_at DESC, s.id LIMIT 3 FOR SHARE OF s",
+            "ORDER BY s.created_at DESC, s.id FOR SHARE OF s",
             (actor.id, goal_id),
         ).fetchall()
         return [self._material(Source(**row)) for row in rows]

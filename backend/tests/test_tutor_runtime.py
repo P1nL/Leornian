@@ -59,6 +59,7 @@ def setup_tutor(database, workflow, session):
     workflow.process_goal(event_id)
     goal = workflow.snapshot(session.token).goals[0]
     settings = Settings(
+        delivery_enabled=False,  # Preserve the historical single-stage Runtime regression contract.
         database_url=database.url,
         model_enabled=True,
         model_base_url="https://provider.invalid/v1",
@@ -565,6 +566,14 @@ def test_http_availability_ownership_and_no_fake_reply(database, workflow, sessi
 def test_relay_only_coordinates_queued_or_expired_runs(database, session, setup_tutor):
     tutor, settings, conversation = setup_tutor
     accepted = submit(tutor, session, conversation)
+    # This persistent test DB may have >50 old queued fixtures. Age only our owned
+    # run into the bounded relay batch; do not drain/cancel/rewrite historical runs.
+    with database.transaction() as connection:
+        connection.execute(
+            "UPDATE runtime.runs SET created_at=(SELECT min(created_at) FROM runtime.runs) "
+            "- interval '1 second' WHERE id=%s",
+            (accepted.run_id,),
+        )
     published = []
     relay_runs_once(database, published.append)
     assert accepted.run_id in published

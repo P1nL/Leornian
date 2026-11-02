@@ -49,15 +49,15 @@ class PlanNode(Contract):
     title: ShortText
     objective: str = Field(min_length=1, max_length=600)
     estimated_minutes: int = Field(ge=5, le=240, strict=True)
-    prerequisite_keys: list[NodeKey] = Field(max_length=7)
-    source_refs: list[SourceRef] = Field(max_length=3)
+    prerequisite_keys: list[NodeKey] = []
+    source_refs: list[SourceRef] = []
 
 
 class PlanDocument(Contract):
     title: ShortText
     summary: str = Field(min_length=1, max_length=1200)
     assumptions: list[ShortText] = Field(max_length=4)
-    nodes: list[PlanNode] = Field(min_length=1, max_length=8)
+    nodes: list[PlanNode] = Field(min_length=1)
 
     @model_validator(mode="after")
     def ordered_dependencies(self) -> Self:
@@ -119,11 +119,9 @@ class LessonRequest(Contract):
 
 class LessonSection(Contract):
     heading: ShortText
-    explanation: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=1800)
-    ]
-    code_example: str = Field(max_length=1800)
-    source_refs: list[SourceRef] = Field(min_length=1, max_length=3)
+    explanation: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+    code_example: str
+    source_refs: list[SourceRef] = Field(min_length=1)
 
 
 class LessonDocument(Contract):
@@ -131,8 +129,8 @@ class LessonDocument(Contract):
     introduction: Annotated[
         str, StringConstraints(strip_whitespace=True, min_length=1, max_length=1000)
     ]
-    sections: list[LessonSection] = Field(min_length=1, max_length=5)
-    recall_prompts: list[ShortText] = Field(min_length=1, max_length=3)
+    sections: list[LessonSection] = Field(min_length=1)
+    recall_prompts: list[ShortText] = Field(min_length=1)
 
 
 class GeneratedLesson(Contract):
@@ -143,3 +141,12 @@ class GeneratedLesson(Contract):
     document: LessonDocument
     sources: list[Material]
     created_at: datetime
+
+
+class NodeProgress(Contract):
+    plan_id: UUID
+    plan_revision: int
+    node_key: NodeKey
+    evidence_gate_id: UUID
+    completed_at: datetime
+    capability: str = "concept_choice"
