@@ -11,6 +11,7 @@
     "librechat:native": "node apps/librechat/native-server.mjs",
     "librechat:build-connected": "node apps/librechat/build-connected.mjs",
     "librechat:connected": "node apps/librechat/connected-server.mjs",
+    "librechat:components": "node apps/librechat/dev-components.mjs",
     "librechat:test": "node --test apps/librechat/*.test.mjs && pnpm --filter @leornian/desktop exec vitest run --config ../librechat/vitest.config.mjs",
     "build": "pnpm librechat:build-connected",
     "desktop:web-dev": "pnpm --filter @leornian/desktop dev",

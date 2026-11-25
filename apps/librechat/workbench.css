@@ -1,0 +1,99 @@
+* { box-sizing: border-box; }
+html, body, #workbench-root { width: 100%; height: 100%; margin: 0; }
+button, input, select { font: inherit; }
+button, a, input, select { -webkit-tap-highlight-color: transparent; }
+.wb-app {
+  --wb-bg: #f4f4f2; --wb-surface: #fff; --wb-muted: #f8f8f6; --wb-ink: #222824;
+  --wb-secondary: #5f6862; --wb-line: #dedfd9; --wb-selected: #e9ede7; --wb-accent: #32664b; --wb-error: #a33c28;
+  display: grid; grid-template-columns: 248px minmax(0, 1fr); width: 100%; height: 100%;
+  background: var(--wb-bg); color: var(--wb-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  font-size: 13px; line-height: 1.5; color-scheme: light;
+}
+.wb-app[data-theme="dark"] {
+  --wb-bg: #181c19; --wb-surface: #222723; --wb-muted: #1d221e; --wb-ink: #ebeee9;
+  --wb-secondary: #b0bab1; --wb-line: #3e4940; --wb-selected: #344238; --wb-accent: #a5d5b7; --wb-error: #ffb6a3;
+  color-scheme: dark;
+}
+.wb-app ::selection { background: var(--wb-selected); color: var(--wb-ink); }
+.wb-app :is(button, a, input, select, pre):focus-visible { outline: 2px solid var(--wb-accent); outline-offset: 3px; }
+.wb-app button { cursor: pointer; }
+.wb-navigation { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--wb-line); background: var(--wb-muted); }
+.wb-brand { display: flex; flex-direction: column; padding: 25px 22px 21px; gap: 2px; color: var(--wb-secondary); font-size: 12px; }
+.wb-wordmark { color: var(--wb-ink); font: 700 25px/1.2 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+.wb-search { display: flex; align-items: center; gap: 8px; margin: 0 14px 15px; padding: 8px 10px;
+  border: 1px solid var(--wb-line); border-radius: 7px; background: var(--wb-surface); color: var(--wb-secondary); }
+.wb-search input { min-width: 0; width: 100%; border: 0; outline: 0; background: transparent; color: var(--wb-ink); font-size: 12px; }
+.wb-search input::placeholder { color: var(--wb-secondary); }
+.wb-catalog { flex: 1; min-height: 0; overflow-y: auto; padding: 0 10px 24px; scrollbar-width: thin; scrollbar-color: var(--wb-line) transparent; }
+.wb-catalog section + section { margin-top: 22px; }
+.wb-catalog h2 { margin: 0 12px 6px; color: var(--wb-secondary); font-size: 11px; font-weight: 600; }
+.wb-story { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; border: 0; border-radius: 6px;
+  padding: 8px 12px; text-align: left; color: var(--wb-ink); background: transparent; font-size: 12px; line-height: 1.5; }
+.wb-story:hover { background: var(--wb-selected); }
+.wb-story[aria-current="page"] { background: var(--wb-selected); font-weight: 600; }
+.wb-story-dot { width: 5px; height: 5px; flex: 0 0 auto; border-radius: 50%; background: transparent; }
+.wb-story[aria-current="page"] .wb-story-dot { background: var(--wb-accent); }
+.wb-nav-footer { border-top: 1px solid var(--wb-line); padding: 14px 20px; color: var(--wb-secondary); font-size: 11px; }
+.wb-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.wb-toolbar { min-height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 24px; background: var(--wb-surface); border-bottom: 1px solid var(--wb-line); }
+.wb-title { min-width: 0; }
+.wb-title h1 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.5; }
+.wb-title > span { display: block; margin-top: 2px; color: var(--wb-secondary); font-size: 11px; overflow-wrap: anywhere; }
+.wb-tools, .wb-controls, .wb-controls-end { display: flex; align-items: center; gap: 8px; }
+.wb-tools button, .wb-controls button, .wb-controls a { display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid transparent; border-radius: 6px; padding: 7px; background: transparent; color: var(--wb-secondary); text-decoration: none; font-size: 12px; white-space: nowrap; }
+.wb-tools button:hover, .wb-controls button:hover, .wb-controls a:hover { background: var(--wb-selected); color: var(--wb-ink); }
+.wb-controls { min-height: 53px; padding: 8px 20px; gap: 20px; background: var(--wb-surface); border-bottom: 1px solid var(--wb-line); }
+.wb-controls label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--wb-secondary); }
+.wb-controls select { max-width: 150px; border: 1px solid var(--wb-line); border-radius: 5px; padding: 4px 22px 4px 8px;
+  background: var(--wb-surface); color: var(--wb-ink); font-size: 12px; }
+.wb-scale { color: var(--wb-secondary); font-size: 11px; font-variant-numeric: tabular-nums; }
+.wb-controls-end { margin-left: auto; gap: 8px; }
+.wb-controls button[aria-pressed="true"] { background: var(--wb-selected); color: var(--wb-accent); }
+.wb-content { display: grid; grid-template-columns: minmax(0, 1fr) 300px; flex: 1; min-height: 0; }
+.wb-content-wide { grid-template-columns: minmax(0, 1fr); }
+.wb-canvas { min-width: 0; min-height: 0; padding: 16px; overflow: auto; background: var(--wb-bg); }
+.wb-frame-shell { height: 100%; min-height: 400px; margin-inline: auto; background: var(--wb-surface); box-shadow: 0 2px 9px #0000000b; }
+.wb-frame-shell iframe { display: block; border: 1px solid var(--wb-line); background: var(--wb-surface); transform-origin: top left; }
+.wb-details { display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: var(--wb-surface); border-left: 1px solid var(--wb-line); scrollbar-width: thin; }
+.wb-details-heading { display: flex; align-items: center; gap: 8px; margin: 20px 18px 8px; }
+.wb-details h2 { margin: 0; font-size: 13px; font-weight: 600; }
+.wb-help { margin: 0 18px 16px; color: var(--wb-secondary); font-size: 11px; line-height: 1.8; text-wrap: pretty; }
+.wb-file-list { padding: 0 10px 14px; display: grid; gap: 4px; }
+.wb-file-list button { display: block; width: 100%; border: 0; border-radius: 4px; padding: 7px 8px; text-align: left;
+  background: transparent; color: var(--wb-secondary); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+.wb-file-list button[aria-pressed="true"], .wb-file-list button:hover { background: var(--wb-selected); color: var(--wb-ink); }
+.wb-source-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 9px 18px;
+  border-block: 1px solid var(--wb-line); font-size: 11px; background: var(--wb-muted); }
+.wb-source-toolbar button { display: flex; padding: 3px; background: transparent; border: 0; color: var(--wb-secondary); }
+.wb-source { flex: 1; min-height: 180px; max-height: 70vh; margin: 0; padding: 16px 18px; overflow: auto; background: var(--wb-muted);
+  color: var(--wb-secondary); font: 11px/1.8 ui-monospace, SFMono-Regular, Consolas, monospace; tab-size: 2; scrollbar-width: thin; }
+.wb-selection { padding: 16px 18px; border-top: 1px solid var(--wb-line); font-size: 11px; }
+.wb-selection p { overflow-wrap: anywhere; }
+.wb-selection code { display: block; overflow-wrap: anywhere; color: var(--wb-accent); }
+.wb-status { display: flex; align-items: center; gap: 7px; padding: 9px 20px; min-height: 34px; background: var(--wb-surface);
+  border-top: 1px solid var(--wb-line); color: var(--wb-secondary); font-size: 11px; }
+.wb-status-dot { width: 5px; height: 5px; flex: 0 0 auto; border-radius: 50%; background: var(--wb-accent); }
+.wb-status[data-error="true"] { color: var(--wb-error); }
+.wb-status[data-error="true"] .wb-status-dot { background: currentColor; }
+.wb-local-data { margin-left: auto; white-space: nowrap; }
+.wb-note { margin: 0; padding: 8px 24px; color: var(--wb-secondary); background: var(--wb-muted); font-size: 12px; border-bottom: 1px solid var(--wb-line); }
+.wb-empty { padding: 16px 12px; color: var(--wb-secondary); }
+@media (max-width: 1100px) {
+  .wb-app { grid-template-columns: 210px minmax(0, 1fr); }
+  .wb-content { grid-template-columns: minmax(0, 1fr) 250px; }
+  .wb-content-wide { grid-template-columns: minmax(0, 1fr); }
+  .wb-toolbar { padding-inline: 18px; }
+}
+@media (max-width: 800px) {
+  .wb-app { grid-template-columns: 170px minmax(0, 1fr); }
+  .wb-content { position: relative; grid-template-columns: minmax(0, 1fr); }
+  .wb-details { position: absolute; inset: 0 0 0 auto; z-index: 10; display: flex;
+    width: min(320px, calc(100% - 16px)); box-shadow: -4px 0 16px #0000000b; }
+  .wb-controls { flex-wrap: wrap; gap: 8px 14px; padding-inline: 12px; }
+  .wb-controls-end { margin-left: 0; }
+  .wb-tools button:first-child { font-size: 0; gap: 0; }
+  .wb-local-data { display: none; }
+}
