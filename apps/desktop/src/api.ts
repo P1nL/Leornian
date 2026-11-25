@@ -16,10 +16,18 @@ export type Turn = components["schemas"]["Turn"];
 export type ArtifactView = components["schemas"]["ArtifactView"];
 export type ArtifactJob = components["schemas"]["ArtifactJob"];
 export type ModelAvailability = components["schemas"]["ModelAvailability"];
+export type ModelConfiguration = components["schemas"]["ModelConfiguration"];
+export type ModelConnection = components["schemas"]["ModelConnection"];
+export type ModelProfile = components["schemas"]["ModelProfile"];
+export type ModelProfileInput = components["schemas"]["ModelProfileInput"];
+export type ModelConnectionTest = components["schemas"]["ModelConnectionTest"];
 export type Track = components["schemas"]["Track"];
 export type Attempt = components["schemas"]["Attempt"];
 export type LessonView = components["schemas"]["LessonView"];
 export type Source = components["schemas"]["Source"];
+export type MaterialDemand = components["schemas"]["MaterialDemand"];
+export type MaterialJob = components["schemas"]["MaterialJob"];
+export type MaterialUpload = components["schemas"]["MaterialUpload"];
 export type ReviewCard = components["schemas"]["ReviewCard"];
 export type LearningPlan = components["schemas"]["LearningPlan"];
 export type PlanRevision = components["schemas"]["PlanRevision"];
@@ -74,7 +82,8 @@ export function explain(error: unknown): string {
   if (error instanceof ApiError) {
     if (error.status === 401) return "本地会话已失效，请重新进入。旧目标仍保存在原身份下。";
     if (error.code === "idempotency_conflict") return "这次提交的内容已改变，请发起新的提交。";
-    if (error.code === "model_unavailable") return "尚未配置并启用 Leornian 的独立模型，未发送教学请求。";
+    if (error.code === "model_unavailable") return "请检查当前身份的模型连接、职责映射、启用状态和材料外发授权；系统不会借用开发或其他用户的密钥。";
+    if (error.code.startsWith("material_")) return "材料尚未接收完成：请检查文件格式、大小和用途；相同提交不会重复创建任务。";
     if (error.code === "run_active") return "当前回合尚未结束，请先等待、承接已有回执或取消。";
     if (error.code === "unknown_unresolved") return "仍没有完整回执，不会重新发送这次模型调用。";
     if (error.code === "resume_not_allowed") return "当前状态不允许续行，请重新同步服务端状态。";

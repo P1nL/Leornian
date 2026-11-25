@@ -26,13 +26,18 @@ describe("教学工件", () => {
   it("空范围和排队任务不显示成已交付，并兼容服务端 null 绑定", () => {
     const actor = { id: "actor", display_name: "Learner" };
     const session: Session = { actor, token: "offline", expires_at: "2026-11-08T00:00:00Z" };
-    const conversation = { id: "conversation", goal_id: "goal", created_at: "2026-11-02T00:00:00Z" };
+    const conversation = {
+      id: "conversation", goal_id: "goal", created_at: "2026-11-02T00:00:00Z",
+      studied_nodes: [], hidden_from_recents: false,
+    };
     const snapshot: Snapshot = {
       actor, goals: [], jobs: [], events: [], cursor: 0, limit: 100,
       conversations: [], turns: [], runs: [], tracks: [], attempts: [], sources: [], reviews: [],
+      teaching_sessions: [], teaching_branches: [],
       plans: [], lessons: [], packs: [], choice_results: [], remediations: [], gates: [],
       node_progress: [], transfers: [], supply_demands: [], evaluations: [], python_attempts: [],
-      execution_progress: [], delivery_tasks: [], tool_activities: [],
+      program_attempts: [],
+      execution_progress: [], delivery_tasks: [], tool_activities: [], learning_artifacts: [],
       artifacts: [{
         id: "artifact", goal_id: "goal", revision: 1, title: "已检查的笔记",
         focus: { kind: "goal", plan_id: null, node_key: null },

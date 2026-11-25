@@ -4,6 +4,14 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   clearScreen: false,
+  build: {
+    rolldownOptions: {
+      input: {
+        main: "index.html",
+        chat: "chat.html",
+      },
+    },
+  },
   server: {
     proxy: {
       "/v1": "http://127.0.0.1:8088",

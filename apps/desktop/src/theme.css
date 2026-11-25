@@ -151,6 +151,27 @@ code { font-family: "Cascadia Code", Consolas, monospace; }
 .attempt-history article { border-top: 1px solid var(--line); padding: 14px 0; }
 
 .sources-workspace { margin-top: 42px; padding-top: 30px; border-top: 1px solid var(--line); }
+.model-settings { margin-bottom: 30px; padding-block: 18px 24px; border-block: 1px solid var(--line); }
+.model-settings h3 { font-size: 14px; line-height: 1.7; margin: 0 0 12px; overflow-wrap: anywhere; }
+.model-settings select { width: 100%; font: inherit; font-size: 14px; padding: 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--ink); }
+.model-settings select:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.model-form { margin-top: 28px; padding-block: 22px; border-top: 1px solid var(--line); }
+.model-field-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
+.model-role-options { margin-top: 22px; padding: 16px; border: 1px solid var(--line); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.model-role-options legend { font-size: 13px; font-weight: 600; }
+.model-settings .model-check { display: flex; align-items: flex-start; gap: 10px; margin: 18px 0; font-weight: 400; line-height: 1.8; }
+.model-settings .model-check input { flex: 0 0 18px; width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--accent); }
+.model-role-options .model-check { margin: 0; }
+.model-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; }
+.model-actions .text-button { min-height: 44px; }
+.model-actions p { font-size: 12px; line-height: 1.8; }
+.model-connection-list, .model-profile-list, .model-test-history ul { list-style: none; margin: 24px 0; padding: 0; }
+.model-connection-list > li, .model-profile-list > li, .model-test-history li { padding-block: 18px; border-top: 1px solid var(--line); }
+.model-test-history p, .model-test-history small { font-size: 12px; line-height: 1.8; color: var(--muted); }
+@media (max-width: 760px) {
+  .model-field-pair, .model-role-options { grid-template-columns: minmax(0, 1fr); }
+  .model-settings .goal-heading { align-items: flex-start; flex-direction: column; }
+}
 .sources-workspace select { font: inherit; font-size: 14px; width: 100%; padding: 12px; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 9px; }
 .sources-workspace select:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .source-form { padding-top: 20px; }
@@ -161,6 +182,28 @@ code { font-family: "Cascadia Code", Consolas, monospace; }
 .source-excerpt { font-size: 13px; line-height: 1.9; max-width: 75ch; white-space: pre-wrap; overflow-wrap: anywhere; }
 .source-list small { font-size: 11px; color: var(--muted); line-height: 1.8; }
 .source-actions { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 14px; }
+.material-intake { margin-block: 24px; padding-block: 20px; border-block: 1px solid var(--line); min-width: 0; }
+.material-intake summary { cursor: pointer; font-size: 15px; font-weight: 600; min-height: 28px; }
+.material-intake summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.material-intake input[type="file"] { max-width: 100%; min-width: 0; }
+.material-intake input::file-selector-button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; margin-right: 12px; cursor: pointer; }
+.material-deadlines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
+.material-deadlines label { margin-top: 0; }
+.material-authority { display: flex; align-items: flex-start; gap: 10px; line-height: 1.8; font-weight: 400; }
+.material-authority input { width: 18px; height: 18px; flex: 0 0 18px; margin-top: 3px; accent-color: var(--accent); }
+.material-record-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-top: 28px; }
+.material-record-heading h3 { font-size: 14px; margin: 0; }
+.material-intake .text-button { min-height: 44px; }
+.material-job-list { list-style: none; padding: 0; margin: 16px 0 0; }
+.material-job-list li { padding-block: 18px; border-bottom: 1px solid var(--line); }
+.material-job-list h4 { font-size: 14px; margin: 0 0 10px; overflow-wrap: anywhere; }
+.material-job-list h4 span { margin-left: 8px; font-weight: 400; color: var(--muted); font-size: 11px; }
+.material-job-list p { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.material-job-list small { color: var(--muted); font-size: 11px; line-height: 1.8; }
+@media (max-width: 760px) {
+  .material-deadlines { grid-template-columns: minmax(0, 1fr); }
+  .material-record-heading { align-items: flex-start; }
+}
 .review-workspace { margin-top: 42px; padding-top: 30px; border-top: 1px solid var(--line); }
 .review-list { list-style: none; padding: 0; margin: 24px 0 0; }
 .review-list li { border-top: 1px solid var(--line); padding: 22px 0; }

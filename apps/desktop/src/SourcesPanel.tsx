@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { explain, request } from "./api";
 import type { Session, Snapshot, Source } from "./api";
+import { MaterialUploadPanel } from "./MaterialUploadPanel";
 
 const date = new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium" });
 const pendingKey = "leornian.pending-source.v1";
@@ -73,13 +74,14 @@ export function SourcesPanel({ session, snapshot, onUpdated }: {
 
   return <section className="sources-workspace" aria-labelledby="sources-heading">
     <h2 id="sources-heading">把参考资料带进学习</h2>
-    <p className="tutor-description">粘贴你已阅读并有权使用的摘录及原文链接。系统不抓取网页，也不独立认证内容。每个版本需你确认使用，有效期七天。</p>
+    <p className="tutor-description">提供你有权使用的材料。现有摘录入口沿用逐版确认和七天准入；文件材料单独声明真实用途与保留期限，系统不独立认证内容。</p>
     {!goal ? <p className="empty">保存目标后，可以为它添加参考摘录。</p> : <>
       <label htmlFor="source-goal">资料关联的目标</label>
       <select id="source-goal" value={goal.id} disabled={busy}
         onChange={(event) => { setGoalId(event.target.value); reset(); setError(""); setNotice(""); }}>
         {snapshot.goals.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}
       </select>
+      <MaterialUploadPanel key={`${session.actor.id}:${goal.id}`} session={session} goal={goal} />
       <form className="source-form" onSubmit={save}>
         <h3>{editing ? `修订摘录 · 当前版本 ${editing.revision}` : "添加一份参考摘录"}</h3>
         <label htmlFor="source-title">资料标题</label>

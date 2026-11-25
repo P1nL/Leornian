@@ -7,6 +7,7 @@ import { TutorPanel } from "./TutorPanel";
 import { JourneyPanel } from "./JourneyPanel";
 import { SourcesPanel } from "./SourcesPanel";
 import { ReviewPanel } from "./ReviewPanel";
+import { ModelSettingsPanel } from "./ModelSettingsPanel";
 
 const sessionKey = "leornian.session.v1";
 const pendingKey = "leornian.pending-goal.v1";
@@ -16,6 +17,8 @@ const date = new Intl.DateTimeFormat("zh-CN", {
 const labels = {
   "job.queued": "目标已接收，等待后台保存",
   "goal.created": "学习目标已保存到数据库",
+  "goal.updated": "学习目标已更新",
+  "goal.deleted": "学习目标已从列表移除",
   "job.succeeded": "后台任务完成",
   "job.failed": "后台任务未完成，请检查任务结果",
   "tutor.queued": "教学请求已接收",
@@ -26,6 +29,9 @@ const labels = {
   "tutor.cancelled": "这轮教学已取消",
   "tutor.blocked_unknown": "模型调用结果未知，已停止自动续行",
   "tutor.result_available": "迟到回执已记录，可明确承接",
+  "tutor.thinking": "教学处理进度已更新",
+  "tutor.stage_reply": "当前阶段回复已保存",
+  "tutor.conversation_hidden": "会话已从最近列表隐藏",
   "learning.plan_drafted": "入门计划草案已保存",
   "learning.plan_confirmed": "已确认当前计划",
   "assessment.queued": "代码作答已接收，等待隔离执行",
@@ -35,6 +41,10 @@ const labels = {
   "knowledge.revised": "来源新版本已保存，旧准入不沿用",
   "knowledge.admitted": "当前来源版本已确认使用",
   "knowledge.revoked": "来源使用资格已撤销",
+  "knowledge.material_permission_changed": "材料使用权限已变化，重新核对引用",
+  "knowledge.material_update_offered": "教材新版已准备，等待选择是否切换",
+  "learning.material_update_decided": "教材更新决定已保存",
+  "delivery.notification_updated": "教材更新通知状态已同步",
   "learning.review_scheduled": "本课已加入复习安排",
   "learning.review_recorded": "复习自评已记录，下次时间已更新",
   "learning.review_status_changed": "复习暂停状态已更新",
@@ -43,11 +53,15 @@ const labels = {
   "learning.lesson_document_created": "节点课时正文与引用已保存，未判定学习完成",
   "item_bank.updated": "节点题包状态已更新",
   "assessment.choice_recorded": "概念练习作答已保存，不代表正式 Gate",
+  "assessment.response_recorded": "知识检查回答已保存；参考对照不代表正式考核",
   "assessment.remediation_updated": "补救任务状态已更新",
   "assessment.gate_updated": "概念考核状态已更新",
   "assessment.transfer_updated": "新情境后继状态已更新，不代表学习完成",
   "learning.node_completed": "本节点概念 Gate 通过，已记录服务端证据",
   "tutor.artifact_updated": "教学工件任务或版本已更新，不代表学习通过",
+  "tutor.learning_artifact_updated": "学习工件交互已更新，评分以服务端结果为准",
+  "tutor.teaching_session_updated": "教学模式或答疑分支已更新，不代表学习完成",
+  "tutor.teaching_intent_updated": "结果后续教学意图已更新，未代替作答或学习进度",
 };
 
 type Pending = { key: string; actorId: string; title: string; motivation: string };
@@ -57,7 +71,9 @@ function readLocal<T>(key: string): T | null {
   catch { return null; }
 }
 
-export function App() {
+export function App({ tutorPresentation = "legacy" }: {
+  tutorPresentation?: "legacy" | "chat";
+} = {}) {
   const [session, setSession] = useState<Session | null>(() => readLocal(sessionKey));
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [events, setEvents] = useState<PublicEvent[]>([]);
@@ -177,6 +193,8 @@ export function App() {
       <main id="goals">
         <header className="toolbar">
           <span>我的学习空间</span>
+          {tutorPresentation === "chat" &&
+            <a className="chat-entry-back" href="/">返回原学习空间</a>}
           <span className={`connection ${connection === "实时连接" ? "connected" : ""}`} role="status">
             <i aria-hidden="true" />{connection}
           </span>
@@ -195,6 +213,8 @@ export function App() {
             </form>
           ) : (
             <>
+              <ModelSettingsPanel key={session.actor.id} session={session}
+                onUpdated={() => setRefresh((value) => value + 1)} />
               <form className="goal-form" onSubmit={submit}>
                 <label htmlFor="goal-title">学习目标</label>
                 <input id="goal-title" required minLength={3} maxLength={120} value={title}
@@ -238,6 +258,7 @@ export function App() {
                 </section>
               </div>
               {snapshot && <TutorPanel session={session} snapshot={snapshot}
+                presentation={tutorPresentation}
                 onUpdated={() => setRefresh((value) => value + 1)} />}
               {snapshot && <JourneyPanel session={session} snapshot={snapshot}
                 onUpdated={() => setRefresh((value) => value + 1)} />}

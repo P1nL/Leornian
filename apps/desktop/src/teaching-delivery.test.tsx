@@ -17,20 +17,25 @@ describe("教学交付状态", () => {
     expect(text).not.toContain("已通过");
   });
 
-  it("等待用户信息时显示原任务的补充入口和取消屏障", () => {
+  it.each(["legacy", "chat"] as const)("两入口保留补充信息、UNKNOWN 和合格交付边界 (%s)", (presentation) => {
     const actor = { id: "actor", display_name: "Learner" };
     const session: Session = { actor, token: "offline", expires_at: "2026-11-08T00:00:00Z" };
     const snapshot: Snapshot = {
       actor, cursor: 0, limit: 100, events: [], jobs: [],
-      artifacts: [], artifact_jobs: [], tool_activities: [],
+      teaching_sessions: [], teaching_branches: [],
+      artifacts: [], artifact_jobs: [], tool_activities: [], learning_artifacts: [],
       tracks: [], attempts: [], sources: [], reviews: [], lessons: [], choice_results: [],
       remediations: [], node_progress: [], transfers: [], supply_demands: [],
-      python_attempts: [], execution_progress: [],
+      python_attempts: [], program_attempts: [], execution_progress: [],
       goals: [{ id: "goal", title: "Python paths", motivation: "", created_at: "2026-11-01T00:00:00Z" }],
-      conversations: [{ id: "conversation", goal_id: "goal", created_at: "2026-11-01T00:00:00Z" }],
+      conversations: [{
+        id: "conversation", goal_id: "goal", created_at: "2026-11-01T00:00:00Z",
+        studied_nodes: [], hidden_from_recents: false,
+      }],
       turns: [{ conversation_id: "conversation", turns: [{
         id: "turn", user_text: "Explain paths", assistant_text: null,
         purpose: "teaching", context_focus: { kind: "goal" },
+        planning_requested: false,
         created_at: "2026-11-01T00:00:00Z", completed_at: null,
       }] }],
       runs: [{ id: "run", conversation_id: "conversation", turn_id: "turn", status: "failed",
@@ -46,10 +51,37 @@ describe("教学交付状态", () => {
       }],
     };
     const html = renderToStaticMarkup(<TutorPanel session={session} snapshot={snapshot}
-      onUpdated={() => undefined} />);
+      presentation={presentation} onUpdated={() => undefined} />);
     expect(html).toContain("你的 Python 基础是什么？");
     expect(html).toContain("承接原交付任务");
     expect(html).toContain("取消交付任务");
     expect(html).not.toContain("已通过交付检查并保存");
+
+    const unknown: Snapshot = { ...snapshot,
+      runs: [{ ...snapshot.runs[0], status: "blocked_unknown", can_resume: false }],
+      delivery_tasks: [{ ...snapshot.delivery_tasks![0],
+        status: "blocked_unknown", can_resume: false, required_input: [] }],
+    };
+    const blocked = renderToStaticMarkup(<TutorPanel session={session} snapshot={unknown}
+      presentation={presentation} onUpdated={() => undefined} />);
+    expect(blocked).toContain("不会重发");
+    expect(blocked).not.toContain("承接原交付任务");
+    expect(blocked).not.toContain("已通过交付检查并保存");
+    expect(blocked).toMatch(/<textarea[^>]*id="tutor-message"[^>]*disabled/);
+
+    const accepted: Snapshot = { ...snapshot,
+      runs: [{ ...snapshot.runs[0], status: "succeeded" }],
+      delivery_tasks: [{ ...snapshot.delivery_tasks![0],
+        status: "accepted", can_resume: false, required_input: [] }],
+      turns: [{ ...snapshot.turns[0], turns: [{ ...snapshot.turns[0].turns[0],
+        assistant_text: "<script>untrusted()</script> Qualified public answer",
+      }] }],
+    };
+    const delivered = renderToStaticMarkup(<TutorPanel session={session} snapshot={accepted}
+      presentation={presentation} onUpdated={() => undefined} />);
+    expect(delivered).toContain("已通过交付检查并保存");
+    expect(delivered).toContain("Qualified public answer");
+    expect(delivered).toContain("&lt;script&gt;");
+    expect(delivered).not.toContain("<script>");
   });
 });

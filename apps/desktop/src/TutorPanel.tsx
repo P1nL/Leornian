@@ -6,6 +6,7 @@ import type { Conversation, DeliveryTask, ModelAvailability, Run, Session, Snaps
 import { PlanOutline } from "./PlanOutline";
 import { LearningFollowups } from "./LearningFollowups";
 import { ArtifactPanel } from "./ArtifactPanel";
+import { ChatPane, getChatPaneView } from "./librechat/ChatPane";
 
 const pendingKey = "leornian.pending-turn.v1";
 const toolLabels: Record<string, string> = {
@@ -51,8 +52,9 @@ function pendingDraft(): Pending | null {
   catch { return null; }
 }
 
-export function TutorPanel({ session, snapshot, onUpdated }: {
+export function TutorPanel({ session, snapshot, onUpdated, presentation = "legacy" }: {
   session: Session; snapshot: Snapshot; onUpdated: () => void;
+  presentation?: "legacy" | "chat";
 }) {
   const draft = pendingDraft();
   const [goalId, setGoalId] = useState(draft?.actorId === session.actor.id ? draft.goalId : "");
@@ -175,7 +177,7 @@ export function TutorPanel({ session, snapshot, onUpdated }: {
     finally { setBusy(false); }
   }
 
-  return <section className="tutor-workspace" aria-labelledby="tutor-heading">
+  const heading = <>
     <div className="section-heading">
       <h2 id="tutor-heading">和 Tutor 一起开始</h2>
       <button className="text-button" onClick={() => {
@@ -183,7 +185,8 @@ export function TutorPanel({ session, snapshot, onUpdated }: {
       }}>检查连接</button>
     </div>
     <p className="tutor-description">围绕目标提问，或生成可修订的学习路线。确认路线后，可为有来源的节点生成课时；正文生成不代表练习通过或掌握。</p>
-    {!goal ? <p className="empty">先保存一个学习目标，再开始教学对话。</p> : <>
+  </>;
+  const scope = goal && <>
       <label htmlFor="tutor-goal">本次学习目标</label>
       <select id="tutor-goal" value={goal.id} disabled={busy} onChange={(event) => {
         setGoalId(event.target.value); setNodeKey(""); setReceiptId(""); setError("");
@@ -193,7 +196,8 @@ export function TutorPanel({ session, snapshot, onUpdated }: {
       <p className="model-status" role="status">{!availability ? "正在检查模型配置…" : availability.ready
         ? "独立模型已配置；提交会发送当前目标、路线、课时、反馈、准入摘录及必要对话。"
         : "尚未配置并启用 Leornian 独立模型。不会发送请求，也不会生成模拟教学回复。"}</p>
-      <div className="teaching-history" aria-label="教学对话">
+  </>;
+  const messages = <div className="teaching-history" aria-label="教学对话">
         {turns.length > 0 && historyEnd !== conversation?.id && <button className="text-button"
           disabled={busy} onClick={() => void earlierHistory()}>加载更早对话</button>}
         {turns.length === 0 ? <p className="empty">例如，问问 Tutor：为了做出这个小工具，我应该先理解什么？</p>
@@ -243,7 +247,8 @@ export function TutorPanel({ session, snapshot, onUpdated }: {
                 </div>}
             </article>;
           })}
-      </div>
+      </div>;
+  const learningContext = <>
       {conversation && <ArtifactPanel key={`${conversation.id}:${nodeKey}:${receiptId}`}
         session={session} snapshot={snapshot} conversation={conversation}
         focus={selectedNode && plan?.active ? {
@@ -262,13 +267,14 @@ export function TutorPanel({ session, snapshot, onUpdated }: {
         planId={plan.id} revision={plan.active.revision}
         disabled={busy || Boolean(active) || examActive || !availability?.ready}
         onUpdated={onUpdated} />}
-      {active && !snapshot.delivery_tasks?.some((task) => task.run_id === active.id) && <div className="run-actions">
+  </>;
+  const runActions = active && !snapshot.delivery_tasks?.some((task) => task.run_id === active.id) && <div className="run-actions">
         {active.can_resume && <button className="primary" disabled={busy}
           onClick={() => void action(active, "resume")}>承接已记录的回执</button>}
         <button className="text-button" disabled={busy} onClick={() => void action(active, "cancel")}>取消本轮</button>
         {active.status === "blocked_unknown" && <p>取消只停止本地后续动作，不代表供应商未执行或未计费。</p>}
-      </div>}
-      <form onSubmit={submit} className="tutor-composer">
+      </div>;
+  const composer = <form onSubmit={submit} className="tutor-composer">
         {examActive && <p className="plan-version-note">概念考核进行中。请先提交或取消考核，再继续 Tutor 对话。</p>}
         <label htmlFor="tutor-purpose">这次想做什么</label>
         <select id="tutor-purpose" value={purpose} disabled={busy || Boolean(active) || examActive}
@@ -310,7 +316,18 @@ export function TutorPanel({ session, snapshot, onUpdated }: {
             {busy ? "正在提交…" : purpose === "planning" ? "生成路线草案" : "发送给 Tutor"}
           </button>
         </div>
-      </form>
+      </form>;
+  if (presentation === "chat" && goal) {
+    return <ChatPane labelledBy="tutor-heading"
+      view={getChatPaneView({ hasMessages: turns.length > 0, isLoading: false })}
+      header={<>{heading}{scope}</>} messages={messages} landing={messages}
+      composer={<>{runActions}{composer}</>}
+      footer={conversation || plan ? learningContext : null} />;
+  }
+  return <section className="tutor-workspace" aria-labelledby="tutor-heading">
+    {heading}
+    {!goal ? <p className="empty">先保存一个学习目标，再开始教学对话。</p> : <>
+      {scope}{messages}{learningContext}{runActions}{composer}
     </>}
   </section>;
 }
