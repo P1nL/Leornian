@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 from psycopg import Connection
@@ -18,9 +19,31 @@ class PgIdentityStore:
             "INSERT INTO identity.learners(id, display_name) VALUES (%s, %s)",
             (session.actor.id, session.actor.display_name),
         )
+        self.issue_session(session, digest)
+
+    def issue_session(self, session: Session, digest: str) -> None:
         self.connection.execute(
             "INSERT INTO identity.sessions(token_digest, actor_id, expires_at) VALUES (%s, %s, %s)",
             (digest, session.actor.id, session.expires_at),
+        )
+
+    def renew_session(self, digest: str, expires_at: datetime) -> tuple[Actor, datetime] | None:
+        row = self.connection.execute(
+            "UPDATE identity.sessions s SET expires_at = GREATEST(s.expires_at, %s) "
+            "FROM identity.learners l WHERE s.actor_id = l.id AND l.active "
+            "AND s.token_digest = %s AND s.expires_at > now() AND s.revoked_at IS NULL "
+            "RETURNING l.id, l.display_name, s.expires_at",
+            (expires_at, digest),
+        ).fetchone()
+        if row is None:
+            return None
+        return Actor(id=row["id"], display_name=row["display_name"]), row["expires_at"]
+
+    def revoke_session(self, digest: str) -> None:
+        self.connection.execute(
+            "UPDATE identity.sessions SET revoked_at = now() "
+            "WHERE token_digest = %s AND revoked_at IS NULL",
+            (digest,),
         )
 
     def authenticate(self, digest: str) -> Actor | None:

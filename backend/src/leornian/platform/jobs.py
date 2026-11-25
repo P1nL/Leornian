@@ -69,6 +69,16 @@ class Jobs:
             raise BusinessError("not_found", "Job not found.")
         return Job(**row)
 
+    def for_request(self, actor: Actor, request_id: UUID) -> Job:
+        row = self.connection.execute(
+            f"SELECT {JOB_COLUMNS} FROM platform.jobs "
+            "WHERE actor_id = %s AND input_ref = %s AND kind = 'learning.create_goal'",
+            (actor.id, request_id),
+        ).fetchone()
+        if row is None:
+            raise BusinessError("not_found", "Job not found.")
+        return Job(**row)
+
     def list(self, actor: Actor) -> list[Job]:
         rows = self.connection.execute(
             f"SELECT {JOB_COLUMNS} FROM platform.jobs "
