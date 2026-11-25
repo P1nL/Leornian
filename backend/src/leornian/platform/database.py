@@ -20,5 +20,5 @@ class Database:
         with self.transaction() as connection:
             return connection.execute(
                 "SELECT EXISTS(SELECT 1 FROM platform.schema_migrations "
-                "WHERE version = '0022') AS ok"
+                    "WHERE version = '0072') AS ok"
             ).fetchone()["ok"]
