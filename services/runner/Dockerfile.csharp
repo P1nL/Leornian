@@ -1,0 +1,7 @@
+ARG BASE_IMAGE=mcr.microsoft.com/dotnet/sdk:10.0
+FROM ${BASE_IMAGE}
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 \
+    DOTNET_NOLOGO=1 DOTNET_CLI_HOME=/tmp/dotnet HOME=/tmp
+RUN mkdir -p /opt/leornian/template
+COPY Project.csproj /opt/leornian/template/Project.csproj
+RUN dotnet restore /opt/leornian/template/Project.csproj --ignore-failed-sources

@@ -1,0 +1,5 @@
+ARG BASE_IMAGE=node:22-bookworm-slim
+FROM ${BASE_IMAGE}
+RUN npm --registry=https://registry.npmjs.org install --ignore-scripts --no-audit --no-fund \
+    --prefix /opt/leornian typescript@5.9.3 @types/node@22.19.0 undici-types@6.21.0
+ENV PATH="/opt/leornian/node_modules/.bin:${PATH}"

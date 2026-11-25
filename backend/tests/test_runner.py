@@ -47,3 +47,8 @@ def test_real_container_timeout_is_not_success(runner):
 def test_real_container_output_is_bounded(runner):
     result = runner.execute_case("while True: print('x' * 1024, flush=True)", [])
     assert result["outcome"] == "output_limit" and len(result["stdout"].encode()) <= 4096
+
+
+def test_real_container_invalid_utf8_output_stays_within_byte_limit(runner):
+    result = runner.execute_case("import os; os.write(1, b'\\xff' * 4096)", [])
+    assert result["outcome"] == "output_limit" and len(result["stdout"].encode()) <= 4096
