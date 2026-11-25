@@ -1,6 +1,6 @@
-from leornian.agent_runtime.gateway import ChatCompletionsGateway
 from leornian.agent_runtime.repository import Runs
 from leornian.bootstrap.item_supply import ItemSupply
+from leornian.bootstrap.model_configuration import configuration_scope, require_model_admission
 from leornian.bootstrap.transfer import TransferWorkflow
 from leornian.modules.assessment.gates import Gates
 from leornian.modules.assessment.transfers import Transfers
@@ -25,11 +25,7 @@ class SupplyWorkflow:
 
     @staticmethod
     def current(connection, actor, demand):
-        origin = (
-            demand["python_remediation_id"]
-            if demand["kind"] == "python_io"
-            else demand["remediation_id"]
-        )
+        origin = Transfers.origin_id(demand)
         source_id, _ = TransferWorkflow.need(connection, actor, origin, demand["kind"])
         if Transfers(connection).passed_for(actor, origin, kind=demand["kind"]):
             raise BusinessError("precondition_failed", "The original transfer need is not open.")
@@ -39,14 +35,14 @@ class SupplyWorkflow:
         return ItemSupply.current(connection, actor, source)
 
     def _schedule(self, connection, actor, token, demand, data, feedback=None):
-        plan, _, materials = self.current(connection, actor, demand)
+        plan, node, materials = self.current(connection, actor, demand)
         Gates(connection).require_no_exam(actor)
         tutor = Tutor(PgTutorStore(connection))
         conversation = tutor.conversation(actor, plan.goal_id)
         tutor.get(actor, conversation.id, lock=True)
         if Runs(connection).actor_active(actor.id):
             raise BusinessError("run_active", "Foreground work takes priority over item supply.")
-        ChatCompletionsGateway(self.settings).require_ready()
+        require_model_admission(self.settings)
         pack, _ = Packs(connection).request(
             actor,
             plan.id,
@@ -56,9 +52,18 @@ class SupplyWorkflow:
             supply_demand_id=demand["id"],
             transfer_feedback=feedback,
             session_digest=Identity.digest(token),
+            material_context=ItemSupply.prepare_material_context(
+                connection, actor, plan, node
+            ),
         )
         ItemSupply.schedule(
-            connection, actor, conversation.id, Identity.digest(token), pack, "author"
+            connection,
+            actor,
+            conversation.id,
+            Identity.digest(token),
+            pack,
+            "author",
+            configuration_scope=configuration_scope(self.settings),
         )
         ItemSupply.event(connection, actor.id, pack["id"])
         return Demands(connection).summary(actor, demand["id"])
@@ -69,11 +74,7 @@ class SupplyWorkflow:
             demands = Demands(connection)
             prior = demands.previous(actor, key)
             if prior:
-                origin = (
-                    prior["python_remediation_id"]
-                    if required_kind == "python_io"
-                    else prior["remediation_id"]
-                )
+                origin = Transfers.origin_id(prior)
                 if (origin, prior["plan_revision"], prior["instruction"], prior["kind"]) != (
                     remediation_id,
                     data.expected_plan_revision,
@@ -129,6 +130,7 @@ class SupplyWorkflow:
                     instruction=data.instruction,
                     kind=required_kind,
                     automatic=data.automatic,
+                    program_environment=source.get("program_environment"),
                 ),
             )
 
@@ -171,6 +173,25 @@ class SupplyWorkflow:
                     transfer_feedback_id=data.transfer_feedback_id,
                     kind=demand["kind"],
                     automatic=parent["automatic"],
+                    program_environment=parent.get("program_environment"),
                 ),
                 feedback,
             )
+
+    def request_program(self, token, remediation_id, key, data):
+        kind = TransferWorkflow(self.database, self.settings).program_kind(token, remediation_id)
+        return self.request(token, remediation_id, key, data, required_kind=kind)
+
+    def request_receipt(self, token, key):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            demands = Demands(connection)
+            row = demands.previous(actor, key)
+            if not row:
+                raise BusinessError("not_found", "Supply request has not been recorded.")
+            return demands.summary(actor, row["id"])
+
+    def view(self, token, demand_id):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            return Demands(connection).summary(actor, demand_id)

@@ -458,7 +458,9 @@ def test_actual_runner_claim_route_dispatches_python_without_private_expected(
     monkeypatch.setattr(
         JourneyWorkflow,
         "claim",
-        lambda _self, runner_id: owned_claim(database, session, runner_id=runner_id),
+        lambda _self, runner_id, program_environments=(): owned_claim(
+            database, session, runner_id=runner_id,
+        ),
     )
     client = TestClient(create_app(replace(settings, runner_token="fixture-controller-token")))
     denied = client.post(

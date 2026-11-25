@@ -3,8 +3,8 @@
 import json
 
 from leornian.agent_runtime.contracts import RoleSpec
-from leornian.agent_runtime.gateway import ChatCompletionsGateway
 from leornian.agent_runtime.repository import Runs
+from leornian.bootstrap.model_configuration import configuration_scope, require_model_admission
 from leornian.bootstrap.teaching_context import TeachingContext
 from leornian.delivery.contracts import EventPayload
 from leornian.delivery.events import Events
@@ -40,7 +40,7 @@ class ArtifactWorkflow:
             actor = identity.authenticate(token)
             conversation = Tutor(PgTutorStore(connection)).get(actor, conversation_id, lock=True)
             Gates(connection).require_no_exam(actor)
-            ChatCompletionsGateway(self.settings).require_ready()
+            require_model_admission(self.settings)
             TeachingContext.build(connection, actor, conversation, data.focus)
             result = Artifacts(connection).request(
                 actor,
@@ -162,6 +162,7 @@ class ArtifactWorkflow:
                     job["session_digest"],
                     "artifact.v1",
                     tools=(),
+                    configuration_scope=configuration_scope(self.settings),
                 )
                 connection.execute(
                     "UPDATE tutor.artifact_requests SET run_id=%s,status='running' WHERE id=%s",

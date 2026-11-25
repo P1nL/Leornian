@@ -10,6 +10,7 @@ import pytest
 from fastapi.testclient import TestClient
 from test_dynamic_plans import document
 from test_generated_lessons import lesson_setup as lesson_setup
+from test_streaming_learning import frames
 from test_tutor_runtime import calls, expire
 from test_tutor_runtime import response as tool_response
 from test_tutor_runtime import setup_tutor as setup_tutor
@@ -89,6 +90,79 @@ def provider(settings, author="Use pathlib.Path.iterdir to list entries.", rejec
         return httpx.Response(200, json=body(result))
 
     return ChatCompletionsGateway(settings, httpx.MockTransport(handle)), sent, reviews
+
+
+def test_provider_stream_commits_thinking_events_and_delivers_the_reply(managed, session, workflow):
+    tutor, settings, conversation = managed
+    accepted = tutor.submit(
+        session.token, conversation.id, str(uuid4()), TurnInput(text="Explain paths.")
+    )
+    gateway, sent, _ = provider(settings)
+    original_transport = gateway.transport
+
+    def stream(request):
+        result = original_transport.handle_request(request).json()
+        choice = result["choices"][0]
+        return httpx.Response(200, headers={"content-type": "text/event-stream"}, content=frames(
+            {"delta": {"reasoning_content":
+                       "private-provider-thinking\n先说明路径与目录的区别，再给出可复现的例子。\n"}},
+            {"delta": {"content": choice["message"]["content"]}},
+            {"delta": {}, "finish_reason": choice["finish_reason"]},
+        ))
+
+    gateway.transport = httpx.MockTransport(stream)
+    assert drain(tutor, settings, accepted, gateway, session.token).status == "accepted"
+    snapshot = workflow.snapshot(session.token)
+    assert any(event.event_type == "tutor.thinking" for event in snapshot.events)
+    assert snapshot.turns[0].turns[0].assistant_text.startswith("Use pathlib")
+    assert snapshot.turns[0].turns[0].thinking_text.strip() == (
+        "先说明路径与目录的区别，再给出可复现的例子。"
+    )
+    history = tutor.turn_history(session.token, conversation.id)
+    assert history[0].thinking_text == snapshot.turns[0].turns[0].thinking_text
+    steps = history[0].thinking_steps
+    assert [step.kind for step in steps] == ["thinking", "review"]
+    assert len({step.id for step in steps}) == 2
+    assert all(step.status == "completed" and step.duration_ms is not None for step in steps)
+    assert steps[0].detail.strip() == history[0].thinking_text.strip()
+    assert "路径与目录" not in steps[1].detail
+    assert snapshot.turns[0].turns[0].thinking_steps == steps
+    assert any(
+        event.payload.thinking_text and "路径与目录" in event.payload.thinking_text
+        for event in snapshot.events
+    )
+    assert "private-provider-thinking" not in snapshot.model_dump_json()
+    other = workflow.create_session("Different learner")
+    assert "路径与目录" not in workflow.snapshot(other.token).model_dump_json()
+    assert len(sent) == 2 and all(wire["stream"] for wire in sent)
+
+
+def test_old_accepted_thinking_is_read_only_and_does_not_invoke_the_model(
+    managed, session, monkeypatch,
+):
+    tutor, settings, conversation = managed
+    monkeypatch.setattr(tutor, "model_thinking", lambda *_args: None)
+    accepted = tutor.submit(
+        session.token, conversation.id, str(uuid4()), TurnInput(text="Explain paths.")
+    )
+    gateway, sent, _ = provider(settings)
+    original_transport = gateway.transport
+
+    def stream(request):
+        result = original_transport.handle_request(request).json()["choices"][0]
+        return httpx.Response(200, headers={"content-type": "text/event-stream"}, content=frames(
+            {"delta": {"reasoning_content": "private-provider-thinking\n先区分路径与文件。\n"}},
+            {"delta": {"content": result["message"]["content"]}},
+            {"delta": {}, "finish_reason": result["finish_reason"]},
+        ))
+
+    gateway.transport = httpx.MockTransport(stream)
+    assert drain(tutor, settings, accepted, gateway, session.token).status == "accepted"
+    history = tutor.turn_history(session.token, conversation.id)
+    assert history[0].thinking_text.strip() == "先区分路径与文件。"
+    again = tutor.turn_history(session.token, conversation.id)
+    assert again[0].thinking_text == history[0].thinking_text
+    assert len(sent) == 2
 
 
 def drain(tutor, settings, accepted, gateway, token, steps=40):
@@ -211,6 +285,12 @@ def test_managed_thinking_tool_turn_review_and_next_turn_preserve_private_protoc
     records = calls(tutor.database, first.run_id)
     assert len(records) == 3 and all(r["status"] == "result_recorded" for r in records)
     assert records[0]["usage"]["completion_tokens_details"]["reasoning_tokens"] == 100
+    steps = tutor.turn_history(session.token, conversation.id)[0].thinking_steps
+    assert [step.kind for step in steps] == ["thinking", "tool", "thinking", "review"]
+    assert steps[1].tool_name == "learning_get_context"
+    assert steps[1].duration_ms is not None
+    assert len({step.id for step in steps}) == 4
+    assert all(step.status == "completed" for step in steps)
     second = tutor.submit(
         session.token, conversation.id, str(uuid4()), TurnInput(text="Give a brief reminder.")
     )
@@ -304,6 +384,10 @@ def test_thinking_tools_unknown_or_cancel_does_not_replay_or_apply_tools(managed
     record = calls(tutor.database, accepted.run_id)[0]
     assert not record["applied"]
     assert record["status"] == ("unknown" if outcome == "timeout" else "result_recorded")
+    steps = tutor.turn_history(session.token, conversation.id)[0].thinking_steps
+    assert len(steps) == 1
+    assert steps[0].status == ("unknown" if outcome == "timeout" else "cancelled")
+    assert not steps[0].detail
 
 
 def test_reasoning_only_truncation_never_becomes_format_repair_content(managed, session):
@@ -537,8 +621,8 @@ def test_node_context_and_more_than_five_lesson_sections(database, workflow, ses
     model, sent, _ = provider(settings)
     drain(tutor, settings, turn, model, session.token)
     context = json.loads(sent[0]["messages"][1]["content"].split("(data): ", 1)[1])
-    assert context["selected_lesson"]["id"] == str(saved.id)
-    assert len(context["selected_lesson"]["document"]["sections"]) == 6
+    assert context["node"]["selected_lesson"]["id"] == str(saved.id)
+    assert len(context["node"]["selected_lesson"]["document"]["sections"]) == 6
     with pytest.raises(BusinessError):
         tutor.submit(
             session.token,
@@ -656,7 +740,7 @@ def test_review_format_repair_preserves_negative_and_identical_candidate_cannot_
         if "Independently review" in wire["messages"][0]["content"]:
             review_count += 1
             payload = json.loads(wire["messages"][-1]["content"])
-            result = report(payload, bad=review_count in {1, 3})
+            result = report(payload, bad=review_count in {1, 2})
             if review_count == 1:
                 result["verdict"] = "bad-format"
             return httpx.Response(200, json=body(json.dumps(result)))
@@ -676,8 +760,98 @@ def test_review_format_repair_preserves_negative_and_identical_candidate_cannot_
         session.token,
     )
     assert result.status == "accepted" and result.revision == 2
-    assert author_count == 3 and review_count == 4
-    assert len(calls(tutor.database, accepted.run_id)) == 7
+    assert author_count == 3 and review_count == 3
+    assert len(calls(tutor.database, accepted.run_id)) == 6
+
+
+def test_additional_checks_are_allowed_and_their_negative_findings_reach_the_author(
+    managed, session,
+):
+    tutor, settings, conversation = managed
+    accepted = tutor.submit(
+        session.token, conversation.id, str(uuid4()), TurnInput(text="Explain paths.")
+    )
+    authors, reviews = [], []
+
+    def handle(request):
+        wire = json.loads(request.content)
+        if "Independently review" in wire["messages"][0]["content"]:
+            payload = json.loads(wire["messages"][-1]["content"])
+            assert "execution_environment_checks" in payload["required_checks"]
+            result = report(payload)
+            extra = report({"candidate_call_id": payload["candidate_call_id"],
+                            "required_checks": ["supplemental_environment_claim"]},
+                           bad=not reviews)["checks"][0]
+            result["checks"].append(extra)
+            result["verdict"] = extra["verdict"]
+            reviews.append(result)
+            return httpx.Response(200, json=body(json.dumps(result)))
+        authors.append(wire)
+        return httpx.Response(200, json=body(
+            "Revised sandbox explanation." if len(authors) > 1 else "First explanation."
+        ))
+
+    result = drain(tutor, settings, accepted,
+                   ChatCompletionsGateway(settings, httpx.MockTransport(handle)), session.token)
+    assert result.status == "accepted" and result.revision == 2
+    assert len(authors) == len(reviews) == 2
+    assert "Address the requested objective" in json.dumps(authors[1])
+
+
+@pytest.mark.parametrize("omit_negative", [False, True])
+def test_no_progress_review_repair_pauses_across_restart_without_reissuing_calls(
+    managed, session, workflow, omit_negative,
+):
+    tutor, settings, conversation = managed
+    accepted = tutor.submit(
+        session.token, conversation.id, str(uuid4()), TurnInput(text="Explain paths.")
+    )
+    sent = []
+
+    def handle(request):
+        wire = json.loads(request.content)
+        sent.append(wire)
+        if "Independently review" not in wire["messages"][0]["content"]:
+            return httpx.Response(200, json=body("A complete explanation."))
+        payload = json.loads(wire["messages"][-1]["content"])
+        result = report(payload)
+        if omit_negative:
+            if not payload.get("format_repair"):
+                extra = report({"candidate_call_id": payload["candidate_call_id"],
+                                "required_checks": ["supplemental_environment_claim"]},
+                               bad=True)["checks"][0]
+                result["checks"].append(extra)
+                result["verdict"] = "malformed"
+        else:
+            result["checks"].pop(0)
+        return httpx.Response(200, json=body(json.dumps(result)))
+
+    gateway = ChatCompletionsGateway(settings, httpx.MockTransport(handle))
+    for _ in range(3):
+        tutor = TutorWorkflow(tutor.database, settings)
+        AgentLoop(tutor, gateway).run(accepted.run_id)
+    task = tutor.delivery_task(session.token, accepted.delivery_task_id)
+    assert task.status == "blocked_protocol" and task.can_resume
+    assert task.reason_code == "delivery_protocol_stalled" and task.last_progress_at
+    assert tutor.get(session.token, accepted.run_id).status == "failed"
+    assert workflow.snapshot(session.token).turns[0].turns[0].assistant_text is None
+    history = tutor.turn_history(session.token, conversation.id)
+    assert history[0].thinking_steps[-1].status == "failed"
+    AgentLoop(TutorWorkflow(tutor.database, settings), gateway).run(accepted.run_id)
+    assert len(sent) == 3
+    if omit_negative:
+        with tutor.database.transaction(snapshot=True) as connection:
+            issue = connection.execute(
+                "SELECT issues FROM tutor.delivery_tasks WHERE id=%s",
+                (task.id,),
+            ).fetchone()["issues"][0]
+        assert issue["frozen_checks"]["supplemental_environment_claim"]["verdict"] == (
+            "changes_required"
+        )
+    else:
+        tutor.resume_delivery(session.token, task.id)
+        fixed, _, _ = provider(settings)
+        assert drain(tutor, settings, accepted, fixed, session.token).status == "accepted"
 
 
 def test_prepared_call_keeps_frozen_policy_after_configuration_change(managed, session):

@@ -1,12 +1,16 @@
 from uuid import UUID
 
+from leornian.bootstrap.example_runs import ExampleRuns
+from leornian.bootstrap.program_execution import ProgramWorkflow
 from leornian.bootstrap.python_execution import PythonWorkflow
 from leornian.delivery.contracts import EventPayload
 from leornian.delivery.events import Events
 from leornian.modules.assessment.application import Assessment
 from leornian.modules.assessment.contracts import Attempt, Submission
+from leornian.modules.assessment.programs import ProgramAssessment
+from leornian.modules.assessment.python_assessment import PythonAssessment
 from leornian.modules.execution.application import Execution
-from leornian.modules.execution.contracts import ExecutionClaim, RunnerReport
+from leornian.modules.execution.contracts import ExecutionClaim, ProgramExecutionClaim, RunnerReport
 from leornian.modules.identity.application import Identity
 from leornian.modules.identity.contracts import Actor
 from leornian.modules.identity.infrastructure import PgIdentityStore
@@ -84,17 +88,25 @@ class JourneyWorkflow:
             actor = Identity(PgIdentityStore(connection)).authenticate(token)
             return Assessment(connection).get(actor, attempt_id)
 
-    def claim(self, runner_id: str) -> ExecutionClaim | None:
+    def claim(
+        self, runner_id: str, program_environments=(), *, example_terminal=False,
+    ) -> ExecutionClaim | ProgramExecutionClaim | None:
         with self.database.transaction() as connection:
-            work = Execution(connection).claim(runner_id)
+            work = Execution(connection).claim(
+                runner_id, program_environments, example_terminal=example_terminal,
+            )
             return self.claim_in(connection, work)
 
     @staticmethod
-    def claim_in(connection, work) -> ExecutionClaim | None:
+    def claim_in(connection, work) -> ExecutionClaim | ProgramExecutionClaim | None:
         if work is None:
             return None
+        if work.get("example_input"):
+            return ExampleRuns.claim_in(connection, work)
         if work["python_input_ref"]:
             return PythonWorkflow.claim_in(connection, work)
+        if work["program_input_ref"]:
+            return ProgramWorkflow.claim_in(connection, work)
         assessment = Assessment(connection)
         try:
             with connection.transaction():
@@ -127,8 +139,21 @@ class JourneyWorkflow:
         with self.database.transaction() as connection:
             # The immutable reference permits consistent identity -> plan -> execution locking.
             existing = Execution(connection).reference(job_id)
+            if existing["example_input"]:
+                execution = Execution(connection)
+                try:
+                    with connection.transaction():
+                        _, practice = ExampleRuns.authorize(connection, existing)
+                        if practice and not existing["example_input"].get("practice_only"):
+                            execution.detach_example(job_id)
+                except BusinessError as error:
+                    execution.abandon(job_id, error.code)
+                execution.report(job_id, report)
+                return
             if existing["python_input_ref"]:
                 return PythonWorkflow.report_in(connection, existing, job_id, report)
+            if existing["program_input_ref"]:
+                return ProgramWorkflow.report_in(connection, existing, job_id, report)
             owner = Actor(id=existing["actor_id"], display_name="")
             current = True
             try:
@@ -186,12 +211,44 @@ class JourneyWorkflow:
                         connection, owner.id, "learning.review_scheduled", source["track_id"]
                     )
 
+    def verify_execution(self, job_id, data):
+        with self.database.transaction() as connection:
+            try:
+                work = Execution(connection).current_claim(job_id, data.claim_token)
+                if (work["example_terminal"] or {}).get("stopping"):
+                    return {"allowed": False}
+                actor = Identity(
+                    PgIdentityStore(connection, serialize_actor=True),
+                ).authenticate_digest(work["session_digest"] or "")
+                if actor.id != work["actor_id"]:
+                    return {"allowed": False}
+                if work["example_input"]:
+                    ExampleRuns.authorize(connection, work)
+                elif work["program_input_ref"]:
+                    source = ProgramAssessment(connection).row(actor, work["program_input_ref"])
+                    ProgramWorkflow.current(connection, actor, source)
+                elif work["python_input_ref"]:
+                    source = PythonAssessment(connection).row(actor, work["python_input_ref"])
+                    PythonWorkflow.current(connection, actor, source)
+                else:
+                    source = Assessment(connection).execution_input(actor, work["input_ref"])
+                    track = Journey(connection).get(actor, source["track_id"])
+                    if track.status == "draft" or track.revision != source["course_revision"]:
+                        return {"allowed": False}
+                Execution(connection).current_claim(job_id, data.claim_token)
+            except BusinessError:
+                return {"allowed": False}
+            return {"allowed": True}
+
     def review(self, token: str, card_id: UUID, key: str, data: ReviewInput) -> ReviewCard:
         with self.database.transaction() as connection:
             actor = Identity(PgIdentityStore(connection, lock_session=True)).authenticate(token)
             card, changed = Reviews(connection).respond(actor, card_id, key, data)
             if changed:
-                self._event(connection, actor.id, "learning.review_recorded", card.track_id)
+                Events(connection).append(
+                    actor.id, "learning.review_recorded", card.track_id or card.id,
+                    EventPayload(track_id=card.track_id),
+                )
             return card
 
     def review_status(self, token: str, card_id: UUID, data: ReviewStatus) -> ReviewCard:
@@ -199,12 +256,16 @@ class JourneyWorkflow:
             actor = Identity(PgIdentityStore(connection, lock_session=True)).authenticate(token)
             card, changed = Reviews(connection).change_status(actor, card_id, data)
             if changed:
-                self._event(connection, actor.id, "learning.review_status_changed", card.track_id)
+                Events(connection).append(
+                    actor.id, "learning.review_status_changed", card.track_id or card.id,
+                    EventPayload(track_id=card.track_id),
+                )
             return card
 
     def expire_executions(self) -> int:
         with self.database.transaction() as connection:
             execution = Execution(connection)
+            examples = execution.expire_examples()
             rows = execution.expired()
             for row in rows:
                 execution.abandon(row["id"], "runner_lease_expired")
@@ -216,4 +277,7 @@ class JourneyWorkflow:
                 self._event(
                     connection, actor.id, "assessment.completed", attempt.track_id, attempt.id
                 )
-        return len(rows) + PythonWorkflow(self.database).expire_executions()
+        return (
+            len(rows) + examples + PythonWorkflow(self.database).expire_executions()
+            + ProgramWorkflow(self.database).expire_executions()
+        )

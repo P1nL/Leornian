@@ -9,6 +9,9 @@ x-backend: &backend
     LEORNIAN_DATABASE_URL: postgresql://leornian:${LEORNIAN_POSTGRES_PASSWORD:?Set LEORNIAN_POSTGRES_PASSWORD in .env}@postgres:5432/leornian
     LEORNIAN_BROKER_URL: redis://redis:6379/0
     LEORNIAN_MODEL_ENABLED: ${LEORNIAN_MODEL_ENABLED:-false}
+    LEORNIAN_MODEL_CONFIGURATION_MODE: ${LEORNIAN_MODEL_CONFIGURATION_MODE:-user}
+    LEORNIAN_CREDENTIAL_MASTER_FILE: /run/leornian-model-keys/master.key
+    LEORNIAN_MATERIAL_STORAGE_DIR: /var/lib/leornian/materials
     LEORNIAN_MODEL_BASE_URL: ${LEORNIAN_MODEL_BASE_URL:-}
     LEORNIAN_MODEL_NAME: ${LEORNIAN_MODEL_NAME:-}
     LEORNIAN_MODEL_API_KEY: ${LEORNIAN_MODEL_API_KEY:-}
@@ -17,11 +20,15 @@ x-backend: &backend
     LEORNIAN_MODEL_CONTEXT_TOKENS: ${LEORNIAN_MODEL_CONTEXT_TOKENS:-0}
     LEORNIAN_MODEL_MAX_OUTPUT_TOKENS: ${LEORNIAN_MODEL_MAX_OUTPUT_TOKENS:-0}
     LEORNIAN_RUNNER_TOKEN: ${LEORNIAN_RUNNER_TOKEN:-}
+  volumes:
+    - model-keys:/run/leornian-model-keys:ro
+    - material-originals:/var/lib/leornian/materials
   restart: unless-stopped
 
 services:
   postgres:
     image: postgres:15
+    restart: unless-stopped
     environment:
       POSTGRES_USER: leornian
       POSTGRES_PASSWORD: ${LEORNIAN_POSTGRES_PASSWORD:?Set LEORNIAN_POSTGRES_PASSWORD in .env}
@@ -38,6 +45,7 @@ services:
 
   redis:
     image: redis:7.2.7
+    restart: unless-stopped
     ports:
       - "127.0.0.1:6388:6379"
     healthcheck:
@@ -54,12 +62,21 @@ services:
       postgres:
         condition: service_healthy
 
+  credential-init:
+    <<: *backend
+    command: ["python", "-m", "leornian.platform.credentials", "--initialize"]
+    restart: "no"
+    volumes:
+      - model-keys:/run/leornian-model-keys
+
   api:
     <<: *backend
     ports:
       - "127.0.0.1:8088:8088"
     depends_on:
       migrate:
+        condition: service_completed_successfully
+      credential-init:
         condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health/ready')"]
@@ -69,10 +86,25 @@ services:
 
   worker:
     <<: *backend
-    command: ["celery", "-A", "leornian.entrypoints.worker:app", "worker", "--loglevel=INFO", "--concurrency=2"]
+    command: ["celery", "-A", "leornian.entrypoints.worker:app", "worker", "--loglevel=INFO", "--concurrency=2", "--queues=leornian.foreground"]
     stop_grace_period: 650s
     depends_on:
       migrate:
+        condition: service_completed_successfully
+      credential-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  material-worker:
+    <<: *backend
+    # Old crawl wakeups stay off the new foreground queue without purging Redis.
+    command: ["celery", "-A", "leornian.entrypoints.worker:app", "worker", "--loglevel=INFO", "--concurrency=2", "--queues=leornian.materials,leornian"]
+    stop_grace_period: 650s
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      credential-init:
         condition: service_completed_successfully
       redis:
         condition: service_healthy
@@ -83,11 +115,15 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
+      credential-init:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
 
 volumes:
   postgres-data:
+  model-keys:
+  material-originals:
 
 networks:
   default:

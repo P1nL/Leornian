@@ -22,7 +22,8 @@ from leornian.bootstrap.knowledge import KnowledgeWorkflow
 from leornian.modules.assessment.gate_contracts import GateRequest
 from leornian.modules.item_bank.demand_contracts import SupplyRequest
 from leornian.modules.item_bank.supply_contracts import REVIEW_ROLES, SLOTS, ChoiceInput
-from leornian.modules.tutor.contracts import TurnInput
+from leornian.modules.tutor.contracts import PlanningInput, TurnInput
+from leornian.shared_kernel.errors import BusinessError
 
 
 def automatic_request(session, setup, **overrides):
@@ -76,6 +77,40 @@ def test_automatic_pack_publishes_without_exposing_questions_or_writing_progress
         )
 
 
+@pytest.mark.parametrize("published", [False, True])
+def test_successor_route_keeps_published_supply_complete_but_cannot_publish_old_ready_pack(
+    database, session, supply_setup, published,
+):
+    supply, tutor, settings, plan, _ = supply_setup
+    accepted = automatic_request(session, supply_setup)
+    finish_version(database, supply_setup, accepted, "Original route")
+    automatic = AutomaticSupply(database, settings)
+    if published:
+        assert automatic.advance(accepted.pack_id) == 1
+    conversation = tutor.conversation(session.token, plan.goal_id)
+    successor = tutor.submit_plan(
+        session.token, conversation.id, str(uuid4()),
+        PlanningInput(
+            text="Reprepare the route from the accepted material update.", expected_revision=1,
+        ),
+    )
+    value = plan.latest.document.model_dump(mode="json")
+    value["summary"] = "Use the accepted successor material."
+    run_model(tutor, settings, successor.run_id, value)
+    tutor.confirm_plan(session.token, plan.id, 2)
+
+    assert automatic.advance(accepted.pack_id) == 0
+    current = supply.get(session.token, accepted.pack_id)
+    assert current.status == ("published" if published else "ready")
+    assert current.automation_status == ("completed" if published else "waiting")
+    assert current.automation_reason == (None if published else "stale_version")
+    assert len(current.reviewed_roles) == len(REVIEW_ROLES)
+    assert child(database, accepted.pack_id) is None
+    if published:
+        with pytest.raises(BusinessError, match="current confirmed plan"):
+            supply.practice(session.token, accepted.pack_id)
+
+
 def test_negative_review_creates_one_changed_successor_and_automatically_publishes(
     database, session, supply_setup
 ):
@@ -95,6 +130,11 @@ def test_negative_review_creates_one_changed_successor_and_automatically_publish
     run_model(tutor, settings, summary.pending_run_id, value, observe=observed.append)
     author_context = json.loads(observed[0]["messages"][1]["content"])
     assert len(author_context["review_feedback"]) == 6
+    assert author_context["revision_scope"] == {
+        "predecessor_id": str(accepted.pack_id), "automatic": True,
+        "instruction_inherited": True, "predecessor_published": False,
+    }
+    assert "Preserve sound, unaffected slots" in observed[0]["messages"][0]["content"]
     assert (
         not next(
             r["report"] for r in author_context["review_feedback"] if r["role"] == "technical"

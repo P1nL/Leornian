@@ -1,5 +1,4 @@
 from concurrent.futures import ThreadPoolExecutor
-from datetime import UTC, datetime
 from uuid import uuid4
 
 import pytest
@@ -11,6 +10,7 @@ from leornian.entrypoints.api import create_app
 from leornian.modules.assessment.contracts import Submission
 from leornian.modules.execution.contracts import CaseOutput, RunnerReport
 from leornian.modules.learning.contracts import GoalInput
+from leornian.modules.learning.fsrs_schedule import schedule
 from leornian.modules.learning.review_contracts import ReviewInput, ReviewStatus
 from leornian.platform.config import Settings
 from leornian.shared_kernel.errors import BusinessError
@@ -73,9 +73,9 @@ def test_completion_schedules_exactly_once_and_early_review_is_rejected(
         )
 
 
-@pytest.mark.parametrize("rating,days", [("again", 1), ("good", 3), ("easy", 7)])
+@pytest.mark.parametrize("rating", ["again", "good", "easy"])
 def test_due_self_report_changes_schedule_not_assessment(
-    database, workflow, session, review_setup, rating, days
+    database, workflow, session, review_setup, rating
 ):
     service, card = review_setup
     make_due(database, card)
@@ -86,7 +86,12 @@ def test_due_self_report_changes_schedule_not_assessment(
             pool.map(lambda _: service.review(session.token, card.id, key, data), range(2))
         )
     assert results[0] == results[1] and results[0].revision == 2
-    assert abs((results[0].next_due_at - datetime.now(UTC)).total_seconds() - days * 86400) < 30
+    result = results[0]
+    _, expected, _, due, _ = schedule(
+        card.scheduling_state, rating, result.reviewed_at, card.id.int % (2**63),
+    )
+    assert result.next_due_at == due and result.scheduling_state == expected
+    assert result.algorithm_version == "py-fsrs.6.3.2"
     assert not results[0].due
     with pytest.raises(BusinessError) as error:
         service.review(

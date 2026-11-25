@@ -6,6 +6,7 @@ from leornian.delivery.events import Events
 from leornian.modules.assessment.application import Assessment
 from leornian.modules.assessment.choices import Choices
 from leornian.modules.assessment.gates import Gates
+from leornian.modules.assessment.programs import ProgramAssessment
 from leornian.modules.assessment.python_assessment import PythonAssessment
 from leornian.modules.assessment.remediation import Remediations
 from leornian.modules.assessment.transfers import Transfers
@@ -28,6 +29,8 @@ from leornian.modules.tutor.artifacts import Artifacts
 from leornian.modules.tutor.deliveries import Deliveries
 from leornian.modules.tutor.evaluations import Evaluations
 from leornian.modules.tutor.infrastructure import PgTutorStore
+from leornian.modules.tutor.learning_artifacts import LearningArtifacts
+from leornian.modules.tutor.teaching_sessions import TeachingSessions
 from leornian.platform.database import Database
 from leornian.platform.jobs import Accepted, Job, Jobs
 from leornian.shared_kernel.errors import BusinessError
@@ -42,6 +45,14 @@ class GoalWorkflow:
     def create_session(self, display_name: str) -> Session:
         with self.database.transaction() as connection:
             return Identity(PgIdentityStore(connection)).create_local_session(display_name)
+
+    def refresh_session(self, token: str) -> Session:
+        with self.database.transaction() as connection:
+            return Identity(PgIdentityStore(connection)).renew_local_session(token)
+
+    def end_session(self, token: str) -> None:
+        with self.database.transaction() as connection:
+            Identity(PgIdentityStore(connection)).revoke_local_session(token)
 
     def submit(self, token: str, key: str, data: GoalInput) -> Accepted:
         with self.database.transaction() as connection:
@@ -61,12 +72,60 @@ class GoalWorkflow:
             actor = Identity(PgIdentityStore(connection)).authenticate(token)
             return Jobs(connection).get(actor, job_id)
 
+    def goal_request(self, token: str, key: str) -> Accepted:
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            request = Learning(PgGoalStore(connection)).goal_request(actor, key)
+            job = Jobs(connection).for_request(actor, request.id)
+            return Accepted(job_id=job.id)
+
+    def rename_goal(self, token, goal_id, title, motivation=None):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection, serialize_actor=True)).authenticate(token)
+            goal = Learning(PgGoalStore(connection)).rename_goal(actor, goal_id, title, motivation)
+            Events(connection).append(
+                actor.id, "goal.updated", goal.id, EventPayload(goal_id=goal.id),
+            )
+            return goal
+
+    def delete_goal(self, token, goal_id):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection, serialize_actor=True)).authenticate(token)
+            conversations = Tutor(PgTutorStore(connection)).list_conversations(actor)
+            if any(item.goal_id == goal_id and Runs(connection).active(item.id)
+                   for item in conversations):
+                raise BusinessError("run_active", "先结束或取消当前教学，再删除学习计划。")
+            Learning(PgGoalStore(connection)).delete_goal(actor, goal_id)
+            Events(connection).append(
+                actor.id, "goal.deleted", goal_id, EventPayload(goal_id=goal_id),
+            )
+            return {"deleted": True}
+
     def snapshot(self, token: str) -> Snapshot:
         # State and cursor must describe the same database snapshot.
         with self.database.transaction(snapshot=True) as connection:
             actor = Identity(PgIdentityStore(connection)).authenticate(token)
             tutor = Tutor(PgTutorStore(connection))
             conversations = tutor.list_conversations(actor)
+            turns = [
+                ConversationTurns(conversation_id=item.id, turns=tutor.turns(item.id))
+                for item in conversations
+            ]
+            thinking = Events(connection).thinking(
+                actor.id, [turn.id for page in turns for turn in page.turns],
+            )
+            steps = Events(connection).thinking_steps(
+                actor.id, [turn.id for page in turns for turn in page.turns],
+            )
+            turns = [
+                page.model_copy(update={"turns": [
+                    Events(connection).attach_reply_thinking(
+                        actor.id, turn, thinking.get(str(turn.id)), steps.get(str(turn.id), []),
+                    )
+                    for turn in page.turns
+                ]})
+                for page in turns
+            ]
             return Snapshot(
                 actor=actor,
                 goals=Learning(PgGoalStore(connection)).list_goals(actor),
@@ -74,13 +133,13 @@ class GoalWorkflow:
                 events=Events(connection).recent(actor),
                 cursor=Events(connection).cursor(actor),
                 conversations=conversations,
-                turns=[
-                    ConversationTurns(conversation_id=item.id, turns=tutor.turns(item.id))
-                    for item in conversations
-                ],
+                teaching_sessions=TeachingSessions(connection).list(actor),
+                teaching_branches=TeachingSessions(connection).branches(actor, limit=100),
+                turns=turns,
                 runs=Runs(connection).list(actor.id),
                 delivery_tasks=Deliveries(connection).page(actor, limit=100),
                 artifacts=Artifacts(connection).list(actor),
+                learning_artifacts=LearningArtifacts(connection).list(actor),
                 artifact_jobs=Artifacts(connection).jobs(actor),
                 tool_activities=Runs(connection).activities(actor.id),
                 tracks=Journey(connection).list(actor),
@@ -98,6 +157,7 @@ class GoalWorkflow:
                 supply_demands=Demands(connection).list(actor),
                 evaluations=Evaluations(connection).list(actor),
                 python_attempts=PythonAssessment(connection).list(actor),
+                program_attempts=ProgramAssessment(connection).list(actor),
                 execution_progress=Progress(connection).python_list(actor),
             )
 

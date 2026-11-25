@@ -4,6 +4,1323 @@
  */
 
 export interface paths {
+    "/v1/material-demands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Demands */
+        get: operations["material_demands_v1_material_demands_get"];
+        put?: never;
+        /** Create Material Demand */
+        post: operations["create_material_demand_v1_material_demands_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Demand Receipt */
+        get: operations["material_demand_receipt_v1_material_demands_commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Demand */
+        get: operations["material_demand_v1_material_demands__demand_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/texts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare Text Material */
+        post: operations["prepare_text_material_v1_material_demands__demand_id__texts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/uploads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reserve Material Upload */
+        post: operations["reserve_material_upload_v1_material_demands__demand_id__uploads_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-uploads/{upload_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Upload */
+        get: operations["material_upload_v1_material_uploads__upload_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/uploads/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Upload Receipt */
+        get: operations["material_upload_receipt_v1_material_demands__demand_id__uploads_commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/files/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material File Job Receipt */
+        get: operations["material_file_job_receipt_v1_material_demands__demand_id__files_commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-jobs/{job_id}/cancellation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Job Cancellation */
+        get: operations["material_job_cancellation_v1_material_jobs__job_id__cancellation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/documents/{document_id}/versions/{revision}/revocation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Document Revocation */
+        get: operations["material_document_revocation_v1_documents__document_id__versions__revision__revocation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-uploads/{upload_id}/content": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Original Material */
+        get: operations["original_material_v1_material_uploads__upload_id__content_get"];
+        /** Upload Original Material */
+        put: operations["upload_original_material_v1_material_uploads__upload_id__content_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare File Material */
+        post: operations["prepare_file_material_v1_material_demands__demand_id__files_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Demand Jobs */
+        get: operations["demand_jobs_v1_material_demands__demand_id__jobs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Job */
+        get: operations["material_job_v1_material_jobs__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-jobs/{job_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Material Job */
+        post: operations["cancel_material_job_v1_material_jobs__job_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-searches": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Search Material */
+        post: operations["search_material_v1_material_searches_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-searches/{search_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Search Status */
+        get: operations["material_search_status_v1_material_searches__search_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-searches/{search_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Material Search */
+        post: operations["cancel_material_search_v1_material_searches__search_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-selections/{selection_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Selection */
+        get: operations["material_selection_v1_material_selections__selection_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-change-checks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare Material Versions */
+        post: operations["compare_material_versions_v1_material_change_checks_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-change-checks/{check_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Change Check */
+        get: operations["material_change_check_v1_material_change_checks__check_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-change-checks/{check_id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Change Review */
+        get: operations["material_change_review_v1_material_change_checks__check_id__review_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-change-checks/{check_id}/review/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Material Change Review */
+        post: operations["cancel_material_change_review_v1_material_change_checks__check_id__review_cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-change-checks/{check_id}/preparation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Update Preparation */
+        get: operations["material_update_preparation_v1_material_change_checks__check_id__preparation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-change-checks/{check_id}/offers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare Material Update */
+        post: operations["prepare_material_update_v1_material_change_checks__check_id__offers_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-update-offers/{offer_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Update Offer */
+        get: operations["material_update_offer_v1_material_update_offers__offer_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-update-offers/{offer_id}/decisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decide Material Update */
+        post: operations["decide_material_update_v1_material_update_offers__offer_id__decisions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-update-offers/{offer_id}/decisions/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Update Decision Receipt */
+        get: operations["material_update_decision_receipt_v1_material_update_offers__offer_id__decisions__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-update-decisions/{decision_id}/repreparations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Dependency Preparations */
+        get: operations["material_dependency_preparations_v1_material_update_decisions__decision_id__repreparations_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Material Sources */
+        get: operations["list_material_sources_v1_material_sources_get"];
+        put?: never;
+        /** Register Material Source */
+        post: operations["register_material_source_v1_material_sources_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source Registration Receipt */
+        get: operations["material_source_registration_receipt_v1_material_sources_commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/{source_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source */
+        get: operations["material_source_v1_material_sources__source_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/{source_id}/checks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check Material Source */
+        post: operations["check_material_source_v1_material_sources__source_id__checks_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/{source_id}/checks/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source Check Receipt */
+        get: operations["material_source_check_receipt_v1_material_sources__source_id__checks__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/{source_id}/checks/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source Check Receipt */
+        get: operations["material_source_check_receipt_v1_material_sources__source_id__checks_commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/{source_id}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke Material Source */
+        post: operations["revoke_material_source_v1_material_sources__source_id__revoke_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-sources/{source_id}/revocation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source Revocation Receipt */
+        get: operations["material_source_revocation_receipt_v1_material_sources__source_id__revocation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-source-observations/{observation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source Observation */
+        get: operations["material_source_observation_v1_material_source_observations__observation_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-source-observations/{observation_id}/original": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Source Original */
+        get: operations["material_source_original_v1_material_source_observations__observation_id__original_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-demands/{demand_id}/discovery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Demand Discovery */
+        get: operations["material_demand_discovery_v1_material_demands__demand_id__discovery_get"];
+        put?: never;
+        /** Request Material Discovery */
+        post: operations["request_material_discovery_v1_material_demands__demand_id__discovery_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Notification List */
+        get: operations["notification_list_v1_notifications_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/notifications/{notification_id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Read Notification */
+        post: operations["read_notification_v1_notifications__notification_id__read_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/learning-artifact-candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Learning Candidate */
+        post: operations["learning_candidate_v1_conversations__conversation_id__learning_artifact_candidates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/learning-artifacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Learning Artifact List */
+        get: operations["learning_artifact_list_v1_conversations__conversation_id__learning_artifacts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/learning-artifacts/{artifact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Learning Artifact */
+        get: operations["learning_artifact_v1_conversations__conversation_id__learning_artifacts__artifact_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/learning-artifacts/{artifact_id}/actions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Learning Artifact Action */
+        post: operations["learning_artifact_action_v1_conversations__conversation_id__learning_artifacts__artifact_id__actions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Learning Artifact List V2 */
+        get: operations["learning_artifact_list_v2_v2_conversations__conversation_id__learning_artifacts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Learning Artifact V2 */
+        get: operations["learning_artifact_v2_v2_conversations__conversation_id__learning_artifacts__artifact_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/example-runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Run Example */
+        post: operations["run_example_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/example-runs/{command_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Example Result */
+        get: operations["example_result_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs__command_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/example-runs/{command_id}/input": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send Example Input */
+        post: operations["send_example_input_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs__command_id__input_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/example-runs/{command_id}/stop": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stop Example */
+        post: operations["stop_example_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs__command_id__stop_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/demos/{component_id}/completions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Demonstration History */
+        get: operations["demonstration_history_v2_conversations__conversation_id__learning_artifacts__artifact_id__demos__component_id__completions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/sources/{component_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Composition Source */
+        get: operations["composition_source_v2_conversations__conversation_id__learning_artifacts__artifact_id__sources__component_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/actions/{action_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Learning Action Receipt */
+        get: operations["learning_action_receipt_v2_conversations__conversation_id__learning_artifacts__artifact_id__actions__action_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/learning-artifacts/{artifact_id}/actions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Learning Artifact Action V2 */
+        post: operations["learning_artifact_action_v2_v2_conversations__conversation_id__learning_artifacts__artifact_id__actions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-connections/{connection_id}/tests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Test Model Connection */
+        post: operations["test_model_connection_v1_model_connections__connection_id__tests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-connection-tests/{test_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Connection Test */
+        get: operations["model_connection_test_v1_model_connection_tests__test_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-connection-tests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Connection Tests */
+        get: operations["model_connection_tests_v1_model_connection_tests_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-configuration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Configuration */
+        get: operations["model_configuration_v1_model_configuration_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-search-configuration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tavily Configuration */
+        get: operations["tavily_configuration_v1_material_search_configuration_get"];
+        /** Save Tavily Configuration */
+        put: operations["save_tavily_configuration_v1_material_search_configuration_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-presets/{preset_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Apply Model Preset */
+        post: operations["apply_model_preset_v1_model_presets__preset_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-connections/{connection_id}/use": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Use Model Connection */
+        post: operations["use_model_connection_v1_model_connections__connection_id__use_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-providers/custom": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Custom Model Provider */
+        post: operations["create_custom_model_provider_v1_model_providers_custom_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-connections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Connections */
+        get: operations["model_connections_v1_model_connections_get"];
+        put?: never;
+        /** Create Model Connection */
+        post: operations["create_model_connection_v1_model_connections_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-connections/{connection_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Model Connection */
+        delete: operations["delete_model_connection_v1_model_connections__connection_id__delete"];
+        options?: never;
+        head?: never;
+        /** Patch Model Connection */
+        patch: operations["patch_model_connection_v1_model_connections__connection_id__patch"];
+        trace?: never;
+    };
+    "/v1/model-profiles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Profiles */
+        get: operations["model_profiles_v1_model_profiles_get"];
+        put?: never;
+        /** Create Model Profile */
+        post: operations["create_model_profile_v1_model_profiles_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/model-profiles/{profile_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Model Profile */
+        patch: operations["patch_model_profile_v1_model_profiles__profile_id__patch"];
+        trace?: never;
+    };
+    "/v1/model-role-mappings/{role}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Assign Model Role */
+        put: operations["assign_model_role_v1_model_role_mappings__role__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-texts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Material Text */
+        post: operations["material_text_v1_material_texts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/sources/{source_id}/material-compatibility": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Legacy Material */
+        post: operations["legacy_material_v1_sources__source_id__material_compatibility_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/documents/{document_id}/versions/{revision}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Document Version */
+        get: operations["document_version_v1_documents__document_id__versions__revision__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/documents/{document_id}/versions/{revision}/blocks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Document Blocks */
+        get: operations["document_blocks_v1_documents__document_id__versions__revision__blocks_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/documents/{document_id}/versions/{revision}/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Document Permission */
+        post: operations["document_permission_v1_documents__document_id__versions__revision__permissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-bindings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bind Material */
+        post: operations["bind_material_v1_material_bindings_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-bindings/{binding_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Binding */
+        get: operations["material_binding_v1_material_bindings__binding_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/material-bindings/{binding_id}/blocks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Bound Material Blocks */
+        get: operations["bound_material_blocks_v1_material_bindings__binding_id__blocks_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/conversations/{conversation_id}/artifact-requests": {
         parameters: {
             query?: never;
@@ -174,6 +1491,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/conversations/{conversation_id}/material-progress": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Material Progress */
+        get: operations["material_progress_v1_conversations__conversation_id__material_progress_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/material-repair": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Repair Conversation Materials */
+        post: operations["repair_conversation_materials_v1_conversations__conversation_id__material_repair_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/conversations/{conversation_id}/history": {
         parameters: {
             query?: never;
@@ -225,6 +1576,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/local-sessions/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh Local Session */
+        post: operations["refresh_local_session_v1_local_sessions_refresh_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/local-sessions/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** End Local Session */
+        delete: operations["end_local_session_v1_local_sessions_current_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/goals": {
         parameters: {
             query?: never;
@@ -236,6 +1621,41 @@ export interface paths {
         put?: never;
         /** Submit Goal */
         post: operations["submit_goal_v1_goals_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/goals/{goal_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Goal */
+        delete: operations["delete_goal_v1_goals__goal_id__delete"];
+        options?: never;
+        head?: never;
+        /** Rename Goal */
+        patch: operations["rename_goal_v1_goals__goal_id__patch"];
+        trace?: never;
+    };
+    "/v1/goal-requests/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Goal Request Receipt */
+        get: operations["goal_request_receipt_v1_goal_requests__request_key__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -310,6 +1730,159 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/conversations/{conversation_id}/recent-entry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Hide Conversation */
+        delete: operations["hide_conversation_v1_conversations__conversation_id__recent_entry_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/teaching-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teaching Session */
+        get: operations["teaching_session_v2_conversations__conversation_id__teaching_session_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/teaching-session/continue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Continue Node */
+        post: operations["continue_node_v2_conversations__conversation_id__teaching_session_continue_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/teaching-intents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teaching Intents */
+        get: operations["teaching_intents_v1_conversations__conversation_id__teaching_intents_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/teaching-intents/{intent_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Teaching Intent */
+        post: operations["cancel_teaching_intent_v1_conversations__conversation_id__teaching_intents__intent_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/teaching-intents/{intent_id}/cancel/{action_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teaching Intent Cancellation Receipt */
+        get: operations["teaching_intent_cancellation_receipt_v1_conversations__conversation_id__teaching_intents__intent_id__cancel__action_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/teaching-session/actions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Control Teaching Session */
+        post: operations["control_teaching_session_v2_conversations__conversation_id__teaching_session_actions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/teaching-session/actions/{action_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teaching Session Receipt */
+        get: operations["teaching_session_receipt_v2_conversations__conversation_id__teaching_session_actions__action_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/conversations/{conversation_id}/teaching-branches": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teaching Branches */
+        get: operations["teaching_branches_v2_conversations__conversation_id__teaching_branches_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/conversations/{conversation_id}/turns": {
         parameters: {
             query?: never;
@@ -321,6 +1894,23 @@ export interface paths {
         put?: never;
         /** Submit Turn */
         post: operations["submit_turn_v1_conversations__conversation_id__turns_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/turn-requests/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Requested Turn */
+        get: operations["requested_turn_v1_conversations__conversation_id__turn_requests__request_key__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -361,6 +1951,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/plans/{plan_id}/confirmations/{revision}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Plan Confirmation */
+        get: operations["plan_confirmation_v1_plans__plan_id__confirmations__revision__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/plans/{plan_id}/revisions": {
         parameters: {
             query?: never;
@@ -389,6 +1996,23 @@ export interface paths {
         put?: never;
         /** Confirm Dynamic Plan */
         post: operations["confirm_dynamic_plan_v1_plans__plan_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/plans/{plan_id}/environment-requirements/{revision}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Route Environment Manifest */
+        get: operations["route_environment_manifest_v1_plans__plan_id__environment_requirements__revision__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -455,6 +2079,40 @@ export interface paths {
         };
         /** Get Pack */
         get: operations["get_pack_v1_packs__pack_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/plans/{plan_id}/question-bank": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Question Bank */
+        get: operations["question_bank_v1_plans__plan_id__question_bank_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/generation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Pack Generation */
+        get: operations["pack_generation_v1_packs__pack_id__generation_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -542,6 +2200,40 @@ export interface paths {
         put?: never;
         /** Request Supply */
         post: operations["request_supply_v1_remediations__remediation_id__supply_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/supply-requests/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Supply Request Receipt */
+        get: operations["supply_request_receipt_v1_supply_requests__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/supply-demands/{demand_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Supply Demand */
+        get: operations["get_supply_demand_v1_supply_demands__demand_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -684,6 +2376,329 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/packs/{pack_id}/execution-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Practice Submission V2 */
+        post: operations["practice_submission_v2_v2_packs__pack_id__execution_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/execution-practice-attempts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Practice History V2 */
+        get: operations["practice_history_v2_v2_packs__pack_id__execution_practice_attempts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/python-practice-attempts/{attempt_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Practice Attempt V2 */
+        get: operations["practice_attempt_v2_v2_python_practice_attempts__attempt_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/python-practice-requests/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Practice Request V2 */
+        get: operations["practice_request_v2_v2_python_practice_requests__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/python-practice-attempts/{attempt_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Practice V2 */
+        post: operations["cancel_practice_v2_v2_python_practice_attempts__attempt_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/program-practice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Program Practice */
+        get: operations["program_practice_v2_packs__pack_id__program_practice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/program-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Program Submission */
+        post: operations["program_submission_v2_packs__pack_id__program_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/program-practice-attempts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Program History */
+        get: operations["program_history_v2_packs__pack_id__program_practice_attempts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/program-practice-attempts/{attempt_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Program Attempt */
+        get: operations["program_attempt_v2_program_practice_attempts__attempt_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/program-practice-requests/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Program Request */
+        get: operations["program_request_v2_program_practice_requests__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/program-practice-attempts/{attempt_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Program */
+        post: operations["cancel_program_v2_program_practice_attempts__attempt_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/program-review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Program Review */
+        post: operations["program_review_v2_packs__pack_id__program_review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/program-gate-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Program Gate */
+        post: operations["request_program_gate_v2_packs__pack_id__program_gate_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/program-gate-requests/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Program Gate Request Receipt */
+        get: operations["program_gate_request_receipt_v2_packs__pack_id__program_gate_requests__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/gates/{gate_id}/program-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Program Gate */
+        post: operations["submit_program_gate_v2_gates__gate_id__program_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/gates/{gate_id}/program-submissions/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Program Gate Submission Receipt */
+        get: operations["program_gate_submission_receipt_v2_gates__gate_id__program_submissions__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/program-attempts/{attempt_id}/transfer-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Program Transfer */
+        post: operations["request_program_transfer_v2_program_attempts__attempt_id__transfer_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/transfers/{transfer_id}/program-submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Program Transfer */
+        post: operations["submit_program_transfer_v2_transfers__transfer_id__program_submissions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/program-attempts/{attempt_id}/supply-demands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Program Supply */
+        post: operations["request_program_supply_v2_program_attempts__attempt_id__supply_demands_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/packs/{pack_id}/execution-gate-requests": {
         parameters: {
             query?: never;
@@ -718,6 +2733,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/transfer-requests/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Transfer Request Receipt */
+        get: operations["transfer_request_receipt_v1_transfer_requests__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/transfers/{transfer_id}": {
         parameters: {
             query?: never;
@@ -727,6 +2759,57 @@ export interface paths {
         };
         /** Get Transfer */
         get: operations["get_transfer_v1_transfers__transfer_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/opening": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Transfer Opening Receipt */
+        get: operations["transfer_opening_receipt_v1_transfers__transfer_id__opening_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/submissions/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Transfer Submission Receipt */
+        get: operations["transfer_submission_receipt_v1_transfers__transfer_id__submissions__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transfers/{transfer_id}/cancellation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Transfer Cancellation Receipt */
+        get: operations["transfer_cancellation_receipt_v1_transfers__transfer_id__cancellation_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -837,6 +2920,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/gates/{gate_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Concept Gate */
+        get: operations["get_concept_gate_v1_gates__gate_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/concept-gates/{gate_id}/start": {
         parameters: {
             query?: never;
@@ -848,6 +2948,125 @@ export interface paths {
         put?: never;
         /** Start Concept Gate */
         post: operations["start_concept_gate_v1_concept_gates__gate_id__start_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/gates/{gate_id}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Concept Gate */
+        post: operations["start_concept_gate_v1_gates__gate_id__start_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/gates/{gate_id}/start-receipt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Gate Start Receipt */
+        get: operations["gate_start_receipt_v1_gates__gate_id__start_receipt_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/gates/{gate_id}/cancellation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Gate Cancellation Receipt */
+        get: operations["gate_cancellation_receipt_v1_gates__gate_id__cancellation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/execution-gate-requests/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Legacy Gate Request Receipt */
+        get: operations["legacy_gate_request_receipt_v1_packs__pack_id__execution_gate_requests__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/packs/{pack_id}/gate-requests/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Legacy Gate Request Receipt */
+        get: operations["legacy_gate_request_receipt_v1_packs__pack_id__gate_requests__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}/submissions/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Concept Gate Submission Receipt */
+        get: operations["concept_gate_submission_receipt_v1_concept_gates__gate_id__submissions__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/concept-gates/{gate_id}/execution-submissions/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Python Gate Submission Receipt */
+        get: operations["python_gate_submission_receipt_v1_concept_gates__gate_id__execution_submissions__request_key__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -882,6 +3101,23 @@ export interface paths {
         put?: never;
         /** Cancel Concept Gate */
         post: operations["cancel_concept_gate_v1_concept_gates__gate_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/gates/{gate_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Concept Gate */
+        post: operations["cancel_concept_gate_v1_gates__gate_id__cancel_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -931,6 +3167,57 @@ export interface paths {
         };
         /** Open Practice */
         get: operations["open_practice_v1_packs__pack_id__practice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/response-practice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Response Practice */
+        get: operations["response_practice_v2_packs__pack_id__response_practice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/responses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Response */
+        post: operations["submit_response_v2_packs__pack_id__responses_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/packs/{pack_id}/response-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Response Results */
+        get: operations["response_results_v2_packs__pack_id__response_results_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1126,6 +3413,296 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/review-activities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review Activities */
+        get: operations["review_activities_v1_review_activities_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/review-activities/{activity_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review Activity */
+        get: operations["review_activity_v1_review_activities__activity_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/review-activities/{activity_id}/present": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Present Review Activity */
+        post: operations["present_review_activity_v1_review_activities__activity_id__present_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/review-activities/{activity_id}/responses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Respond Review Activity */
+        post: operations["respond_review_activity_v1_review_activities__activity_id__responses_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/review-activities/{activity_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Review Activity */
+        post: operations["cancel_review_activity_v1_review_activities__activity_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/review-activities/{activity_id}/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review Activity Receipt */
+        get: operations["review_activity_receipt_v1_review_activities__activity_id__commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reviews/{card_id}/logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review Logs */
+        get: operations["review_logs_v1_reviews__card_id__logs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/learning-evidence": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Learning Evidence */
+        get: operations["get_learning_evidence_v1_learning_evidence_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/proactive-preference": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Proactive Preference */
+        get: operations["proactive_preference_v1_conversations__conversation_id__proactive_preference_get"];
+        put?: never;
+        /** Set Proactive Preference */
+        post: operations["set_proactive_preference_v1_conversations__conversation_id__proactive_preference_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/proactive-preference/commands/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Proactive Preference Receipt */
+        get: operations["proactive_preference_receipt_v1_conversations__conversation_id__proactive_preference_commands__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/execution-environments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Execution Environment Snapshot */
+        get: operations["execution_environment_snapshot_v1_execution_environments_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/environment-demands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request Execution Environment */
+        post: operations["request_execution_environment_v1_environment_demands_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/environment-demand-requests/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Execution Environment Request Receipt */
+        get: operations["execution_environment_request_receipt_v1_environment_demand_requests__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/environment-demands/{demand_id}/decisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decide Execution Environment */
+        post: operations["decide_execution_environment_v1_environment_demands__demand_id__decisions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/environment-demands/{demand_id}/decisions/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Execution Environment Decision Receipt */
+        get: operations["execution_environment_decision_receipt_v1_environment_demands__demand_id__decisions__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/environment-demands/{demand_id}/rebuild": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Rebuild Execution Environment */
+        post: operations["rebuild_execution_environment_v1_environment_demands__demand_id__rebuild_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/environment-demands/{demand_id}/rebuilds/{request_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Execution Environment Rebuild Receipt */
+        get: operations["execution_environment_rebuild_receipt_v1_environment_demands__demand_id__rebuilds__request_key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/goals/{goal_id}/sources": {
         parameters: {
             query?: never;
@@ -1194,6 +3771,108 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/internal/environment-engine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe Execution Engine */
+        post: operations["observe_execution_engine_internal_environment_engine_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/environment-preparations/claim": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Claim Environment Preparation */
+        post: operations["claim_environment_preparation_internal_environment_preparations_claim_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/environment-preparations/{job_id}/progress": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Environment Preparation Progress */
+        post: operations["environment_preparation_progress_internal_environment_preparations__job_id__progress_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/environment-preparations/{job_id}/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Environment Preparation Report */
+        post: operations["environment_preparation_report_internal_environment_preparations__job_id__report_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/environment-releases/{release_id}/unavailable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Environment Release Unavailable */
+        post: operations["environment_release_unavailable_internal_environment_releases__release_id__unavailable_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/environment-releases/{release_id}/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify Environment Release */
+        post: operations["verify_environment_release_internal_environment_releases__release_id__verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/internal/executions/claim": {
         parameters: {
             query?: never;
@@ -1205,6 +3884,40 @@ export interface paths {
         put?: never;
         /** Runner Claim */
         post: operations["runner_claim_internal_executions_claim_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/executions/{job_id}/terminal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Example Terminal Exchange */
+        post: operations["example_terminal_exchange_internal_executions__job_id__terminal_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/executions/{job_id}/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify Execution */
+        post: operations["verify_execution_internal_executions__job_id__verify_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1249,6 +3962,35 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AbilityDimension */
+        AbilityDimension: {
+            /**
+             * Dimension
+             * @enum {string}
+             */
+            dimension: "concept" | "execution" | "transfer";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "unobserved" | "practicing" | "demonstrated";
+            /** Evidence Count */
+            evidence_count: number;
+            /** Passed Count */
+            passed_count: number;
+            /** Failed Count */
+            failed_count: number;
+            /** Error Count */
+            error_count: number;
+            /** Assisted Count */
+            assisted_count: number;
+            /** Independent Pass Count */
+            independent_pass_count: number;
+            /** Latest Receipt */
+            latest_receipt: string | null;
+            /** Latest At */
+            latest_at: string | null;
+        };
         /** Accepted */
         Accepted: {
             /**
@@ -1262,6 +4004,34 @@ export interface components {
              * Format: uuid
              */
             job_id: string;
+        };
+        /** ActionGroupComponent */
+        ActionGroupComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "ActionGroup";
+            props: components["schemas"]["GroupProps"];
+        };
+        /** ActionProps */
+        ActionProps: {
+            /** Label */
+            label: string;
+            /**
+             * Event
+             * @enum {string}
+             */
+            event: "submit_answer" | "submit_review" | "check_code" | "preview" | "cancel";
+            /** For Component */
+            for_component: string;
+            /**
+             * Primary
+             * @default false
+             */
+            primary: boolean;
         };
         /** Actor */
         Actor: {
@@ -1283,12 +4053,204 @@ export interface components {
              */
             valid_until: string;
         };
+        /** AlgorithmBitsComponent */
+        AlgorithmBitsComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmBits";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmContainerComponent */
+        AlgorithmContainerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmContainer";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmGeometryComponent */
+        AlgorithmGeometryComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmGeometry";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmGraphComponent */
+        AlgorithmGraphComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmGraph";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmGridComponent */
+        AlgorithmGridComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmGrid";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmIntervalsComponent */
+        AlgorithmIntervalsComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmIntervals";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmPlayerComponent */
+        AlgorithmPlayerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmPlayer";
+            props: components["schemas"]["AlgorithmProps"];
+        };
+        /**
+         * AlgorithmProps
+         * @description Algorithm inputs, never model-generated frames or executable algorithms.
+         */
+        AlgorithmProps: {
+            /** Label */
+            label: string;
+            /**
+             * Algorithm
+             * @enum {string}
+             */
+            algorithm: "binary_search" | "brackets" | "bfs" | "grid_paths" | "combination_sum" | "interval_scan" | "bitwise" | "geometry";
+            /** State */
+            state: string;
+            /** Input */
+            input: string;
+            /**
+             * Show Code
+             * @default true
+             */
+            show_code: boolean;
+            /**
+             * Show Variables
+             * @default true
+             */
+            show_variables: boolean;
+        };
+        /** AlgorithmRecursionComponent */
+        AlgorithmRecursionComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmRecursion";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmSequenceComponent */
+        AlgorithmSequenceComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AlgorithmSequence";
+            props: components["schemas"]["AlgorithmViewProps"];
+        };
+        /** AlgorithmViewProps */
+        AlgorithmViewProps: {
+            /** Label */
+            label: string;
+            /** Timeline */
+            timeline: string;
+        };
+        /** AnnotationProps */
+        AnnotationProps: {
+            /** Label */
+            label: string;
+            /** Code State */
+            code_state: string;
+            /** State */
+            state: string;
+        };
+        /** AnnotationState */
+        AnnotationState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "annotations";
+            /** Value */
+            value?: string[];
+        };
+        /** AnswerFeedbackComponent */
+        AnswerFeedbackComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "AnswerFeedback";
+            props: components["schemas"]["FeedbackProps"];
+        };
+        /** ArtifactActionComponent */
+        ArtifactActionComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "ArtifactAction";
+            props: components["schemas"]["ActionProps"];
+        };
         /** ArtifactDocument */
         ArtifactDocument: {
             /** Title */
             title: string;
             /** Sections */
             sections: components["schemas"]["ArtifactSection"][];
+        };
+        /** ArtifactInteraction */
+        ArtifactInteraction: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "artifact";
+            /**
+             * Exact Handle
+             * Format: uuid
+             */
+            exact_handle: string;
+            /**
+             * Intent
+             * @constant
+             */
+            intent: "introduce_only";
         };
         /** ArtifactJob */
         ArtifactJob: {
@@ -1435,6 +4397,138 @@ export interface components {
             /** Completed At */
             completed_at: string | null;
         };
+        /** BankNode */
+        BankNode: {
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /** Title */
+            title: string;
+            /** Position */
+            position: number;
+            /** Packs */
+            packs: components["schemas"]["BankPack"][];
+        };
+        /** BankPack */
+        BankPack: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "choice" | "python_io" | "response" | "sql_query" | "python_project" | "project_stdio" | "web_project" | "http_project";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "authoring" | "blind_solving" | "qualifying" | "reviewing" | "changes_required" | "ready" | "published" | "failed" | "cancelled";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Predecessor Id */
+            predecessor_id: string | null;
+            /** Supply Task Id */
+            supply_task_id: string | null;
+        };
+        /** BfsInput */
+        BfsInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "bfs";
+            /** Nodes */
+            nodes: string[];
+            /** Edges */
+            edges: components["schemas"]["DirectedEdge"][];
+            /** Start */
+            start: string;
+        };
+        /** BinarySearchInput */
+        BinarySearchInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "binary_search";
+            /** Values */
+            values: number[];
+            /** Target State */
+            target_state: string;
+        };
+        /** BitsInput */
+        BitsInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "bitwise";
+            /** Left */
+            left: number;
+            /** Right */
+            right: number;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "and" | "or" | "xor";
+            /** Width */
+            width: number;
+        };
+        /** BoundMaterialPage */
+        BoundMaterialPage: {
+            binding: components["schemas"]["MaterialBinding"];
+            /** Blocks */
+            blocks: components["schemas"]["DocumentBlock"][];
+            /** Next Offset */
+            next_offset: number | null;
+        };
+        /** BracketsInput */
+        BracketsInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "brackets";
+            /** Text */
+            text: string;
+        };
+        /** CancelAction */
+        CancelAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "cancel";
+        };
+        /** CancelTeachingIntent */
+        CancelTeachingIntent: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+        };
         /** CaseOutput */
         CaseOutput: {
             /** Exit Code */
@@ -1448,6 +4542,32 @@ export interface components {
              * @enum {string}
              */
             outcome: "completed" | "timeout" | "output_limit" | "infrastructure_error";
+        };
+        /** ChoiceAnswerComponent */
+        ChoiceAnswerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "ChoiceAnswer";
+            props: components["schemas"]["ChoiceProps"];
+        };
+        /** ChoiceDirectAnswer */
+        ChoiceDirectAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "choice";
+            /**
+             * Correct Key
+             * @enum {string}
+             */
+            correct_key: "A" | "B" | "C" | "D";
+            /** Explanation */
+            explanation: string;
         };
         /** ChoiceInput */
         ChoiceInput: {
@@ -1471,6 +4591,20 @@ export interface components {
             key: "A" | "B" | "C" | "D";
             /** Text */
             text: string;
+        };
+        /** ChoiceProps */
+        ChoiceProps: {
+            /** Label */
+            label: string;
+            /** Options */
+            options: components["schemas"]["Option"][];
+            /**
+             * Multiple
+             * @default false
+             */
+            multiple: boolean;
+            /** State */
+            state: string;
         };
         /** ChoiceResult */
         ChoiceResult: {
@@ -1501,15 +4635,534 @@ export interface components {
              */
             created_at: string;
         };
+        /** ChoiceState */
+        ChoiceState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "choice";
+            /** Value */
+            value?: string[];
+        };
+        /** CitationProps */
+        CitationProps: {
+            /** Label */
+            label: string;
+            /** Citation */
+            citation: components["schemas"]["MaterialCitation"] | components["schemas"]["SourceRef"];
+        };
+        /** CodeBlockComponent */
+        CodeBlockComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "CodeBlock";
+            props: components["schemas"]["CodeProps"];
+        };
+        /** CodeDiffComponent */
+        CodeDiffComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "CodeDiff";
+            props: components["schemas"]["DiffProps"];
+        };
+        /** CodeEditorComponent */
+        CodeEditorComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "CodeEditor";
+            props: components["schemas"]["CodeProps"];
+        };
+        /** CodeProps */
+        CodeProps: {
+            /** Label */
+            label: string;
+            /** State */
+            state: string;
+        };
+        /** CodeState */
+        CodeState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "code";
+            /** Value */
+            value: string;
+            /**
+             * Read Only
+             * @default false
+             */
+            read_only: boolean;
+        };
+        /** CodeWorkspacePresentation */
+        CodeWorkspacePresentation: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "code_workspace";
+            task: components["schemas"]["PythonQuestion"];
+        };
+        /**
+         * CombinationInput
+         * @description Positive subset sum: each input position is considered at most once.
+         */
+        CombinationInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "combination_sum";
+            /** Values */
+            values: number[];
+            /** Target */
+            target: number;
+        };
+        /** CompleteReviewAction */
+        CompleteReviewAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "complete_review";
+            /** Component Id */
+            component_id: string;
+        };
+        /** ComposerInteraction */
+        ComposerInteraction: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "composer";
+        };
+        /** CompositionActionReceipt */
+        CompositionActionReceipt: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Artifact Revision */
+            artifact_revision: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /** Result Owner */
+            result_owner?: "assessment" | null;
+            /** Result Id */
+            result_id?: string | null;
+            /**
+             * Schema Version
+             * @default learning_action.v2
+             * @constant
+             */
+            schema_version: "learning_action.v2";
+            /** Component Id */
+            component_id: string;
+            /**
+             * Component State
+             * @enum {string}
+             */
+            component_state: "ready" | "running" | "completed" | "cancelled";
+        };
+        /** CompositionAnswerAction */
+        CompositionAnswerAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "answer_component";
+            /** Component Id */
+            component_id: string;
+            /** Payload */
+            payload: components["schemas"]["MultipleResponse"] | components["schemas"]["PredictionResponse"] | components["schemas"]["ShortResponse"] | components["schemas"]["OrderingResponse"] | components["schemas"]["LineResponse"];
+        };
+        /** CompositionArtifactSummary */
+        CompositionArtifactSummary: {
+            /**
+             * Schema Version
+             * @default learning_artifact.v2
+             * @constant
+             */
+            schema_version: "learning_artifact.v2";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * Source Turn Id
+             * Format: uuid
+             */
+            source_turn_id: string;
+            /**
+             * Timeline Item Id
+             * Format: uuid
+             */
+            timeline_item_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Kind
+             * @default learning_composition
+             * @constant
+             */
+            kind: "learning_composition";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** CompositionArtifactView */
+        CompositionArtifactView: {
+            /**
+             * Schema Version
+             * @default learning_artifact.v2
+             * @constant
+             */
+            schema_version: "learning_artifact.v2";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * Source Turn Id
+             * Format: uuid
+             */
+            source_turn_id: string;
+            /**
+             * Timeline Item Id
+             * Format: uuid
+             */
+            timeline_item_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Kind
+             * @default learning_composition
+             * @constant
+             */
+            kind: "learning_composition";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Title */
+            title: string;
+            /**
+             * Practice Only
+             * @default false
+             */
+            practice_only: boolean;
+            focus: components["schemas"]["TeachingFocus"];
+            content_ref: components["schemas"]["CompositionContentRef"];
+            presentation: components["schemas"]["CompositionPresentation"];
+            /** Allowed Actions */
+            allowed_actions: "cancel"[];
+            /** Component Bindings */
+            component_bindings?: components["schemas"]["CompositionComponentView"][];
+            /** Review Bindings */
+            review_bindings?: components["schemas"]["SubmittedCodeReviewBinding"][];
+            /** Demo Bindings */
+            demo_bindings?: components["schemas"]["DemoView"][];
+            /** Review Reports */
+            review_reports?: components["schemas"]["ReviewReportView"][];
+            /** Example Runners */
+            example_runners?: {
+                [key: string]: ("python" | "javascript" | "typescript" | "java" | "go" | "csharp")[];
+            };
+            example_run_surface?: components["schemas"]["ExampleRunSurface"] | null;
+        };
+        /** CompositionCancelRunAction */
+        CompositionCancelRunAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "cancel_component_run";
+            /** Component Id */
+            component_id: string;
+            /**
+             * Expected Attempt Id
+             * Format: uuid
+             */
+            expected_attempt_id: string;
+        };
+        /** CompositionComponentView */
+        CompositionComponentView: {
+            /** Component Id */
+            component_id: string;
+            /** Source */
+            source: components["schemas"]["LearningCandidateOption"] | components["schemas"]["ResponseCandidateOption"] | components["schemas"]["ProgramCandidateOption"];
+            /** Assistance Profile */
+            assistance_profile?: "practice-direct-answer.v1" | null;
+            /** Hint Profile */
+            hint_profile?: "practice-hints.v1" | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled";
+            /** Action Id */
+            action_id?: string | null;
+            /** Allowed Actions */
+            allowed_actions: ("respond" | "run" | "retry" | "cancel_run" | "request_direct_answer" | "request_hint")[];
+            /** Result */
+            result?: components["schemas"]["ChoiceResult"] | components["schemas"]["PythonPracticeAttempt"] | components["schemas"]["ResponseResult"] | components["schemas"]["ProgramPracticeAttempt"] | null;
+            /** Attempts */
+            attempts?: components["schemas"]["PythonPracticeHistory"] | components["schemas"]["ProgramPracticeHistory"] | null;
+            assistance_receipt?: components["schemas"]["PracticeAssistanceReceipt"] | null;
+            /** Hint Receipts */
+            hint_receipts?: components["schemas"]["PracticeHintReceipt"][];
+            /** Next Hint Level */
+            next_hint_level?: (1 | 2 | 3) | null;
+        };
+        /** CompositionContentRef */
+        CompositionContentRef: {
+            /**
+             * Owner
+             * @default tutor
+             * @constant
+             */
+            owner: "tutor";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /** Public Identity */
+            public_identity: string;
+        };
+        /** CompositionDirectAnswerAction */
+        CompositionDirectAnswerAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "request_direct_answer";
+            /** Component Id */
+            component_id: string;
+        };
+        /** CompositionHintAction */
+        CompositionHintAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "request_hint";
+            /** Component Id */
+            component_id: string;
+            /**
+             * Level
+             * @enum {integer}
+             */
+            level: 1 | 2 | 3;
+        };
+        /** CompositionPresentation */
+        CompositionPresentation: {
+            /**
+             * Type
+             * @default learning_composition
+             * @constant
+             */
+            type: "learning_composition";
+            definition: components["schemas"]["LearningCompositionV2"];
+            example_workspace?: components["schemas"]["ExampleWorkspace"] | null;
+        };
+        /** CompositionProgramPayload */
+        CompositionProgramPayload: {
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+            /** Previous Attempt Id */
+            previous_attempt_id?: string | null;
+            /**
+             * Retry
+             * @default false
+             */
+            retry: boolean;
+        };
+        /** CompositionProgramRunAction */
+        CompositionProgramRunAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "run_program_component";
+            /** Component Id */
+            component_id: string;
+            payload: components["schemas"]["CompositionProgramPayload"];
+        };
+        /** CompositionRespondAction */
+        CompositionRespondAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "respond_component";
+            /** Component Id */
+            component_id: string;
+            payload: components["schemas"]["RespondPayload"];
+        };
+        /** CompositionRunAction */
+        CompositionRunAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "run_component";
+            /** Component Id */
+            component_id: string;
+            payload: components["schemas"]["CompositionRunPayload"];
+        };
+        /** CompositionRunPayload */
+        CompositionRunPayload: {
+            /** Code */
+            code: string;
+            /** Previous Attempt Id */
+            previous_attempt_id?: string | null;
+            /**
+             * Retry
+             * @default false
+             */
+            retry: boolean;
+        };
+        /** CompositionSourceView */
+        CompositionSourceView: {
+            /** Component Id */
+            component_id: string;
+            /** Citation */
+            citation: components["schemas"]["MaterialCitation"] | components["schemas"]["SourceRef"];
+            /** Title */
+            title: string;
+            block?: components["schemas"]["DocumentBlock"] | null;
+            location?: components["schemas"]["DocumentPage"] | null;
+            /** Excerpt */
+            excerpt?: string | null;
+            /** Valid Until */
+            valid_until?: string | null;
+        };
         /** ConfirmDynamicPlan */
         ConfirmDynamicPlan: {
             /** Expected Revision */
             expected_revision: number;
+            /** Environment Requirements */
+            environment_requirements?: components["schemas"]["EnvironmentRequirement"][] | null;
         };
         /** ConfirmPlan */
         ConfirmPlan: {
             /** Expected Revision */
             expected_revision: number;
+        };
+        /** ContinueNode */
+        ContinueNode: {
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            focus: components["schemas"]["TeachingFocus"];
+            /** After Turn Id */
+            after_turn_id: string | null;
+            presentation_capabilities?: components["schemas"]["PresentationCapabilities"];
         };
         /** Conversation */
         Conversation: {
@@ -1528,6 +5181,18 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /**
+             * Studied Nodes
+             * @default []
+             */
+            studied_nodes: components["schemas"]["StudiedNode"][];
+            /** Ended Nodes */
+            ended_nodes?: components["schemas"]["StudiedNode"][];
+            /**
+             * Hidden From Recents
+             * @default false
+             */
+            hidden_from_recents: boolean;
         };
         /** ConversationInput */
         ConversationInput: {
@@ -1546,6 +5211,92 @@ export interface components {
             conversation_id: string;
             /** Turns */
             turns: components["schemas"]["Turn"][];
+        };
+        /** CourseDependency */
+        CourseDependency: {
+            /** Name */
+            name: string;
+            /** Version */
+            version: string;
+        };
+        /**
+         * CourseEnvironment
+         * @description Course packages and a maintained build mode; never shell commands or registries.
+         */
+        CourseEnvironment: {
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /** Title */
+            title: string;
+            /** Dependencies */
+            dependencies: components["schemas"]["CourseDependency"][];
+            /**
+             * Build
+             * @default stdio
+             * @enum {string}
+             */
+            build: "stdio" | "vite" | "http";
+            /** Database */
+            database?: ("sqlite" | "postgresql" | "mysql") | null;
+        };
+        /** CurriculumChapter */
+        CurriculumChapter: {
+            /** Text Key */
+            text_key: string;
+            /** Title */
+            title: string;
+            /** Source Url */
+            source_url?: string | null;
+            /** Document Id */
+            document_id?: string | null;
+        };
+        /** CurriculumProject */
+        CurriculumProject: {
+            /** Title */
+            title: string;
+            /** Outcome */
+            outcome: string;
+            /** Conventions */
+            conventions?: string[];
+        };
+        /** CurriculumTechnology */
+        CurriculumTechnology: {
+            /** Name */
+            name: string;
+            /** Version */
+            version?: string | null;
+        };
+        /** CurriculumText */
+        CurriculumText: {
+            /** Key */
+            key: string;
+            /** Title */
+            title: string;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "primary" | "reference";
+            /** Source Url */
+            source_url?: string | null;
+            /** Edition */
+            edition?: string | null;
+            /** Material Citations */
+            material_citations: components["schemas"]["MaterialCitation"][];
+        };
+        /** DataTableComponent */
+        DataTableComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "DataTable";
+            props: components["schemas"]["TableProps"];
         };
         /** DeliveryResume */
         DeliveryResume: {
@@ -1600,6 +5351,766 @@ export interface components {
              * @default []
              */
             required_input: string[];
+            /** Last Progress At */
+            last_progress_at?: string | null;
+            /** Reason Code */
+            reason_code?: string | null;
+        };
+        /** DemoActionReceipt */
+        DemoActionReceipt: {
+            /**
+             * Schema Version
+             * @default learning_demo_action.v1
+             * @constant
+             */
+            schema_version: "learning_demo_action.v1";
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Artifact Revision */
+            artifact_revision: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /** Component Id */
+            component_id: string;
+            /** Generation */
+            generation: number;
+            /**
+             * Nonce
+             * Format: uuid
+             */
+            nonce: string;
+            /** Sequence */
+            sequence: number;
+            /** Result Owner */
+            result_owner?: "tutor" | null;
+            /** Result Id */
+            result_id?: string | null;
+        };
+        /** DemoCompleteAction */
+        DemoCompleteAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "complete_demo";
+            /** Component Id */
+            component_id: string;
+            /** Generation */
+            generation: number;
+            /**
+             * Nonce
+             * Format: uuid
+             */
+            nonce: string;
+            /**
+             * Sequence
+             * @constant
+             */
+            sequence: 2;
+        };
+        /** DemoCompletion */
+        DemoCompletion: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Component Id */
+            component_id: string;
+            /** Generation */
+            generation: number;
+            /**
+             * Presentation Id
+             * Format: uuid
+             */
+            presentation_id: string;
+            /** Content Identity */
+            content_identity: string;
+            /** Inputs */
+            inputs: {
+                [key: string]: string | number;
+            };
+            /**
+             * Event
+             * @enum {string}
+             */
+            event: "timeline_end" | "preview_snapshot";
+            /** Last Step */
+            last_step: number | null;
+            /**
+             * Evidence Kind
+             * @default learner_demo_report.v1
+             * @constant
+             */
+            evidence_kind: "learner_demo_report.v1";
+            /**
+             * Completed At
+             * Format: date-time
+             */
+            completed_at: string;
+        };
+        /** DemoEventAction */
+        DemoEventAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "acknowledge_demo_event";
+            /** Component Id */
+            component_id: string;
+            /** Generation */
+            generation: number;
+            /**
+             * Nonce
+             * Format: uuid
+             */
+            nonce: string;
+            /**
+             * Sequence
+             * @constant
+             */
+            sequence: 1;
+            /**
+             * Event
+             * @enum {string}
+             */
+            event: "timeline_end" | "preview_snapshot";
+            /** Step Index */
+            step_index?: number | null;
+        };
+        /** DemoHistory */
+        DemoHistory: {
+            /** Items */
+            items: components["schemas"]["DemoCompletion"][];
+            /** Next Before */
+            next_before: number | null;
+        };
+        /** DemoStartAction */
+        DemoStartAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "start_demo";
+            /** Component Id */
+            component_id: string;
+            /** Inputs */
+            inputs?: {
+                [key: string]: string | number;
+            };
+        };
+        /** DemoView */
+        DemoView: {
+            /** Component Id */
+            component_id: string;
+            /**
+             * Profile Version
+             * @default demo-report.v1
+             * @constant
+             */
+            profile_version: "demo-report.v1";
+            /**
+             * Event
+             * @enum {string}
+             */
+            event: "timeline_end" | "preview_snapshot";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "started" | "acknowledged" | "completed";
+            /** Generation */
+            generation: number;
+            /** Nonce */
+            nonce: string | null;
+            /** Sequence */
+            sequence: number;
+            /** Inputs */
+            inputs: {
+                [key: string]: string | number;
+            };
+            /** Last Step */
+            last_step: number | null;
+            /** Allowed Actions */
+            allowed_actions: ("start_demo" | "acknowledge_demo_event" | "complete_demo")[];
+            /** Completions */
+            completions?: components["schemas"]["DemoCompletion"][];
+            /**
+             * Completion Count
+             * @default 0
+             */
+            completion_count: number;
+            /** Next Completion Before */
+            next_completion_before?: number | null;
+        };
+        /** DiffProps */
+        DiffProps: {
+            /** Label */
+            label: string;
+            /** State */
+            state: string;
+            /** Before */
+            before: string;
+        };
+        /** DirectedEdge */
+        DirectedEdge: {
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+        };
+        /** DocumentBlock */
+        DocumentBlock: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Ordinal */
+            ordinal: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "heading" | "paragraph" | "code" | "table";
+            /** Section Path */
+            section_path: string[];
+            /** Text */
+            text: string;
+            ref: components["schemas"]["MaterialRef"];
+            /** Source Page */
+            source_page?: number | null;
+            /**
+             * Span Basis
+             * @default source_text
+             * @enum {string}
+             */
+            span_basis: "source_text" | "extracted_text";
+        };
+        /** DocumentBlockPage */
+        DocumentBlockPage: {
+            document: components["schemas"]["DocumentVersion"];
+            /** Blocks */
+            blocks: components["schemas"]["DocumentBlock"][];
+            /** Next After */
+            next_after: number | null;
+        };
+        /** DocumentPage */
+        DocumentPage: {
+            /** Number */
+            number: number;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "embedded_text" | "none" | "ocr";
+            /** Requires Ocr */
+            requires_ocr: boolean;
+            /** Reason Code */
+            reason_code: string | null;
+            /** Region */
+            region?: number[] | null;
+            /** Original Part */
+            original_part?: string | null;
+            /**
+             * Location Basis
+             * @default document_page
+             * @enum {string}
+             */
+            location_basis: "document_page" | "image_region" | "document_part";
+        };
+        /** DocumentPermission */
+        DocumentPermission: {
+            /** Revision */
+            revision: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "allowed" | "revoked";
+            /** Purposes */
+            purposes: ("reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing")[];
+            /** Use Until */
+            use_until: string | null;
+            /** Retain Until */
+            retain_until: string | null;
+            /**
+             * Basis
+             * @enum {string}
+             */
+            basis: "learner_authorized" | "legacy_admission";
+        };
+        /** DocumentPermissionAction */
+        DocumentPermissionAction: {
+            /** Expected Revision */
+            expected_revision: number;
+            /**
+             * Action
+             * @constant
+             */
+            action: "revoke";
+        };
+        /** DocumentVersion */
+        DocumentVersion: {
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Revision */
+            revision: number;
+            /** Title */
+            title: string;
+            /** Source Url */
+            source_url: string;
+            /**
+             * Format
+             * @enum {string}
+             */
+            format: "text" | "markdown" | "html" | "pdf" | "png" | "jpeg" | "docx";
+            /** Content Digest */
+            content_digest: string;
+            /** Parser Version */
+            parser_version: string;
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "learner_supplied" | "legacy_excerpt";
+            /** Legacy Source Id */
+            legacy_source_id?: string | null;
+            /** Legacy Source Revision */
+            legacy_source_revision?: number | null;
+            permission: components["schemas"]["DocumentPermission"];
+            /**
+             * Next Check At
+             * Format: date-time
+             */
+            next_check_at: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Upload Id */
+            upload_id?: string | null;
+            /**
+             * Text Basis
+             * @default source_text
+             * @enum {string}
+             */
+            text_basis: "source_text" | "extracted_text";
+            /** Pages */
+            pages?: components["schemas"]["DocumentPage"][];
+            /**
+             * Content State
+             * @default retained
+             * @enum {string}
+             */
+            content_state: "retained" | "purged";
+            /** Purged At */
+            purged_at?: string | null;
+            /**
+             * Processing State
+             * @default parsed
+             * @enum {string}
+             */
+            processing_state: "parsed" | "partial";
+            /** Unresolved Regions */
+            unresolved_regions?: components["schemas"]["UnresolvedRegion"][];
+        };
+        /** EngineObservationInput */
+        EngineObservationInput: {
+            /** Runner Id */
+            runner_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "missing" | "stopped" | "unsupported";
+            /** Version */
+            version?: string | null;
+            /** Operating System */
+            operating_system?: string | null;
+            /** Detail */
+            detail: string;
+        };
+        /** EngineState */
+        EngineState: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "missing" | "stopped" | "unsupported" | "not_connected";
+            /** Version */
+            version?: string | null;
+            /** Operating System */
+            operating_system?: string | null;
+            /** Detail */
+            detail: string;
+            /** Observed At */
+            observed_at?: string | null;
+            /**
+             * Installation Requires Explicit System Permission
+             * @default true
+             */
+            installation_requires_explicit_system_permission: boolean;
+        };
+        /** EnvironmentDecision */
+        EnvironmentDecision: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Requirement Revision */
+            requirement_revision: number;
+            /** Revision */
+            revision: number;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "allow" | "defer" | "decline" | "revoke";
+            requirement: components["schemas"]["EnvironmentRequirement"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Authorization Basis
+             * @default user
+             * @enum {string}
+             */
+            authorization_basis: "user" | "managed_base" | "reused_consent";
+        };
+        /** EnvironmentDecisionInput */
+        EnvironmentDecisionInput: {
+            /** Expected Requirement Revision */
+            expected_requirement_revision: number;
+            /** Expected Decision Revision */
+            expected_decision_revision: number;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "allow" | "defer" | "decline" | "revoke";
+        };
+        /** EnvironmentDemand */
+        EnvironmentDemand: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Local Scope
+             * @constant
+             */
+            local_scope: "this-device.v1";
+            /** Plan Id */
+            plan_id: string | null;
+            /** Plan Revision */
+            plan_revision: number | null;
+            /** Requirement Revision */
+            requirement_revision: number;
+            requirement: components["schemas"]["EnvironmentRequirement"];
+            /** Decision Revision */
+            decision_revision: number;
+            /** Decision */
+            decision: ("allow" | "defer" | "decline" | "revoke") | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "waiting_authorization" | "waiting_engine" | "queued" | "preparing" | "verifying" | "ready" | "deferred" | "declined" | "revoked" | "failed" | "blocked_unknown";
+            release?: components["schemas"]["EnvironmentRelease"] | null;
+            /** Error Code */
+            error_code?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** EnvironmentDemandInput */
+        EnvironmentDemandInput: {
+            /** Recipe Id */
+            recipe_id: string;
+            course_environment?: components["schemas"]["CourseEnvironment"] | null;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /**
+             * Expected Requirement Revision
+             * @default 0
+             */
+            expected_requirement_revision: number;
+        };
+        /** EnvironmentPreparationClaim */
+        EnvironmentPreparationClaim: {
+            /**
+             * Job Id
+             * Format: uuid
+             */
+            job_id: string;
+            /**
+             * Claim Token
+             * Format: uuid
+             */
+            claim_token: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Requirement Revision */
+            requirement_revision: number;
+            requirement: components["schemas"]["EnvironmentRequirement"];
+        };
+        /** EnvironmentPreparationClaimInput */
+        EnvironmentPreparationClaimInput: {
+            /** Runner Id */
+            runner_id: string;
+        };
+        /** EnvironmentPreparationProgress */
+        EnvironmentPreparationProgress: {
+            /**
+             * Claim Token
+             * Format: uuid
+             */
+            claim_token: string;
+            /**
+             * Phase
+             * @enum {string}
+             */
+            phase: "downloading" | "building" | "verifying";
+        };
+        /** EnvironmentPreparationReport */
+        EnvironmentPreparationReport: {
+            /**
+             * Claim Token
+             * Format: uuid
+             */
+            claim_token: string;
+            /**
+             * Outcome
+             * @enum {string}
+             */
+            outcome: "ready" | "failed";
+            /** Runtime Version */
+            runtime_version?: string | null;
+            /** Image Id */
+            image_id?: string | null;
+            /** Image Ids */
+            image_ids?: {
+                [key: string]: string;
+            };
+            /** Toolchains */
+            toolchains?: {
+                [key: string]: string;
+            };
+            /** Verification */
+            verification?: {
+                [key: string]: unknown;
+            };
+            /** Error Code */
+            error_code?: string | null;
+        };
+        /** EnvironmentRebuildInput */
+        EnvironmentRebuildInput: {
+            /** Expected Requirement Revision */
+            expected_requirement_revision: number;
+            /** Expected Decision Revision */
+            expected_decision_revision: number;
+        };
+        /** EnvironmentRelease */
+        EnvironmentRelease: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Requirement Revision */
+            requirement_revision: number;
+            /** Recipe Id */
+            recipe_id: string;
+            /** Recipe Revision */
+            recipe_revision: number;
+            /**
+             * Profile
+             * @enum {string}
+             */
+            profile: "project-stdio.v1" | "web-check.v1" | "sql-query.v1" | "project-http.v1";
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp" | "html-css" | "sql";
+            /** Dialect */
+            dialect: string;
+            /** Runtime Version */
+            runtime_version: string;
+            /** Image Id */
+            image_id: string;
+            /** Image Ids */
+            image_ids: {
+                [key: string]: string;
+            };
+            /** Toolchains */
+            toolchains: {
+                [key: string]: string;
+            };
+            /** Verification */
+            verification: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** EnvironmentReleaseUnavailable */
+        EnvironmentReleaseUnavailable: {
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "image_missing" | "verification_failed";
+        };
+        /** EnvironmentReleaseVerificationInput */
+        EnvironmentReleaseVerificationInput: {
+            /**
+             * Profile
+             * @enum {string}
+             */
+            profile: "project-stdio.v1" | "web-check.v1" | "sql-query.v1" | "project-http.v1";
+            /** Language */
+            language?: ("python" | "javascript" | "typescript" | "java" | "go" | "csharp" | "html-css" | "sql") | null;
+            /** Dialect */
+            dialect?: ("sqlite" | "postgresql" | "mysql") | null;
+            /** Runtime Version */
+            runtime_version: string;
+        };
+        /** EnvironmentRequirement */
+        EnvironmentRequirement: {
+            /** Recipe Id */
+            recipe_id: string;
+            /** Recipe Revision */
+            recipe_revision: number;
+            /**
+             * Profile
+             * @enum {string}
+             */
+            profile: "project-stdio.v1" | "web-check.v1" | "sql-query.v1" | "project-http.v1";
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp" | "html-css" | "sql";
+            /** Dialect */
+            dialect?: ("sqlite" | "postgresql" | "mysql") | null;
+            /** Title */
+            title: string;
+            /** Toolchains */
+            toolchains: string[];
+            /** Dependency Lock */
+            dependency_lock: string[];
+            course_environment?: components["schemas"]["CourseEnvironment"] | null;
+            /** Version Policy */
+            version_policy: string;
+            /** Sources */
+            sources: string[];
+            /**
+             * Install Location
+             * @default application-owned Docker images and volumes
+             * @constant
+             */
+            install_location: "application-owned Docker images and volumes";
+            /**
+             * Preparation Network
+             * @default trusted dependency download only
+             * @constant
+             */
+            preparation_network: "trusted dependency download only";
+            /**
+             * Learner Network
+             * @default none
+             * @constant
+             */
+            learner_network: "none";
+            /** Services */
+            services?: string[];
+            /** Estimated Download Bytes */
+            estimated_download_bytes?: number | null;
+            /** Estimated Disk Bytes */
+            estimated_disk_bytes?: number | null;
+            /**
+             * Cost
+             * @default public dependencies; no paid service activation
+             * @constant
+             */
+            cost: "public dependencies; no paid service activation";
         };
         /** ErrorResponse */
         ErrorResponse: {
@@ -1624,7 +6135,7 @@ export interface components {
              * Source Kind
              * @enum {string}
              */
-            source_kind: "choice" | "transfer" | "python";
+            source_kind: "choice" | "transfer" | "python" | "program";
             /**
              * Source Id
              * Format: uuid
@@ -1737,6 +6248,194 @@ export interface components {
              * @default null
              */
             artifact_job_id: string | null;
+            /**
+             * Learning Artifact Id
+             * @default null
+             */
+            learning_artifact_id: string | null;
+            /**
+             * Document Id
+             * @default null
+             */
+            document_id: string | null;
+            /**
+             * Document Revision
+             * @default null
+             */
+            document_revision: number | null;
+            /**
+             * Teaching Intent Id
+             * @default null
+             */
+            teaching_intent_id: string | null;
+            /**
+             * Material Update Offer Id
+             * @default null
+             */
+            material_update_offer_id: string | null;
+            /**
+             * Material Update Decision Id
+             * @default null
+             */
+            material_update_decision_id: string | null;
+            /**
+             * Notification Id
+             * @default null
+             */
+            notification_id: string | null;
+            /**
+             * Thinking Summary
+             * @default null
+             */
+            thinking_summary: string | null;
+            /**
+             * Thinking Text
+             * @default null
+             */
+            thinking_text: string | null;
+            /** @default null */
+            thinking_step: components["schemas"]["ThinkingStep"] | null;
+            /**
+             * Reply Text
+             * @default null
+             */
+            reply_text: string | null;
+            /**
+             * Reply Id
+             * @default null
+             */
+            reply_id: string | null;
+        };
+        /** ExampleRunInput */
+        ExampleRunInput: {
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /** Component Id */
+            component_id: string;
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /** Code */
+            code: string;
+            /**
+             * Stdin
+             * @default
+             */
+            stdin: string;
+            /**
+             * Interactive
+             * @default false
+             */
+            interactive: boolean;
+            /**
+             * Share Code For Teaching
+             * @default false
+             */
+            share_code_for_teaching: boolean;
+        };
+        /** ExampleRunResult */
+        ExampleRunResult: {
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "running" | "reported" | "expired";
+            compilation?: components["schemas"]["CaseOutput"] | null;
+            output?: components["schemas"]["CaseOutput"] | null;
+            /** Error Code */
+            error_code?: string | null;
+            terminal?: components["schemas"]["ExampleTerminalView"] | null;
+        };
+        /** ExampleRunSurface */
+        ExampleRunSurface: {
+            /** Run Label */
+            run_label: string;
+            /** Stdin Label */
+            stdin_label: string;
+            /** Stdin Hint */
+            stdin_hint: string;
+            /**
+             * Input Mode
+             * @enum {string}
+             */
+            input_mode: "multiline_before_run" | "line_during_run";
+            /**
+             * Output Mode
+             * @enum {string}
+             */
+            output_mode: "replace_on_next_run" | "live_terminal";
+            /** Share Code Label */
+            share_code_label?: string | null;
+        };
+        /** ExampleTerminalExchange */
+        ExampleTerminalExchange: {
+            /**
+             * Claim Token
+             * Format: uuid
+             */
+            claim_token: string;
+            /** Frame */
+            frame: number;
+            /**
+             * Text
+             * @default
+             */
+            text: string;
+            /** After Input */
+            after_input: number;
+            /**
+             * Closed
+             * @default false
+             */
+            closed: boolean;
+        };
+        /** ExampleTerminalLine */
+        ExampleTerminalLine: {
+            /**
+             * Input Id
+             * Format: uuid
+             */
+            input_id: string;
+            /** Text */
+            text: string;
+        };
+        /** ExampleTerminalView */
+        ExampleTerminalView: {
+            /** Transcript */
+            transcript: string;
+            /** Accepting Input */
+            accepting_input: boolean;
+            /** Stopping */
+            stopping: boolean;
+        };
+        /** ExampleWorkspace */
+        ExampleWorkspace: {
+            /** Editor */
+            editor: string;
+            /** Description */
+            description: string;
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /**
+             * Stdin
+             * @default
+             */
+            stdin: string;
         };
         /** ExecutionClaim */
         ExecutionClaim: {
@@ -1754,6 +6453,24 @@ export interface components {
             code: string;
             /** Inputs */
             inputs: number[][];
+        };
+        /** ExecutionEnvironments */
+        ExecutionEnvironments: {
+            /**
+             * Application Status
+             * @default ready
+             * @constant
+             */
+            application_status: "ready";
+            engine: components["schemas"]["EngineState"];
+            /** Recipes */
+            recipes: components["schemas"]["EnvironmentRequirement"][];
+            /** Demands */
+            demands: components["schemas"]["EnvironmentDemand"][];
+            /** Evaluation Only */
+            evaluation_only?: string[];
+            /** Automatic Recipe Ids */
+            automatic_recipe_ids?: string[];
         };
         /** ExecutionProgress */
         ExecutionProgress: {
@@ -1773,14 +6490,22 @@ export interface components {
             node_key: string;
             /**
              * Policy Version
-             * @constant
+             * @enum {string}
              */
-            policy_version: "python-io-gate.v1";
+            policy_version: "python-io-gate.v1" | "program-execution-gate.v1";
             /**
              * Completed At
              * Format: date-time
              */
             completed_at: string;
+        };
+        /** ExecutionVerificationInput */
+        ExecutionVerificationInput: {
+            /**
+             * Claim Token
+             * Format: uuid
+             */
+            claim_token: string;
         };
         /** Exercise */
         Exercise: {
@@ -1794,6 +6519,102 @@ export interface components {
             starter_code: string;
             /** Provenance */
             provenance: string;
+        };
+        /** ExplanationComponent */
+        ExplanationComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "Explanation";
+            props: components["schemas"]["TextProps"];
+        };
+        /** FacetCoverage */
+        FacetCoverage: {
+            /** Facet */
+            facet: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "text_supported" | "supported" | "partial" | "missing" | "uncertain";
+            /** Evidence */
+            evidence: components["schemas"]["MaterialRef"][];
+        };
+        /** FeedbackProps */
+        FeedbackProps: {
+            /** Label */
+            label: string;
+            /** For Component */
+            for_component: string;
+        };
+        /** FileMaterialInput */
+        FileMaterialInput: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Document Id */
+            document_id?: string | null;
+            /**
+             * Expected Revision
+             * @default 0
+             */
+            expected_revision: number;
+            /** Title */
+            title: string;
+            /** Source Url */
+            source_url?: string | null;
+            /**
+             * Format
+             * @enum {string}
+             */
+            format: "text" | "markdown" | "html" | "pdf" | "png" | "jpeg" | "docx";
+            /**
+             * Authorized Use
+             * @constant
+             */
+            authorized_use: true;
+            /** Purposes */
+            purposes: ("reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing")[];
+            /** Use Until */
+            use_until?: string | null;
+            /** Retain Until */
+            retain_until?: string | null;
+        };
+        /** FilesState */
+        FilesState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "files";
+            /** Files */
+            files: components["schemas"]["ProjectFile"][];
+        };
+        /** FinishTeachingNode */
+        FinishTeachingNode: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "finish_node";
+            focus: components["schemas"]["TeachingFocus"];
+            /**
+             * After Turn Id
+             * Format: uuid
+             */
+            after_turn_id: string;
         };
         /** GateItemResult */
         GateItemResult: {
@@ -1821,6 +6642,31 @@ export interface components {
              * @enum {string}
              */
             slot: "assessment_1" | "assessment_2";
+        };
+        /** GateProgramResult */
+        GateProgramResult: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "assessment_1" | "assessment_2";
+            /**
+             * Attempt Id
+             * Format: uuid
+             */
+            attempt_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "passed" | "not_passed" | "error";
+            /** Passed Cases */
+            passed_cases: number;
+            /** Feedback */
+            feedback: string | null;
+            /** Error Code */
+            error_code: string | null;
+            compilation?: components["schemas"]["CaseOutput"] | null;
         };
         /** GateRequest */
         GateRequest: {
@@ -1876,7 +6722,7 @@ export interface components {
              * @default concept-gate.v1
              * @enum {string}
              */
-            policy_version: "concept-gate.v1" | "python-io-gate.v1";
+            policy_version: "concept-gate.v1" | "python-io-gate.v1" | "program-execution-gate.v1";
             /** Relation Run Id */
             relation_run_id: string | null;
             /**
@@ -1903,7 +6749,7 @@ export interface components {
              * Questions
              * @default []
              */
-            questions: (components["schemas"]["PublicQuestion"] | components["schemas"]["PythonQuestion"])[];
+            questions: (components["schemas"]["PublicQuestion"] | components["schemas"]["PythonQuestion"] | (components["schemas"]["SqlQuestion"] | components["schemas"]["ProjectQuestion"] | components["schemas"]["StdioQuestion"] | components["schemas"]["WebQuestion"] | components["schemas"]["HttpQuestion"]))[];
             /**
              * Results
              * @default []
@@ -1916,6 +6762,8 @@ export interface components {
             allowed_actions: ("start" | "submit" | "cancel")[];
             /** Blocked Reason */
             blocked_reason?: string | null;
+            /** Program Results */
+            program_results?: components["schemas"]["GateProgramResult"][];
         };
         /** GeneratedLesson */
         GeneratedLesson: {
@@ -1942,6 +6790,69 @@ export interface components {
              */
             created_at: string;
         };
+        /** GenerationReport */
+        GenerationReport: {
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "authoring" | "blind_solving" | "qualifying" | "reviewing" | "changes_required" | "ready" | "published" | "failed" | "cancelled";
+            /** Stages */
+            stages: components["schemas"]["GenerationStage"][];
+            /** Qualifications */
+            qualifications: {
+                [key: string]: number;
+            };
+            /** Published At */
+            published_at: string | null;
+        };
+        /** GenerationStage */
+        GenerationStage: {
+            /** Role */
+            role: ("author" | "blind") | ("curriculum" | "difficulty" | "technical" | "ambiguity" | "security" | "adversarial");
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "running" | "succeeded" | "failed" | "cancelled" | "blocked_unknown";
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /** Completed At */
+            completed_at: string | null;
+            /** Public Notes */
+            public_notes: ("从本节目标选取考点。" | "让补救题集中检查一个基础步骤。" | "为同一概念设计不同的应用情境。" | "按公开题面独立作答。" | "用公开样例核对作答。" | "另行检查边界情况。" | "核对题目是否用到尚未学习的知识。" | "比较练习、考核和补救题的难度。" | "核对题面与判定规则是否一致。" | "检查题目条件是否有多种解释。" | "检查公开内容是否泄露答案。" | "检查能否照搬练习解法通过考核。" | "本版使用了超出节点目标的知识。" | "补救题还需要降低难度。" | "题面描述与判定规则需要对齐。" | "需要补充条件才能唯一作答。" | "练习给出了过多的考核线索。" | "需要换一种情境检验独立应用。")[];
+            /** Item Count */
+            item_count?: number | null;
+            /** Blind Passed */
+            blind_passed?: boolean | null;
+            /** Decisions */
+            decisions?: {
+                [key: string]: "pass" | "revise" | "reject";
+            };
+            /** Independence */
+            independence?: ("supported" | "revise" | "reject") | null;
+        };
+        /**
+         * GeometryInput
+         * @description Orientation of three points by the signed cross product.
+         */
+        GeometryInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "geometry";
+            /** Points */
+            points: components["schemas"]["Point"][];
+        };
         /** Goal */
         Goal: {
             /**
@@ -1958,6 +6869,7 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            material_scope?: components["schemas"]["GoalMaterialScope"] | null;
         };
         /** GoalInput */
         GoalInput: {
@@ -1968,11 +6880,296 @@ export interface components {
              * @default
              */
             motivation: string;
+            material_scope?: components["schemas"]["GoalMaterialScope"] | null;
+        };
+        /** GoalMaterialScope */
+        GoalMaterialScope: {
+            /**
+             * Contract
+             * @default goal-material-scope.v1
+             * @constant
+             */
+            contract: "goal-material-scope.v1";
+            /** Language */
+            language?: string | null;
+            /** Language Version */
+            language_version?: string | null;
+            /** Framework */
+            framework?: string | null;
+            /** Framework Version */
+            framework_version?: string | null;
+            /** Authorized Official Sources */
+            authorized_official_sources: boolean;
+            /**
+             * Authorized Public Sources
+             * @default false
+             */
+            authorized_public_sources: boolean;
+        };
+        /** GoalRename */
+        GoalRename: {
+            /** Title */
+            title: string;
+            /** Motivation */
+            motivation?: string | null;
+        };
+        /** GraduatedHint */
+        GraduatedHint: {
+            /**
+             * Level
+             * @enum {integer}
+             */
+            level: 1 | 2 | 3;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "concept" | "strategy" | "next_step";
+            /** Text */
+            text: string;
+        };
+        /** GraphEdge */
+        GraphEdge: {
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+            /** Label */
+            label?: string | null;
+        };
+        /** GraphNode */
+        GraphNode: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** X */
+            x: number;
+            /** Y */
+            y: number;
+        };
+        /** GraphProps */
+        GraphProps: {
+            /** Label */
+            label: string;
+            /** Nodes */
+            nodes: components["schemas"]["GraphNode"][];
+            /** Edges */
+            edges: components["schemas"]["GraphEdge"][];
+            /** State */
+            state: string;
+        };
+        /** GridCell */
+        GridCell: {
+            /** Row */
+            row: number;
+            /** Column */
+            column: number;
+        };
+        /** GridPathsInput */
+        GridPathsInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "grid_paths";
+            /** Rows */
+            rows: number;
+            /** Columns */
+            columns: number;
+            /** Blocked */
+            blocked?: components["schemas"]["GridCell"][];
+        };
+        /** GroupProps */
+        GroupProps: {
+            /** Members */
+            members: string[];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HttpAnswer */
+        HttpAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "http";
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+        };
+        /** HttpCase */
+        HttpCase: {
+            scenario: components["schemas"]["HttpScenario"];
+            /** Expected */
+            expected: components["schemas"]["HttpResponse"][];
+        };
+        /** HttpDatabase */
+        HttpDatabase: {
+            /**
+             * Dialect
+             * @enum {string}
+             */
+            dialect: "sqlite" | "postgresql" | "mysql";
+            schema_definition?: components["schemas"]["SqlSchema"] | null;
+        };
+        /** HttpEnvironment */
+        HttpEnvironment: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "project-http.v1";
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /** Runtime Version */
+            runtime_version: string;
+            /**
+             * Environment Release Id
+             * Format: uuid
+             */
+            environment_release_id: string;
+        };
+        /** HttpProgram */
+        HttpProgram: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "project-http.v1";
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /** Runtime Version */
+            runtime_version: string;
+            /**
+             * Environment Release Id
+             * Format: uuid
+             */
+            environment_release_id: string;
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            database?: components["schemas"]["HttpDatabase"] | null;
+            /** Scenarios */
+            scenarios: components["schemas"]["HttpScenario"][];
+        };
+        /** HttpQuestion */
+        HttpQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            language: "http_project";
+            environment: components["schemas"]["HttpEnvironment"];
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            database?: components["schemas"]["HttpDatabase"] | null;
+            sample: components["schemas"]["HttpCase"];
+            /**
+             * Comparison Profile
+             * @default http-response.v1
+             * @constant
+             */
+            comparison_profile: "http-response.v1";
+        };
+        /** HttpRequest */
+        HttpRequest: {
+            /**
+             * Method
+             * @default GET
+             * @enum {string}
+             */
+            method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD";
+            /** Path */
+            path: string;
+            /** Body */
+            body?: string | null;
+            /**
+             * Content Type
+             * @default application/json
+             * @enum {string}
+             */
+            content_type: "application/json" | "text/plain";
+        };
+        /** HttpResponse */
+        HttpResponse: {
+            /** Status */
+            status: number;
+            /** Body */
+            body: string;
+        };
+        /** HttpScenario */
+        HttpScenario: {
+            /** Requests */
+            requests: components["schemas"]["HttpRequest"][];
+            dataset?: components["schemas"]["SqlDataset"] | null;
+        };
+        /** HttpScenarioResult */
+        HttpScenarioResult: {
+            /**
+             * Protocol
+             * @default http-scenario-result.v1
+             * @constant
+             */
+            protocol: "http-scenario-result.v1";
+            /** Responses */
+            responses: components["schemas"]["HttpResponse"][];
+        };
+        /** Interval */
+        Interval: {
+            /** Id */
+            id: string;
+            /** Start */
+            start: number;
+            /** End */
+            end: number;
+        };
+        /** IntervalsInput */
+        IntervalsInput: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "interval_scan";
+            /** Intervals */
+            intervals: components["schemas"]["Interval"][];
+        };
+        /** IsolatedPreviewComponent */
+        IsolatedPreviewComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "IsolatedPreview";
+            props: components["schemas"]["PreviewProps"];
         };
         /** Job */
         Job: {
@@ -2003,6 +7200,284 @@ export interface components {
             /** Completed At */
             completed_at: string | null;
         };
+        /** KeyValueListComponent */
+        KeyValueListComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "KeyValueList";
+            props: components["schemas"]["ValuesProps"];
+        };
+        /** KnowledgeCheckPresentation */
+        KnowledgeCheckPresentation: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "knowledge_check";
+            question: components["schemas"]["PublicQuestion"];
+        };
+        /** LearningActionReceipt */
+        LearningActionReceipt: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Artifact Revision */
+            artifact_revision: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /** Result Owner */
+            result_owner?: "assessment" | null;
+            /** Result Id */
+            result_id?: string | null;
+        };
+        /** LearningArtifactSummary */
+        LearningArtifactSummary: {
+            /**
+             * Schema Version
+             * @default learning_artifact.v1
+             * @constant
+             */
+            schema_version: "learning_artifact.v1";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * Source Turn Id
+             * Format: uuid
+             */
+            source_turn_id: string;
+            /**
+             * Timeline Item Id
+             * Format: uuid
+             */
+            timeline_item_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "knowledge_check" | "code_workspace";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** LearningArtifactView */
+        LearningArtifactView: {
+            /**
+             * Schema Version
+             * @default learning_artifact.v1
+             * @constant
+             */
+            schema_version: "learning_artifact.v1";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * Source Turn Id
+             * Format: uuid
+             */
+            source_turn_id: string;
+            /**
+             * Timeline Item Id
+             * Format: uuid
+             */
+            timeline_item_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "knowledge_check" | "code_workspace";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Title */
+            title: string;
+            /**
+             * Practice Only
+             * @default false
+             */
+            practice_only: boolean;
+            focus: components["schemas"]["TeachingFocus"];
+            content_ref: components["schemas"]["LearningContentRef"];
+            /** Presentation */
+            presentation: components["schemas"]["KnowledgeCheckPresentation"] | components["schemas"]["CodeWorkspacePresentation"];
+            /** Allowed Actions */
+            allowed_actions: ("respond" | "run" | "cancel")[];
+            /** Result */
+            result?: components["schemas"]["ChoiceResult"] | components["schemas"]["PythonAttempt"] | null;
+            /**
+             * Commentary Status
+             * @default not_requested
+             * @enum {string}
+             */
+            commentary_status: "not_requested" | "pending_or_available";
+        };
+        /** LearningCandidate */
+        LearningCandidate: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "knowledge_check" | "code_workspace";
+            focus: components["schemas"]["TeachingFocus"];
+            content_ref: components["schemas"]["LearningContentRef"];
+            /** Title */
+            title: string;
+        };
+        /** LearningCandidateInput */
+        LearningCandidateInput: {
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2";
+        };
+        /** LearningCandidateOption */
+        LearningCandidateOption: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "code_workspace" | "knowledge_check";
+            focus: components["schemas"]["TeachingFocus"];
+            content_ref: components["schemas"]["LearningContentRef"];
+            /** Title */
+            title: string;
+            /** Presentation */
+            presentation: components["schemas"]["KnowledgeCheckPresentation"] | components["schemas"]["CodeWorkspacePresentation"];
+        };
+        /** LearningCompositionV2 */
+        LearningCompositionV2: {
+            /**
+             * Schema Version
+             * @constant
+             */
+            schema_version: "learning_composition.v2";
+            /** Title */
+            title: string;
+            /**
+             * Layout
+             * @default stack
+             * @enum {string}
+             */
+            layout: "stack" | "split";
+            /** States */
+            states?: {
+                [key: string]: components["schemas"]["CodeState"] | components["schemas"]["TextState"] | components["schemas"]["ChoiceState"] | components["schemas"]["OrderState"] | components["schemas"]["AnnotationState"] | components["schemas"]["PlaybackState"] | components["schemas"]["NumberState"] | components["schemas"]["SelectionState"] | components["schemas"]["FilesState"];
+            };
+            /** Inputs */
+            inputs?: {
+                [key: string]: components["schemas"]["BinarySearchInput"] | components["schemas"]["BracketsInput"] | components["schemas"]["BfsInput"] | components["schemas"]["GridPathsInput"] | components["schemas"]["CombinationInput"] | components["schemas"]["IntervalsInput"] | components["schemas"]["BitsInput"] | components["schemas"]["GeometryInput"];
+            };
+            /** Components */
+            components: (components["schemas"]["ExplanationComponent"] | components["schemas"]["SourceReferenceComponent"] | components["schemas"]["CodeBlockComponent"] | components["schemas"]["CodeEditorComponent"] | components["schemas"]["CodeDiffComponent"] | components["schemas"]["DataTableComponent"] | components["schemas"]["KeyValueListComponent"] | components["schemas"]["IsolatedPreviewComponent"] | components["schemas"]["TreeViewComponent"] | components["schemas"]["RelationGraphComponent"] | components["schemas"]["SequenceDiagramComponent"] | components["schemas"]["AlgorithmPlayerComponent"] | components["schemas"]["AlgorithmSequenceComponent"] | components["schemas"]["AlgorithmContainerComponent"] | components["schemas"]["AlgorithmGraphComponent"] | components["schemas"]["AlgorithmGridComponent"] | components["schemas"]["AlgorithmRecursionComponent"] | components["schemas"]["AlgorithmIntervalsComponent"] | components["schemas"]["AlgorithmBitsComponent"] | components["schemas"]["AlgorithmGeometryComponent"] | components["schemas"]["ChoiceAnswerComponent"] | components["schemas"]["TextAnswerComponent"] | components["schemas"]["OrderingAnswerComponent"] | components["schemas"]["LineRangeAnswerComponent"] | components["schemas"]["ParameterControlComponent"] | components["schemas"]["StepPlayerComponent"] | components["schemas"]["AnswerFeedbackComponent"] | components["schemas"]["ResultFeedbackComponent"] | components["schemas"]["ReviewFindingComponent"] | components["schemas"]["ArtifactActionComponent"] | components["schemas"]["ActionGroupComponent"])[];
+        };
+        /** LearningContentRef */
+        LearningContentRef: {
+            /**
+             * Owner
+             * @default item_bank
+             * @constant
+             */
+            owner: "item_bank";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2";
+            /** Public Identity */
+            public_identity: string;
+        };
+        /** LearningEvidenceProjection */
+        LearningEvidenceProjection: {
+            /**
+             * Projector Version
+             * @default ability-dimensions.v1
+             * @constant
+             */
+            projector_version: "ability-dimensions.v1";
+            /** Dimensions */
+            dimensions: components["schemas"]["AbilityDimension"][];
+            /** Evidence */
+            evidence: components["schemas"]["OwnedEvidence"][];
+        };
         /** LearningPlan */
         LearningPlan: {
             /**
@@ -2017,6 +7492,11 @@ export interface components {
             goal_id: string;
             latest: components["schemas"]["PlanRevision"];
             active: components["schemas"]["PlanRevision"] | null;
+        };
+        /** LegacyMaterialImport */
+        LegacyMaterialImport: {
+            /** Expected Revision */
+            expected_revision: number;
         };
         /** Lesson */
         Lesson: {
@@ -2069,11 +7549,72 @@ export interface components {
             code_example: string;
             /** Source Refs */
             source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
         };
         /** LessonView */
         LessonView: {
             lesson: components["schemas"]["Lesson"];
             exercise: components["schemas"]["Exercise"];
+        };
+        /** LineAnnotation */
+        LineAnnotation: {
+            /** Line */
+            line: number;
+            /** Reason */
+            reason: string;
+        };
+        /** LineQuestion */
+        LineQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            response_type: "line_review";
+            /** Code */
+            code: string;
+            /**
+             * Assessment Mode
+             * @default location_only
+             * @constant
+             */
+            assessment_mode: "location_only";
+        };
+        /** LineRangeAnswerComponent */
+        LineRangeAnswerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "LineRangeAnswer";
+            props: components["schemas"]["AnnotationProps"];
+        };
+        /** LineResponse */
+        LineResponse: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "line_review";
+            /** Annotations */
+            annotations: components["schemas"]["LineAnnotation"][];
         };
         /** LocalSessionRequest */
         LocalSessionRequest: {
@@ -2106,6 +7647,1333 @@ export interface components {
              */
             valid_until: string;
         };
+        /** MaterialBinding */
+        MaterialBinding: {
+            /**
+             * Contract
+             * @default material-binding.v1
+             * @constant
+             */
+            contract: "material-binding.v1";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Revision */
+            revision: number;
+            /** Plan Id */
+            plan_id: string | null;
+            /** Plan Revision */
+            plan_revision: number | null;
+            /** Node Key */
+            node_key: string | null;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            /** Refs */
+            refs: components["schemas"]["MaterialRef"][];
+            /** Expected Completion At */
+            expected_completion_at: string | null;
+            /**
+             * Review Due At
+             * Format: date-time
+             */
+            review_due_at: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialBindingInput */
+        MaterialBindingInput: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            /** Expected Binding Revision */
+            expected_binding_revision: number;
+            /** Refs */
+            refs: components["schemas"]["MaterialRef"][];
+            /** Expected Completion At */
+            expected_completion_at?: string | null;
+        };
+        /** MaterialBlockMapping */
+        MaterialBlockMapping: {
+            baseline: components["schemas"]["MaterialRef"];
+            candidate: components["schemas"]["MaterialRef"];
+        };
+        /** MaterialChangeInput */
+        MaterialChangeInput: {
+            /**
+             * Binding Id
+             * Format: uuid
+             */
+            binding_id: string;
+            /** Expected Binding Revision */
+            expected_binding_revision: number;
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Candidate Revision */
+            candidate_revision: number;
+        };
+        /** MaterialChangeReport */
+        MaterialChangeReport: {
+            /**
+             * Contract
+             * @default material-change.v1
+             * @constant
+             */
+            contract: "material-change.v1";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Binding Id
+             * Format: uuid
+             */
+            binding_id: string;
+            /** Binding Revision */
+            binding_revision: number;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Baseline Revision */
+            baseline_revision: number;
+            /** Candidate Revision */
+            candidate_revision: number;
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "unchanged" | "uncertain";
+            /**
+             * Semantic Quality
+             * @default not_certified
+             * @constant
+             */
+            semantic_quality: "not_certified";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "no_content_change" | "waiting_dependency";
+            /** Reason Code */
+            reason_code: "change_review_required" | null;
+            /** Unchanged Blocks */
+            unchanged_blocks: components["schemas"]["MaterialBlockMapping"][];
+            /** Removed Or Changed Blocks */
+            removed_or_changed_blocks: components["schemas"]["MaterialRef"][];
+            /** Added Or Changed Blocks */
+            added_or_changed_blocks: components["schemas"]["MaterialRef"][];
+            /** Affected Refs */
+            affected_refs: components["schemas"]["MaterialRef"][];
+            /** Affected Context Refs */
+            affected_context_refs: components["schemas"]["MaterialRef"][];
+            /** Relocated Refs */
+            relocated_refs: components["schemas"]["MaterialBlockMapping"][];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialChangeReview */
+        MaterialChangeReview: {
+            /**
+             * Contract
+             * @default material-change-review.v1
+             * @constant
+             */
+            contract: "material-change-review.v1";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Check Id
+             * Format: uuid
+             */
+            check_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "processing" | "waiting_config" | "waiting_dependency" | "blocked_unknown" | "reviewed" | "cancelled";
+            result: components["schemas"]["MaterialChangeVerdict"] | null;
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialChangeVerdict */
+        MaterialChangeVerdict: {
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "editorial_equivalent" | "semantic_change" | "uncertain";
+            /** Summary */
+            summary: string;
+            /** Reviewed Refs */
+            reviewed_refs: components["schemas"]["MaterialRef"][];
+        };
+        /** MaterialCitation */
+        MaterialCitation: {
+            /**
+             * Binding Id
+             * Format: uuid
+             */
+            binding_id: string;
+            /** Binding Revision */
+            binding_revision: number;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            ref: components["schemas"]["MaterialRef"];
+        };
+        /** MaterialCoverage */
+        MaterialCoverage: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "sufficient" | "partial" | "insufficient" | "unavailable";
+            /**
+             * Basis
+             * @default lexical-evidence.v1
+             * @enum {string}
+             */
+            basis: "lexical-evidence.v1" | "semantic-goal-evidence.v1" | "planning-batch-evidence.v1" | "route-planning-evidence.v1";
+            /** Required */
+            required: components["schemas"]["FacetCoverage"][];
+            /** Missing Facets */
+            missing_facets: string[];
+            /**
+             * Semantic Quality
+             * @default not_certified
+             * @constant
+             */
+            semantic_quality: "not_certified";
+            /**
+             * Excluded For Capacity
+             * @default 0
+             */
+            excluded_for_capacity: number;
+            /** Lexical Coverage */
+            lexical_coverage?: components["schemas"]["FacetCoverage"][] | null;
+            /** Reviewed Parts */
+            reviewed_parts?: number | null;
+            /** Synopsis */
+            synopsis?: string | null;
+            /**
+             * Usable For Planning
+             * @default false
+             */
+            usable_for_planning: boolean;
+        };
+        /** MaterialDemand */
+        MaterialDemand: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            /** Language */
+            language?: string | null;
+            /** Language Version */
+            language_version?: string | null;
+            /** Framework */
+            framework?: string | null;
+            /** Framework Version */
+            framework_version?: string | null;
+            /**
+             * Scope Mode
+             * @default facets
+             * @enum {string}
+             */
+            scope_mode: "facets" | "whole_source" | "teaching_goal";
+            /**
+             * Preparation
+             * @default complete
+             * @enum {string}
+             */
+            preparation: "complete" | "initial" | "incremental";
+            /**
+             * Index Mode
+             * @default hybrid
+             * @enum {string}
+             */
+            index_mode: "hybrid" | "lexical";
+            /** Goal Text */
+            goal_text?: string | null;
+            /** Required Facets */
+            required_facets: string[];
+            /** Optional Facets */
+            optional_facets?: string[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /** Consumer Ref */
+            consumer_ref: string;
+            /**
+             * Scope
+             * @default private
+             * @constant
+             */
+            scope: "private";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "open" | "ready" | "cancelled";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialDemandInput */
+        MaterialDemandInput: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            /** Language */
+            language?: string | null;
+            /** Language Version */
+            language_version?: string | null;
+            /** Framework */
+            framework?: string | null;
+            /** Framework Version */
+            framework_version?: string | null;
+            /**
+             * Scope Mode
+             * @default facets
+             * @enum {string}
+             */
+            scope_mode: "facets" | "whole_source" | "teaching_goal";
+            /**
+             * Preparation
+             * @default complete
+             * @enum {string}
+             */
+            preparation: "complete" | "initial" | "incremental";
+            /**
+             * Index Mode
+             * @default hybrid
+             * @enum {string}
+             */
+            index_mode: "hybrid" | "lexical";
+            /** Goal Text */
+            goal_text?: string | null;
+            /** Required Facets */
+            required_facets?: string[];
+            /** Optional Facets */
+            optional_facets?: string[];
+        };
+        /** MaterialDiscovery */
+        MaterialDiscovery: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Demand Revision */
+            demand_revision: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "processing" | "waiting_config" | "waiting_dependency" | "blocked_unknown" | "ready" | "cancelled";
+            /** Selection Id */
+            selection_id: string | null;
+            /** Missing Facets */
+            missing_facets: string[];
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialEvidence */
+        MaterialEvidence: {
+            ref: components["schemas"]["MaterialRef"];
+            /** Text */
+            text: string;
+            /** Title */
+            title: string;
+            /** Source Url */
+            source_url: string;
+            /** Source Page */
+            source_page: number | null;
+            /** Section Path */
+            section_path: string[];
+        };
+        /** MaterialFileJobInput */
+        MaterialFileJobInput: {
+            /** Expected Demand Revision */
+            expected_demand_revision: number;
+            /**
+             * Upload Id
+             * Format: uuid
+             */
+            upload_id: string;
+        };
+        /** MaterialJob */
+        MaterialJob: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Root Id
+             * Format: uuid
+             */
+            root_id: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Demand Revision */
+            demand_revision: number;
+            /** Revision */
+            revision: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "queued" | "parsing" | "processing" | "waiting_dependency" | "waiting_config" | "blocked_unknown" | "ready" | "cancelled";
+            /**
+             * Background Deferred
+             * @default false
+             */
+            background_deferred: boolean;
+            /**
+             * Phase
+             * @enum {string}
+             */
+            phase: "parsing" | "ocr" | "checking" | "indexing" | "validating";
+            /** Reason Code */
+            reason_code: string | null;
+            /** Issues */
+            issues: string[];
+            /** Document Id */
+            document_id: string | null;
+            /** Document Revision */
+            document_revision: number | null;
+            /** Upload Id */
+            upload_id?: string | null;
+            /**
+             * Title
+             * @default Material
+             */
+            title: string;
+            /** Format */
+            format?: ("text" | "markdown" | "html" | "pdf" | "png" | "jpeg" | "docx") | null;
+            prepared_scope?: components["schemas"]["MaterialPreparedScope"] | null;
+            /** Steps */
+            steps: components["schemas"]["MaterialJobStep"][];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** MaterialJobStep */
+        MaterialJobStep: {
+            /** Revision */
+            revision: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "queued" | "parsing" | "processing" | "waiting_dependency" | "waiting_config" | "blocked_unknown" | "ready" | "cancelled";
+            /**
+             * Phase
+             * @enum {string}
+             */
+            phase: "parsing" | "ocr" | "checking" | "indexing" | "validating";
+            /** Reason Code */
+            reason_code: string | null;
+            /** Issues */
+            issues: string[];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialPreparationDocument */
+        MaterialPreparationDocument: {
+            /** Title */
+            title: string;
+            /** State */
+            state: string;
+            /** Phase */
+            phase: string;
+            /** Reason Code */
+            reason_code?: string | null;
+        };
+        /** MaterialPreparationProgress */
+        MaterialPreparationProgress: {
+            /** Demand Id */
+            demand_id?: string | null;
+            /**
+             * Preparation
+             * @default complete
+             * @enum {string}
+             */
+            preparation: "complete" | "initial" | "incremental";
+            /** Goal */
+            goal?: string | null;
+            /**
+             * Status
+             * @default idle
+             * @enum {string}
+             */
+            status: "idle" | "processing" | "waiting_dependency" | "waiting_config" | "blocked_unknown" | "ready" | "cancelled";
+            /** Reason Code */
+            reason_code?: string | null;
+            /** Steps */
+            steps?: components["schemas"]["MaterialPreparationStep"][];
+            /** Documents */
+            documents?: components["schemas"]["MaterialPreparationDocument"][];
+            /**
+             * Current Documents
+             * @default 0
+             */
+            current_documents: number;
+            /**
+             * Ready Documents
+             * @default 0
+             */
+            ready_documents: number;
+            /**
+             * Background Documents
+             * @default 0
+             */
+            background_documents: number;
+            /**
+             * Background Ready Documents
+             * @default 0
+             */
+            background_ready_documents: number;
+            /** Last Progress At */
+            last_progress_at?: string | null;
+        };
+        /** MaterialPreparationStep */
+        MaterialPreparationStep: {
+            /**
+             * Key
+             * @enum {string}
+             */
+            key: "sources" | "acquisition" | "parsing" | "ocr" | "quality" | "chunking" | "embedding" | "indexing" | "retrieval";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pending" | "running" | "completed" | "waiting" | "unknown" | "cancelled";
+            /** Completed */
+            completed: number;
+            /** Total */
+            total: number;
+            /**
+             * Unit
+             * @default documents
+             * @enum {string}
+             */
+            unit: "documents" | "chunks" | "checks";
+            /** Level */
+            level?: number | null;
+        };
+        /** MaterialPreparedScope */
+        MaterialPreparedScope: {
+            /**
+             * Basis
+             * @default whole-source-index.v1
+             * @enum {string}
+             */
+            basis: "whole-source-index.v1" | "selected-source-text.v1";
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Document Revision */
+            document_revision: number;
+            /** Content Digest */
+            content_digest: string;
+            /** Block Count */
+            block_count: number;
+            /** Indexed Characters */
+            indexed_characters: number;
+        };
+        /** MaterialRecoveryResult */
+        MaterialRecoveryResult: {
+            /** Repaired Steps */
+            repaired_steps: number;
+            /** Message */
+            message: string;
+        };
+        /** MaterialRef */
+        MaterialRef: {
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Document Revision */
+            document_revision: number;
+            /**
+             * Block Id
+             * Format: uuid
+             */
+            block_id: string;
+            span: components["schemas"]["MaterialSpan"];
+            /** Content Digest */
+            content_digest: string;
+            /** Selection Id */
+            selection_id?: string | null;
+        };
+        /** MaterialRepreparation */
+        MaterialRepreparation: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Decision Id
+             * Format: uuid
+             */
+            decision_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "plan" | "lesson";
+            /**
+             * Source Id
+             * Format: uuid
+             */
+            source_id: string;
+            /** Source Revision */
+            source_revision: number;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Node Key */
+            node_key: string | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "queued" | "waiting_priority" | "waiting_confirmation" | "running" | "waiting_receipt" | "ready" | "superseded" | "cancelled" | "waiting_dependency";
+            /** Reason */
+            reason: string | null;
+            /** Run Id */
+            run_id: string | null;
+            /** Delivery Task Id */
+            delivery_task_id: string | null;
+            /** Output Plan Revision */
+            output_plan_revision: number | null;
+            /** Output Lesson Id */
+            output_lesson_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** MaterialSearch */
+        MaterialSearch: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "processing" | "waiting_config" | "waiting_dependency" | "blocked_unknown" | "ready" | "cancelled";
+            /** Selection Id */
+            selection_id: string | null;
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialSearchInput */
+        MaterialSearchInput: {
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Expected Demand Revision */
+            expected_demand_revision: number;
+            /** Query */
+            query: string;
+            /**
+             * Mode
+             * @default hybrid
+             * @enum {string}
+             */
+            mode: "lexical" | "hybrid";
+            /** Binding Id */
+            binding_id?: string | null;
+            /** Expected Binding Revision */
+            expected_binding_revision?: number | null;
+            /** Document Id */
+            document_id?: string | null;
+            /** Document Revision */
+            document_revision?: number | null;
+            /** Required Refs */
+            required_refs?: components["schemas"]["MaterialRef"][] | null;
+            /** Source Versions */
+            source_versions?: components["schemas"]["MaterialSearchSource"][] | null;
+        };
+        /** MaterialSearchSource */
+        MaterialSearchSource: {
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Document Revision */
+            document_revision: number;
+        };
+        /** MaterialSelection */
+        MaterialSelection: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "lexical" | "hybrid";
+            /** Evidence */
+            evidence: components["schemas"]["MaterialEvidence"][];
+            coverage: components["schemas"]["MaterialCoverage"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialSource */
+        MaterialSource: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Title */
+            title: string;
+            /** Entry Url */
+            entry_url: string;
+            /** Allowed Prefixes */
+            allowed_prefixes: string[];
+            /**
+             * Authorized Use
+             * @constant
+             */
+            authorized_use: true;
+            /** Purposes */
+            purposes: ("reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing")[];
+            /** Language */
+            language?: string | null;
+            /** Language Version */
+            language_version?: string | null;
+            /** Framework */
+            framework?: string | null;
+            /** Framework Version */
+            framework_version?: string | null;
+            /** Topics */
+            topics?: string[];
+            /** Format */
+            format?: ("text" | "markdown" | "html" | "pdf" | "png" | "jpeg" | "docx") | null;
+            /**
+             * Discover Links
+             * @default true
+             */
+            discover_links: boolean;
+            /** Use Until */
+            use_until?: string | null;
+            /** Retain Until */
+            retain_until?: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Admission
+             * @enum {string}
+             */
+            admission: "allowed" | "revoked";
+            /**
+             * Basis
+             * @enum {string}
+             */
+            basis: "explicit_approval" | "official_catalog" | "learning_catalog" | "public_discovery";
+            /** Catalog Id */
+            catalog_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialSourceAction */
+        MaterialSourceAction: {
+            /** Expected Revision */
+            expected_revision: number;
+        };
+        /** MaterialSourceInput */
+        MaterialSourceInput: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Title */
+            title: string;
+            /** Entry Url */
+            entry_url: string;
+            /** Allowed Prefixes */
+            allowed_prefixes: string[];
+            /**
+             * Authorized Use
+             * @constant
+             */
+            authorized_use: true;
+            /** Purposes */
+            purposes: ("reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing")[];
+            /** Language */
+            language?: string | null;
+            /** Language Version */
+            language_version?: string | null;
+            /** Framework */
+            framework?: string | null;
+            /** Framework Version */
+            framework_version?: string | null;
+            /** Topics */
+            topics?: string[];
+            /** Format */
+            format?: ("text" | "markdown" | "html" | "pdf" | "png" | "jpeg" | "docx") | null;
+            /**
+             * Discover Links
+             * @default true
+             */
+            discover_links: boolean;
+            /** Use Until */
+            use_until?: string | null;
+            /** Retain Until */
+            retain_until?: string | null;
+        };
+        /** MaterialSourceObservation */
+        MaterialSourceObservation: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Source Id
+             * Format: uuid
+             */
+            source_id: string;
+            /**
+             * Resource Id
+             * Format: uuid
+             */
+            resource_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "fetching" | "processing" | "unchanged" | "noise_only" | "changed" | "waiting_config" | "waiting_dependency" | "blocked_unknown" | "cancelled";
+            /** Response Status */
+            response_status: number | null;
+            /** Raw Digest */
+            raw_digest: string | null;
+            /** Teaching Digest */
+            teaching_digest: string | null;
+            /** Upload Id */
+            upload_id: string | null;
+            /** Job Id */
+            job_id: string | null;
+            /** Document Id */
+            document_id: string | null;
+            /** Document Revision */
+            document_revision: number | null;
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialSpan */
+        MaterialSpan: {
+            /** Start */
+            start: number;
+            /** End */
+            end: number;
+        };
+        /** MaterialTextJobInput */
+        MaterialTextJobInput: {
+            /** Expected Demand Revision */
+            expected_demand_revision: number;
+            material: components["schemas"]["TextMaterialImport"];
+        };
+        /** MaterialUpdateDecision */
+        MaterialUpdateDecision: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Offer Id
+             * Format: uuid
+             */
+            offer_id: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "accept_update" | "decide_later" | "keep_current_for_track";
+            /**
+             * Binding Id
+             * Format: uuid
+             */
+            binding_id: string;
+            /** Binding Revision */
+            binding_revision: number;
+            /** Successor Binding Id */
+            successor_binding_id: string | null;
+            /** Successor Binding Revision */
+            successor_binding_revision: number | null;
+            /** Requires Reprepare */
+            requires_reprepare: components["schemas"]["MaterialUpdateDependency"][];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialUpdateDecisionInput */
+        MaterialUpdateDecisionInput: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "accept_update" | "decide_later" | "keep_current_for_track";
+            /** Expected Offer Revision */
+            expected_offer_revision: number;
+            /** Expected Binding Revision */
+            expected_binding_revision: number;
+        };
+        /** MaterialUpdateDependency */
+        MaterialUpdateDependency: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "plan" | "lesson";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision?: number | null;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+        };
+        /** MaterialUpdateImpact */
+        MaterialUpdateImpact: {
+            /** Dependencies */
+            dependencies: components["schemas"]["MaterialUpdateDependency"][];
+            /**
+             * Existing Content
+             * @default keeps_exact_references
+             * @constant
+             */
+            existing_content: "keeps_exact_references";
+            /**
+             * Successor Application
+             * @default new_consumption_only
+             * @constant
+             */
+            successor_application: "new_consumption_only";
+            /**
+             * Route Confirmation
+             * @default required_before_route_change
+             * @constant
+             */
+            route_confirmation: "required_before_route_change";
+        };
+        /** MaterialUpdateNotificationContent */
+        MaterialUpdateNotificationContent: {
+            /**
+             * Offer Id
+             * Format: uuid
+             */
+            offer_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Plan Id */
+            plan_id: string | null;
+            /** Plan Revision */
+            plan_revision: number | null;
+            /** Node Key */
+            node_key: string | null;
+            /**
+             * Binding Id
+             * Format: uuid
+             */
+            binding_id: string;
+            /** Binding Revision */
+            binding_revision: number;
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Baseline Revision */
+            baseline_revision: number;
+            /** Candidate Revision */
+            candidate_revision: number;
+            /** Affected Plan Count */
+            affected_plan_count: number;
+            /** Affected Lesson Count */
+            affected_lesson_count: number;
+            /**
+             * Recommendation
+             * @default consider_update
+             * @constant
+             */
+            recommendation: "consider_update";
+            /**
+             * Reason
+             * @default reviewed_semantic_change
+             * @constant
+             */
+            reason: "reviewed_semantic_change";
+            /**
+             * Migration Cost
+             * @enum {string}
+             */
+            migration_cost: "binding_only" | "dependent_content_requires_reprepare";
+        };
+        /** MaterialUpdateOffer */
+        MaterialUpdateOffer: {
+            /**
+             * Contract
+             * @default material-update-offer.v1
+             * @constant
+             */
+            contract: "material-update-offer.v1";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Check Id
+             * Format: uuid
+             */
+            check_id: string;
+            /**
+             * Preparation Id
+             * Format: uuid
+             */
+            preparation_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Plan Id */
+            plan_id: string | null;
+            /** Plan Revision */
+            plan_revision: number | null;
+            /** Node Key */
+            node_key: string | null;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            /**
+             * Binding Id
+             * Format: uuid
+             */
+            binding_id: string;
+            /** Binding Revision */
+            binding_revision: number;
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Baseline Revision */
+            baseline_revision: number;
+            /** Candidate Revision */
+            candidate_revision: number;
+            /**
+             * Candidate Selection Id
+             * Format: uuid
+             */
+            candidate_selection_id: string;
+            /** Candidate Refs */
+            candidate_refs: components["schemas"]["MaterialRef"][];
+            /** Summary */
+            summary: string;
+            /**
+             * Recommendation
+             * @default consider_update
+             * @constant
+             */
+            recommendation: "consider_update";
+            /**
+             * Preparation Cost
+             * @default completed
+             * @constant
+             */
+            preparation_cost: "completed";
+            /**
+             * Migration Cost
+             * @enum {string}
+             */
+            migration_cost: "binding_only" | "dependent_content_requires_reprepare";
+            impact: components["schemas"]["MaterialUpdateImpact"];
+            /**
+             * Options
+             * @default [
+             *       "accept_update",
+             *       "decide_later",
+             *       "keep_current_for_track"
+             *     ]
+             */
+            options: ("accept_update" | "decide_later" | "keep_current_for_track")[];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialUpdatePreparation */
+        MaterialUpdatePreparation: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Check Id
+             * Format: uuid
+             */
+            check_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "processing" | "waiting_config" | "waiting_dependency" | "blocked_unknown" | "ready" | "cancelled";
+            /** Error Code */
+            error_code: string | null;
+            /** Demand Id */
+            demand_id: string | null;
+            /** Job Id */
+            job_id: string | null;
+            /** Search Id */
+            search_id: string | null;
+            /** Offer Id */
+            offer_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** MaterialUpdatePrepareInput */
+        MaterialUpdatePrepareInput: {
+            /** Expected Binding Revision */
+            expected_binding_revision: number;
+            /**
+             * Candidate Selection Id
+             * Format: uuid
+             */
+            candidate_selection_id: string;
+        };
+        /** MaterialUpload */
+        MaterialUpload: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Demand Id
+             * Format: uuid
+             */
+            demand_id: string;
+            /** Demand Revision */
+            demand_revision: number;
+            /**
+             * Format
+             * @enum {string}
+             */
+            format: "text" | "markdown" | "html" | "pdf" | "png" | "jpeg" | "docx";
+            /** Content Digest */
+            content_digest: string;
+            /** Byte Size */
+            byte_size: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "pending" | "stored" | "purged";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+        };
+        /** MaterialUploadInput */
+        MaterialUploadInput: {
+            /** Expected Demand Revision */
+            expected_demand_revision: number;
+            material: components["schemas"]["FileMaterialInput"];
+            /** Content Digest */
+            content_digest: string;
+            /** Byte Size */
+            byte_size: number;
+        };
         /** ModelAvailability */
         ModelAvailability: {
             /** Ready */
@@ -2121,6 +8989,581 @@ export interface components {
              * @constant
              */
             protocol: "chat_completions";
+        };
+        /** ModelConfiguration */
+        ModelConfiguration: {
+            /** Connections */
+            connections: components["schemas"]["ModelConnection"][];
+            /** Profiles */
+            profiles: components["schemas"]["ModelProfile"][];
+            /** Mappings */
+            mappings: components["schemas"]["ModelRoleMapping"][];
+            /**
+             * Credential Storage
+             * @enum {string}
+             */
+            credential_storage: "available" | "waiting_config";
+            /**
+             * Configuration Scope
+             * @enum {string}
+             */
+            configuration_scope: "user" | "development";
+            /** Capabilities */
+            capabilities?: ("explicit-role-assignment.v1" | "provider-presets.v1" | "provider-presets.v2" | "provider-presets.v3" | "material-web-search.v1")[];
+            /** Presets */
+            presets?: components["schemas"]["ModelProviderPreset"][];
+        };
+        /** ModelConnection */
+        ModelConnection: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /** Label */
+            label: string;
+            /**
+             * Protocol
+             * @enum {string}
+             */
+            protocol: "chat_completions" | "dashscope";
+            /** Base Url */
+            base_url: string;
+            /** Region */
+            region: string;
+            /** Local Endpoint */
+            local_endpoint: boolean;
+            /** Enabled */
+            enabled: boolean;
+            /** Deleted */
+            deleted: boolean;
+            /** Credential Version */
+            credential_version: number;
+            /** Credential Present */
+            credential_present: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ModelConnectionDelete */
+        ModelConnectionDelete: {
+            /** Expected Revision */
+            expected_revision: number;
+        };
+        /** ModelConnectionInput */
+        ModelConnectionInput: {
+            /** Label */
+            label: string;
+            /**
+             * Protocol
+             * @enum {string}
+             */
+            protocol: "chat_completions" | "dashscope";
+            /** Base Url */
+            base_url: string;
+            /** Region */
+            region: string;
+            /**
+             * Local Endpoint
+             * @default false
+             */
+            local_endpoint: boolean;
+            /**
+             * Enabled
+             * @default false
+             */
+            enabled: boolean;
+            /**
+             * Api Key
+             * Format: password
+             */
+            api_key: string;
+        };
+        /** ModelConnectionPatch */
+        ModelConnectionPatch: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Label */
+            label?: string | null;
+            /** Enabled */
+            enabled?: boolean | null;
+            /** Api Key */
+            api_key?: string | null;
+        };
+        /** ModelConnectionTest */
+        ModelConnectionTest: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Connection Id
+             * Format: uuid
+             */
+            connection_id: string;
+            /**
+             * Profile Id
+             * Format: uuid
+             */
+            profile_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "dispatching" | "succeeded" | "failed" | "unknown" | "cancelled";
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            } | null;
+            /** Error Code */
+            error_code: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Completed At */
+            completed_at: string | null;
+        };
+        /** ModelConnectionTestInput */
+        ModelConnectionTestInput: {
+            /** Expected Connection Revision */
+            expected_connection_revision: number;
+            /**
+             * Profile Id
+             * Format: uuid
+             */
+            profile_id: string;
+            /**
+             * Allow Billable
+             * @constant
+             */
+            allow_billable: true;
+        };
+        /** ModelConnectionUseInput */
+        ModelConnectionUseInput: {
+            /** Expected Connection Revision */
+            expected_connection_revision: number;
+            /**
+             * Group
+             * @enum {string}
+             */
+            group: "teaching" | "material";
+            /** Profiles */
+            profiles: components["schemas"]["ModelProfileRevision"][];
+            /** Expected Mapping Revisions */
+            expected_mapping_revisions?: {
+                [key: string]: number;
+            };
+        };
+        /** ModelCustomProviderInput */
+        ModelCustomProviderInput: {
+            /**
+             * Group
+             * @enum {string}
+             */
+            group: "teaching" | "material";
+            connection: components["schemas"]["ModelConnectionInput"];
+            profile: components["schemas"]["ModelProfileParameters"];
+            /**
+             * Allow Private Material
+             * @constant
+             */
+            allow_private_material: true;
+            /** Expected Mapping Revisions */
+            expected_mapping_revisions?: {
+                [key: string]: number;
+            };
+        };
+        /** ModelPresetInput */
+        ModelPresetInput: {
+            /**
+             * Api Key
+             * Format: password
+             */
+            api_key: string;
+            /**
+             * Allow Private Material
+             * @constant
+             */
+            allow_private_material: true;
+            /** Connection Id */
+            connection_id?: string | null;
+            /** Expected Connection Revision */
+            expected_connection_revision?: number | null;
+            /** Expected Mapping Revisions */
+            expected_mapping_revisions?: {
+                [key: string]: number;
+            };
+            /** Models */
+            models?: string[] | null;
+            /** Group */
+            group?: ("teaching" | "material") | null;
+        };
+        /** ModelPresetModel */
+        ModelPresetModel: {
+            /** Model */
+            model: string;
+            /** Label */
+            label: string;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "chat" | "ocr" | "embedding" | "rerank";
+            /**
+             * Context Tokens
+             * @default 0
+             */
+            context_tokens: number;
+            /**
+             * Max Output Tokens
+             * @default 0
+             */
+            max_output_tokens: number;
+        };
+        /** ModelProfile */
+        ModelProfile: {
+            /** Label */
+            label: string;
+            /** Model */
+            model: string;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "chat" | "ocr" | "embedding" | "rerank";
+            /**
+             * Context Tokens
+             * @default 0
+             */
+            context_tokens: number;
+            /**
+             * Max Output Tokens
+             * @default 0
+             */
+            max_output_tokens: number;
+            /**
+             * Embedding Dimensions
+             * @default 1024
+             */
+            embedding_dimensions: number;
+            /**
+             * Thinking
+             * @default
+             * @enum {string}
+             */
+            thinking: "" | "enabled" | "disabled";
+            /**
+             * Timeout Seconds
+             * @default 300
+             */
+            timeout_seconds: number;
+            /**
+             * Connection Id
+             * Format: uuid
+             */
+            connection_id: string;
+            /**
+             * Enabled
+             * @default false
+             */
+            enabled: boolean;
+            /**
+             * Allow Private Material
+             * @default false
+             */
+            allow_private_material: boolean;
+            /** Roles */
+            roles: ("tutor.v1" | "planner.v1" | "lesson.v1" | "delivery_review.v1" | "material_check.v1" | "material_review.v1" | "evaluation.v1" | "artifact.v1" | "item_author.v1" | "item_blind.v1" | "item_review.v1" | "gate_relation.v1" | "transfer_relation.v1" | "ocr" | "embedding" | "rerank")[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ModelProfileInput */
+        ModelProfileInput: {
+            /** Label */
+            label: string;
+            /** Model */
+            model: string;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "chat" | "ocr" | "embedding" | "rerank";
+            /**
+             * Context Tokens
+             * @default 0
+             */
+            context_tokens: number;
+            /**
+             * Max Output Tokens
+             * @default 0
+             */
+            max_output_tokens: number;
+            /**
+             * Embedding Dimensions
+             * @default 1024
+             */
+            embedding_dimensions: number;
+            /**
+             * Thinking
+             * @default
+             * @enum {string}
+             */
+            thinking: "" | "enabled" | "disabled";
+            /**
+             * Timeout Seconds
+             * @default 300
+             */
+            timeout_seconds: number;
+            /**
+             * Connection Id
+             * Format: uuid
+             */
+            connection_id: string;
+            /**
+             * Enabled
+             * @default false
+             */
+            enabled: boolean;
+            /**
+             * Allow Private Material
+             * @default false
+             */
+            allow_private_material: boolean;
+            /** Roles */
+            roles: ("tutor.v1" | "planner.v1" | "lesson.v1" | "delivery_review.v1" | "material_check.v1" | "material_review.v1" | "evaluation.v1" | "artifact.v1" | "item_author.v1" | "item_blind.v1" | "item_review.v1" | "gate_relation.v1" | "transfer_relation.v1" | "ocr" | "embedding" | "rerank")[];
+        };
+        /** ModelProfileParameters */
+        ModelProfileParameters: {
+            /** Label */
+            label: string;
+            /** Model */
+            model: string;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "chat" | "ocr" | "embedding" | "rerank";
+            /**
+             * Context Tokens
+             * @default 0
+             */
+            context_tokens: number;
+            /**
+             * Max Output Tokens
+             * @default 0
+             */
+            max_output_tokens: number;
+            /**
+             * Embedding Dimensions
+             * @default 1024
+             */
+            embedding_dimensions: number;
+            /**
+             * Thinking
+             * @default
+             * @enum {string}
+             */
+            thinking: "" | "enabled" | "disabled";
+            /**
+             * Timeout Seconds
+             * @default 300
+             */
+            timeout_seconds: number;
+        };
+        /** ModelProfilePatch */
+        ModelProfilePatch: {
+            /** Label */
+            label: string;
+            /** Model */
+            model: string;
+            /**
+             * Operation
+             * @enum {string}
+             */
+            operation: "chat" | "ocr" | "embedding" | "rerank";
+            /**
+             * Context Tokens
+             * @default 0
+             */
+            context_tokens: number;
+            /**
+             * Max Output Tokens
+             * @default 0
+             */
+            max_output_tokens: number;
+            /**
+             * Embedding Dimensions
+             * @default 1024
+             */
+            embedding_dimensions: number;
+            /**
+             * Thinking
+             * @default
+             * @enum {string}
+             */
+            thinking: "" | "enabled" | "disabled";
+            /**
+             * Timeout Seconds
+             * @default 300
+             */
+            timeout_seconds: number;
+            /**
+             * Connection Id
+             * Format: uuid
+             */
+            connection_id: string;
+            /**
+             * Enabled
+             * @default false
+             */
+            enabled: boolean;
+            /**
+             * Allow Private Material
+             * @default false
+             */
+            allow_private_material: boolean;
+            /** Roles */
+            roles: ("tutor.v1" | "planner.v1" | "lesson.v1" | "delivery_review.v1" | "material_check.v1" | "material_review.v1" | "evaluation.v1" | "artifact.v1" | "item_author.v1" | "item_blind.v1" | "item_review.v1" | "gate_relation.v1" | "transfer_relation.v1" | "ocr" | "embedding" | "rerank")[];
+            /** Expected Revision */
+            expected_revision: number;
+        };
+        /** ModelProfileRevision */
+        ModelProfileRevision: {
+            /**
+             * Profile Id
+             * Format: uuid
+             */
+            profile_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+        };
+        /** ModelProviderPreset */
+        ModelProviderPreset: {
+            /**
+             * Id
+             * @enum {string}
+             */
+            id: "deepseek" | "qwen";
+            /** Label */
+            label: string;
+            /** Base Url */
+            base_url: string;
+            /** Region */
+            region: string;
+            /** Models */
+            models: string[];
+            /**
+             * Api Key Url
+             * @default
+             */
+            api_key_url: string;
+            /** Model Details */
+            model_details?: components["schemas"]["ModelPresetModel"][];
+        };
+        /** ModelRoleAssignmentInput */
+        ModelRoleAssignmentInput: {
+            /**
+             * Profile Id
+             * Format: uuid
+             */
+            profile_id: string;
+            /** Expected Profile Revision */
+            expected_profile_revision: number;
+            /** Expected Mapping Revision */
+            expected_mapping_revision: number;
+        };
+        /** ModelRoleMapping */
+        ModelRoleMapping: {
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "tutor.v1" | "planner.v1" | "lesson.v1" | "delivery_review.v1" | "material_check.v1" | "material_review.v1" | "evaluation.v1" | "artifact.v1" | "item_author.v1" | "item_blind.v1" | "item_review.v1" | "gate_relation.v1" | "transfer_relation.v1" | "ocr" | "embedding" | "rerank";
+            /**
+             * Profile Id
+             * Format: uuid
+             */
+            profile_id: string;
+            /** Revision */
+            revision: number;
+        };
+        /** MultipleQuestion */
+        MultipleQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            response_type: "multiple";
+            /** Options */
+            options: components["schemas"]["ResponseOption"][];
+        };
+        /** MultipleResponse */
+        MultipleResponse: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "multiple";
+            /** Selected Ids */
+            selected_ids: string[];
+        };
+        /** NamedValue */
+        NamedValue: {
+            /** Name */
+            name: string;
+            /** Value */
+            value: string;
+        };
+        /** NoInteraction */
+        NoInteraction: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "none";
+        };
+        /** NodeMaterialPlan */
+        NodeMaterialPlan: {
+            /** Stage Key */
+            stage_key?: string | null;
+            /** Topics */
+            topics?: string[];
+            /** Technologies */
+            technologies?: string[];
+            /** Readings */
+            readings?: components["schemas"]["PlannedReading"][];
         };
         /** NodeProgress */
         NodeProgress: {
@@ -2148,6 +9591,223 @@ export interface components {
              * @default concept_choice
              */
             capability: string;
+        };
+        /** NodeWindow */
+        NodeWindow: {
+            /** After Turn Id */
+            after_turn_id: string | null;
+            /** Next Step */
+            next_step: ("can_continue" | "wait_for_reply" | "wait_for_action" | "wrap_up") | ("opening" | "hold");
+        };
+        /** Notification */
+        Notification: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Offer Id
+             * Format: uuid
+             */
+            offer_id: string;
+            /**
+             * Kind
+             * @constant
+             */
+            kind: "material_update";
+            payload: components["schemas"]["MaterialUpdateNotificationContent"];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "unread" | "read" | "deferred" | "kept_current" | "accepted";
+            /** Read At */
+            read_at: string | null;
+            /** Deferred At */
+            deferred_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** NumberState */
+        NumberState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "number";
+            /** Value */
+            value: number;
+        };
+        /** OpenTeachingSession */
+        OpenTeachingSession: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "open";
+            /**
+             * Mode
+             * @default guided
+             * @enum {string}
+             */
+            mode: "guided" | "free_reading";
+            focus?: components["schemas"]["TeachingFocus"];
+        };
+        /** Option */
+        Option: {
+            /** Id */
+            id: string;
+            /** Text */
+            text: string;
+        };
+        /** OrderState */
+        OrderState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "order";
+            /** Value */
+            value: string[];
+        };
+        /** OrderingAnswerComponent */
+        OrderingAnswerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "OrderingAnswer";
+            props: components["schemas"]["OrderingProps"];
+        };
+        /** OrderingProps */
+        OrderingProps: {
+            /** Label */
+            label: string;
+            /** Items */
+            items: components["schemas"]["Option"][];
+            /** State */
+            state: string;
+        };
+        /** OrderingQuestion */
+        OrderingQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            response_type: "ordering";
+            /** Items */
+            items: components["schemas"]["ResponseOption"][];
+        };
+        /** OrderingResponse */
+        OrderingResponse: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "ordering";
+            /** Ordered Ids */
+            ordered_ids: string[];
+        };
+        /** OwnedEvidence */
+        OwnedEvidence: {
+            /**
+             * Source Owner
+             * @default assessment
+             * @constant
+             */
+            source_owner: "assessment";
+            /**
+             * Source Receipt
+             * Format: uuid
+             */
+            source_receipt: string;
+            /** Evidence Kind */
+            evidence_kind: string;
+            /**
+             * Dimension
+             * @enum {string}
+             */
+            dimension: "concept" | "execution" | "transfer";
+            /**
+             * Outcome
+             * @enum {string}
+             */
+            outcome: "passed" | "not_passed" | "error" | "observed";
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+            /** Track Id */
+            track_id?: string | null;
+            /** Pack Id */
+            pack_id?: string | null;
+            /** Slot */
+            slot?: string | null;
+            /** Item Version */
+            item_version: string;
+            /** Policy Version */
+            policy_version: string;
+            /**
+             * Assistance
+             * @default []
+             */
+            assistance: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Exposure
+             * @default []
+             */
+            exposure: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Material Versions
+             * @default []
+             */
+            material_versions: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Independence
+             * @enum {string}
+             */
+            independence: "independent_gate" | "assisted" | "practice" | "unknown";
         };
         /** PackAccepted */
         PackAccepted: {
@@ -2187,12 +9847,15 @@ export interface components {
              * @default choice
              * @enum {string}
              */
-            kind: "choice" | "python_io";
+            kind: "choice" | "python_io" | "response" | "sql_query" | "python_project" | "project_stdio" | "web_project" | "http_project";
             /**
              * Automatic
              * @default true
              */
             automatic: boolean;
+            response_formats?: components["schemas"]["ResponsePracticeFormats"] | null;
+            /** Program Environment */
+            program_environment?: (components["schemas"]["SqlEnvironment"] | components["schemas"]["PythonProjectEnvironment"] | components["schemas"]["ProjectEnvironment"] | components["schemas"]["WebEnvironment"] | components["schemas"]["HttpEnvironment"]) | null;
         };
         /** PackSummary */
         PackSummary: {
@@ -2225,7 +9888,7 @@ export interface components {
              * @default choice
              * @enum {string}
              */
-            kind: "choice" | "python_io";
+            kind: "choice" | "python_io" | "response" | "sql_query" | "python_project" | "project_stdio" | "web_project" | "http_project";
             /**
              * Status
              * @enum {string}
@@ -2265,6 +9928,73 @@ export interface components {
             automation_action?: string | null;
             /** Automation Reason */
             automation_reason?: string | null;
+            response_formats?: components["schemas"]["ResponsePracticeFormats"] | null;
+            /** Program Environment */
+            program_environment?: (components["schemas"]["SqlEnvironment"] | components["schemas"]["PythonProjectEnvironment"] | components["schemas"]["ProjectEnvironment"] | components["schemas"]["WebEnvironment"] | components["schemas"]["HttpEnvironment"]) | null;
+        };
+        /** ParameterControlComponent */
+        ParameterControlComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "ParameterControl";
+            props: components["schemas"]["ParameterProps"];
+        };
+        /** ParameterProps */
+        ParameterProps: {
+            /** Label */
+            label: string;
+            /** State */
+            state: string;
+            /** Minimum */
+            minimum: number;
+            /** Maximum */
+            maximum: number;
+            /**
+             * Step
+             * @default 1
+             */
+            step: number;
+        };
+        /** Participant */
+        Participant: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+        };
+        /** PauseTeaching */
+        PauseTeaching: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "pause";
+        };
+        /** PlanConfirmation */
+        PlanConfirmation: {
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
         };
         /** PlanDocument */
         PlanDocument: {
@@ -2276,6 +10006,13 @@ export interface components {
             assumptions: string[];
             /** Nodes */
             nodes: components["schemas"]["PlanNode"][];
+            /** Environment Recipes */
+            environment_recipes?: string[];
+            /** Environment Dependencies */
+            environment_dependencies?: components["schemas"]["CourseEnvironment"][];
+            /** Environment Gaps */
+            environment_gaps?: string[];
+            curriculum?: components["schemas"]["RouteCurriculum"] | null;
         };
         /** PlanNode */
         PlanNode: {
@@ -2297,6 +10034,13 @@ export interface components {
              * @default []
              */
             source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /** Curriculum Chapters */
+            curriculum_chapters?: components["schemas"]["CurriculumChapter"][];
+            /** Project Milestone */
+            project_milestone?: string | null;
+            material_plan?: components["schemas"]["NodeMaterialPlan"] | null;
         };
         /** PlanRevision */
         PlanRevision: {
@@ -2318,6 +10062,17 @@ export interface components {
              */
             created_at: string;
         };
+        /** PlannedReading */
+        PlannedReading: {
+            /** Title */
+            title: string;
+            /** Source Url */
+            source_url?: string | null;
+            /** Document Id */
+            document_id?: string | null;
+            /** Document Revision */
+            document_revision?: number | null;
+        };
         /** PlanningInput */
         PlanningInput: {
             /** Text */
@@ -2328,8 +10083,198 @@ export interface components {
              *     }
              */
             focus: components["schemas"]["TeachingFocus"];
+            /** Learning Candidate Id */
+            learning_candidate_id?: string | null;
+            /** Teaching Session Revision */
+            teaching_session_revision?: number | null;
+            /**
+             * Node Pacing
+             * @default false
+             */
+            node_pacing: boolean;
+            presentation_capabilities?: components["schemas"]["PresentationCapabilities"];
             /** Expected Revision */
             expected_revision: number;
+            /**
+             * Discussion
+             * @default false
+             */
+            discussion: boolean;
+            /**
+             * Start Plan
+             * @default false
+             */
+            start_plan: boolean;
+            /** Expected Requirements Revision */
+            expected_requirements_revision?: number | null;
+        };
+        /** PlanningState */
+        PlanningState: {
+            /** Requirements Revision */
+            requirements_revision: number;
+            /**
+             * Information Complete
+             * @default false
+             */
+            information_complete: boolean;
+            /** Missing Information */
+            missing_information?: string[];
+            /**
+             * Plan Requested
+             * @default false
+             */
+            plan_requested: boolean;
+            /**
+             * Start Action
+             * @default false
+             */
+            start_action: boolean;
+            /** Material Goal */
+            material_goal?: string | null;
+            /** Material Topics */
+            material_topics?: string[];
+            /** Material Gaps */
+            material_gaps?: string[];
+            /**
+             * Material Blocked
+             * @default false
+             */
+            material_blocked: boolean;
+        };
+        /** PlaybackState */
+        PlaybackState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "playback";
+            /**
+             * Value
+             * @default 0
+             * @constant
+             */
+            value: 0;
+        };
+        /** Point */
+        Point: {
+            /** Id */
+            id: string;
+            /** X */
+            x: number;
+            /** Y */
+            y: number;
+        };
+        /** PracticeAssistanceReceipt */
+        PracticeAssistanceReceipt: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Profile Version
+             * @default practice-direct-answer.v1
+             * @constant
+             */
+            profile_version: "practice-direct-answer.v1";
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Pack Revision */
+            pack_revision: number;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2";
+            /** Public Identity */
+            public_identity: string;
+            /**
+             * Assistance Kind
+             * @default direct_answer
+             * @constant
+             */
+            assistance_kind: "direct_answer";
+            /** Content */
+            content: components["schemas"]["ChoiceDirectAnswer"] | components["schemas"]["PythonDirectAnswer"] | components["schemas"]["ResponseDirectAnswer"] | components["schemas"]["ProgramDirectAnswer"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** PracticeChoice */
+        PracticeChoice: {
+            /**
+             * Choice
+             * @enum {string}
+             */
+            choice: "defer" | "request";
+            /** Quote */
+            quote: string;
+        };
+        /** PracticeHintReceipt */
+        PracticeHintReceipt: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Profile Version
+             * @default practice-hints.v1
+             * @constant
+             */
+            profile_version: "practice-hints.v1";
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Pack Revision */
+            pack_revision: number;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2";
+            /** Public Identity */
+            public_identity: string;
+            /** Hint Identity */
+            hint_identity: string;
+            /**
+             * Assistance Kind
+             * @default hint
+             * @constant
+             */
+            assistance_kind: "hint";
+            /**
+             * Level
+             * @enum {integer}
+             */
+            level: 1 | 2 | 3;
+            content: components["schemas"]["GraduatedHint"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** PracticeSampleRunInput */
+        PracticeSampleRunInput: {
+            /**
+             * Command Id
+             * Format: uuid
+             */
+            command_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /** Component Id */
+            component_id: string;
+            /** Answer */
+            answer: components["schemas"]["Submission"] | (components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"]);
         };
         /** PracticeSet */
         PracticeSet: {
@@ -2340,6 +10285,474 @@ export interface components {
             pack_id: string;
             /** Questions */
             questions: components["schemas"]["PublicQuestion"][];
+        };
+        /** PredictionQuestion */
+        PredictionQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            response_type: "prediction";
+            /** Code */
+            code: string;
+            /**
+             * Comparison
+             * @default lines-rstrip.v1
+             * @constant
+             */
+            comparison: "lines-rstrip.v1";
+        };
+        /** PredictionResponse */
+        PredictionResponse: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "prediction";
+            /** Text */
+            text: string;
+        };
+        /** PresentReview */
+        PresentReview: {
+            /** Expected Card Revision */
+            expected_card_revision: number;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+        };
+        /** PresentationCapabilities */
+        PresentationCapabilities: {
+            /** Versions */
+            versions?: "learning_composition.v2"[];
+            /** Actions */
+            actions?: ("learning_practice.v2" | "learning_responses.v1" | "learning_code_review.v1" | "learning_code_review.v2" | "learning_programs.v1" | "learning_programs.v2" | "learning_direct_answers.v1" | "learning_hints.v1" | "learning_demo_events.v1" | "learning_example_runs.v1" | "learning_example_runs.v2" | "learning_templates.v1")[];
+        };
+        /** PreviewProps */
+        PreviewProps: {
+            /** Title */
+            title: string;
+            /** Html State */
+            html_state: string;
+            /** Css State */
+            css_state?: string | null;
+        };
+        /** ProactivePreference */
+        ProactivePreference: {
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /** Revision */
+            revision: number;
+            /** Enabled */
+            enabled: boolean;
+            /** Timezone */
+            timezone: string;
+            /** Start Minute */
+            start_minute: number;
+            /** End Minute */
+            end_minute: number;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** ProactivePreferenceInput */
+        ProactivePreferenceInput: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Enabled */
+            enabled: boolean;
+            /**
+             * Timezone
+             * @default UTC
+             */
+            timezone: string;
+            /**
+             * Start Minute
+             * @default 540
+             */
+            start_minute: number;
+            /**
+             * End Minute
+             * @default 1260
+             */
+            end_minute: number;
+        };
+        /** ProgramCandidateOption */
+        ProgramCandidateOption: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "project_workspace" | "sql_workspace";
+            focus: components["schemas"]["TeachingFocus"];
+            content_ref: components["schemas"]["LearningContentRef"];
+            /** Title */
+            title: string;
+            presentation: components["schemas"]["ProgramCandidatePresentation"];
+        };
+        /** ProgramCandidatePresentation */
+        ProgramCandidatePresentation: {
+            /**
+             * Type
+             * @default program_practice
+             * @constant
+             */
+            type: "program_practice";
+            /** Task */
+            task: components["schemas"]["SqlQuestion"] | components["schemas"]["ProjectQuestion"] | components["schemas"]["StdioQuestion"] | components["schemas"]["WebQuestion"] | components["schemas"]["HttpQuestion"];
+        };
+        /** ProgramDirectAnswer */
+        ProgramDirectAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "program";
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+            /** Explanation */
+            explanation: string;
+        };
+        /** ProgramExecutionClaim */
+        ProgramExecutionClaim: {
+            /**
+             * Job Id
+             * Format: uuid
+             */
+            job_id: string;
+            /**
+             * Claim Token
+             * Format: uuid
+             */
+            claim_token: string;
+            /** Program */
+            program: components["schemas"]["SqlProgram"] | components["schemas"]["PythonProjectProgram"] | components["schemas"]["ProjectProgram"] | components["schemas"]["WebProgram"] | components["schemas"]["HttpProgram"];
+            /** Interactive */
+            interactive?: true | null;
+        };
+        /** ProgramFile */
+        ProgramFile: {
+            /** Path */
+            path: string;
+            /** Content */
+            content: string;
+            /**
+             * Read Only
+             * @default false
+             */
+            read_only: boolean;
+        };
+        /** ProgramGateAnswer */
+        ProgramGateAnswer: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "assessment_1" | "assessment_2";
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+        };
+        /** ProgramGateSubmission */
+        ProgramGateSubmission: {
+            /** Programs */
+            programs: components["schemas"]["ProgramGateAnswer"][];
+        };
+        /** ProgramPracticeAttempt */
+        ProgramPracticeAttempt: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "remediation_1";
+            /** Environment */
+            environment: components["schemas"]["SqlEnvironment"] | components["schemas"]["PythonProjectEnvironment"] | components["schemas"]["ProjectEnvironment"] | components["schemas"]["WebEnvironment"] | components["schemas"]["HttpEnvironment"];
+            /**
+             * Comparison Profile
+             * @enum {string}
+             */
+            comparison_profile: "sql-result-typed.v1" | "python-project-io-result.v1" | "stdio-text.v1" | "web-check.v1" | "http-response.v1";
+            /** Comparison Order */
+            comparison_order: ("ordered" | "multiset") | null;
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "passed" | "not_passed" | "error";
+            /** Passed Cases */
+            passed_cases: number;
+            /** Feedback */
+            feedback: string | null;
+            /** Error Code */
+            error_code: string | null;
+            /** Attempt Number */
+            attempt_number: number;
+            /** Previous Attempt Id */
+            previous_attempt_id: string | null;
+            /** Retry Requested */
+            retry_requested: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Completed At */
+            completed_at: string | null;
+            sample_result?: components["schemas"]["ProgramSampleResult"] | null;
+            compilation?: components["schemas"]["CaseOutput"] | null;
+        };
+        /** ProgramPracticeHistory */
+        ProgramPracticeHistory: {
+            /** Latest Attempt Id */
+            latest_attempt_id: string | null;
+            /** Attempts */
+            attempts: components["schemas"]["ProgramPracticeAttempt"][];
+            /** Next Before */
+            next_before?: string | null;
+        };
+        /** ProgramPracticeSubmission */
+        ProgramPracticeSubmission: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "remediation_1";
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+            /** Previous Attempt Id */
+            previous_attempt_id?: string | null;
+            /**
+             * Retry
+             * @default false
+             */
+            retry: boolean;
+        };
+        /** ProgramSampleResult */
+        ProgramSampleResult: {
+            /**
+             * Profile
+             * @default program-public-sample.v1
+             * @constant
+             */
+            profile: "program-public-sample.v1";
+            /**
+             * Outcome
+             * @enum {string}
+             */
+            outcome: "completed" | "timeout" | "output_limit" | "infrastructure_error";
+            /** Exit Code */
+            exit_code: number | null;
+            /** Output */
+            output: components["schemas"]["SqlTableResult"] | components["schemas"]["WebCheckResult"] | components["schemas"]["HttpScenarioResult"] | number | null;
+            /** Integer Text */
+            integer_text?: string | null;
+            /** Text Output */
+            text_output?: string | null;
+        };
+        /** ProgramTransferAttempt */
+        ProgramTransferAttempt: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2";
+            /** Environment */
+            environment: components["schemas"]["SqlEnvironment"] | components["schemas"]["PythonProjectEnvironment"] | components["schemas"]["ProjectEnvironment"] | components["schemas"]["WebEnvironment"] | components["schemas"]["HttpEnvironment"];
+            /**
+             * Comparison Profile
+             * @enum {string}
+             */
+            comparison_profile: "sql-result-typed.v1" | "python-project-io-result.v1" | "stdio-text.v1" | "web-check.v1" | "http-response.v1";
+            /** Comparison Order */
+            comparison_order: ("ordered" | "multiset") | null;
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "passed" | "not_passed" | "error";
+            /** Passed Cases */
+            passed_cases: number;
+            /** Feedback */
+            feedback: string | null;
+            /** Error Code */
+            error_code: string | null;
+            /** Attempt Number */
+            attempt_number: number;
+            /** Previous Attempt Id */
+            previous_attempt_id: string | null;
+            /** Retry Requested */
+            retry_requested: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Completed At */
+            completed_at: string | null;
+            sample_result?: components["schemas"]["ProgramSampleResult"] | null;
+            compilation?: components["schemas"]["CaseOutput"] | null;
+        };
+        /** ProgramTransferSubmission */
+        ProgramTransferSubmission: {
+            /** Answer */
+            answer: components["schemas"]["SqlAnswer"] | components["schemas"]["ProjectAnswer"] | components["schemas"]["StdioAnswer"] | components["schemas"]["WebAnswer"] | components["schemas"]["HttpAnswer"];
+        };
+        /** ProjectAnswer */
+        ProjectAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "project";
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+        };
+        /** ProjectEnvironment */
+        ProjectEnvironment: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "project-stdio.v1";
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /** Runtime Version */
+            runtime_version: string;
+            /**
+             * Environment Release Id
+             * Format: uuid
+             */
+            environment_release_id: string;
+        };
+        /** ProjectFile */
+        ProjectFile: {
+            /** Path */
+            path: string;
+            /** Content */
+            content: string;
+            /**
+             * Read Only
+             * @default false
+             */
+            read_only: boolean;
+        };
+        /** ProjectProgram */
+        ProjectProgram: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "project-stdio.v1";
+            /**
+             * Language
+             * @enum {string}
+             */
+            language: "python" | "javascript" | "typescript" | "java" | "go" | "csharp";
+            /** Runtime Version */
+            runtime_version: string;
+            /**
+             * Environment Release Id
+             * Format: uuid
+             */
+            environment_release_id: string;
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            /** Inputs */
+            inputs: string[];
+        };
+        /** ProjectQuestion */
+        ProjectQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            language: "python_project";
+            environment: components["schemas"]["PythonProjectEnvironment"];
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            sample: components["schemas"]["PythonCase"];
+            /**
+             * Comparison Profile
+             * @default python-project-io-result.v1
+             * @constant
+             */
+            comparison_profile: "python-project-io-result.v1";
         };
         /** PublicEvent */
         PublicEvent: {
@@ -2354,7 +10767,7 @@ export interface components {
              * Event Type
              * @enum {string}
              */
-            event_type: "job.queued" | "goal.created" | "job.succeeded" | "job.failed" | "tutor.queued" | "tutor.running" | "tutor.tool_completed" | "tutor.succeeded" | "tutor.failed" | "tutor.cancelled" | "tutor.blocked_unknown" | "tutor.result_available" | "learning.plan_drafted" | "learning.plan_confirmed" | "assessment.queued" | "assessment.completed" | "learning.lesson_completed" | "knowledge.created" | "knowledge.revised" | "knowledge.admitted" | "knowledge.revoked" | "learning.review_scheduled" | "learning.review_recorded" | "learning.review_status_changed" | "learning.dynamic_plan_drafted" | "learning.dynamic_plan_confirmed" | "learning.lesson_document_created" | "item_bank.updated" | "assessment.choice_recorded" | "assessment.remediation_updated" | "assessment.gate_updated" | "learning.node_completed" | "assessment.transfer_updated" | "tutor.artifact_updated";
+            event_type: "job.queued" | "goal.created" | "goal.updated" | "goal.deleted" | "job.succeeded" | "job.failed" | "tutor.queued" | "tutor.running" | "tutor.tool_completed" | "tutor.succeeded" | "tutor.failed" | "tutor.cancelled" | "tutor.blocked_unknown" | "tutor.result_available" | "tutor.thinking" | "tutor.stage_reply" | "tutor.conversation_hidden" | "learning.plan_drafted" | "learning.plan_confirmed" | "assessment.queued" | "assessment.completed" | "learning.lesson_completed" | "knowledge.created" | "knowledge.revised" | "knowledge.admitted" | "knowledge.revoked" | "knowledge.material_permission_changed" | "knowledge.material_update_offered" | "learning.material_update_decided" | "delivery.notification_updated" | "learning.review_scheduled" | "learning.review_recorded" | "learning.review_status_changed" | "learning.dynamic_plan_drafted" | "learning.dynamic_plan_confirmed" | "learning.lesson_document_created" | "item_bank.updated" | "assessment.choice_recorded" | "assessment.response_recorded" | "assessment.remediation_updated" | "assessment.gate_updated" | "learning.node_completed" | "assessment.transfer_updated" | "tutor.artifact_updated" | "tutor.learning_artifact_updated" | "tutor.teaching_session_updated" | "tutor.teaching_intent_updated";
             /**
              * Aggregate Id
              * Format: uuid
@@ -2397,6 +10810,8 @@ export interface components {
             difficulty: number;
             /** Source Refs */
             source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
         };
         /** PythonAttempt */
         PythonAttempt: {
@@ -2448,10 +10863,128 @@ export interface components {
             /** Expected */
             expected: number;
         };
+        /** PythonDirectAnswer */
+        PythonDirectAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "python";
+            /** Code */
+            code: string;
+            /** Explanation */
+            explanation: string;
+        };
         /** PythonGateSubmission */
         PythonGateSubmission: {
             /** Programs */
             programs: components["schemas"]["GateProgram"][];
+        };
+        /** PythonPracticeAttempt */
+        PythonPracticeAttempt: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Slot */
+            slot: string;
+            /** Gate Id */
+            gate_id: string | null;
+            /** Transfer Id */
+            transfer_id: string | null;
+            /** Code */
+            code: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "passed" | "not_passed" | "error";
+            /** Passed Cases */
+            passed_cases: number;
+            /**
+             * Total Cases
+             * @default 3
+             * @constant
+             */
+            total_cases: 3;
+            /** Feedback */
+            feedback: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Completed At */
+            completed_at: string | null;
+            /**
+             * Policy Version
+             * @enum {string}
+             */
+            policy_version: "python-io-attempt.v1" | "python-practice.v2";
+            /** Attempt Number */
+            attempt_number: number;
+            /** Previous Attempt Id */
+            previous_attempt_id: string | null;
+            /** Retry Requested */
+            retry_requested: boolean;
+        };
+        /** PythonPracticeHistory */
+        PythonPracticeHistory: {
+            /** Items */
+            items: components["schemas"]["PythonPracticeAttempt"][];
+            /** Latest Attempt Id */
+            latest_attempt_id: string | null;
+            /** Next Before */
+            next_before?: string | null;
+        };
+        /** PythonPracticeSubmission */
+        PythonPracticeSubmission: {
+            /** Code */
+            code: string;
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "remediation_1";
+            /** Previous Attempt Id */
+            previous_attempt_id?: string | null;
+            /**
+             * Retry
+             * @default false
+             */
+            retry: boolean;
+        };
+        /** PythonProjectEnvironment */
+        PythonProjectEnvironment: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "python-project-io.v1";
+            /** Runtime Version */
+            runtime_version: string;
+        };
+        /** PythonProjectProgram */
+        PythonProjectProgram: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "python-project-io.v1";
+            /** Runtime Version */
+            runtime_version?: string | null;
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            /** Inputs */
+            inputs: number[][];
         };
         /** PythonQuestion */
         PythonQuestion: {
@@ -2477,6 +11010,8 @@ export interface components {
             difficulty: number;
             /** Source Refs */
             source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
         };
         /** PythonTraining */
         PythonTraining: {
@@ -2487,6 +11022,24 @@ export interface components {
              * @enum {string}
              */
             slot: "practice_1" | "practice_2" | "remediation_1";
+        };
+        /** ReferenceFinding */
+        ReferenceFinding: {
+            /** Line */
+            line: number;
+            /** Content */
+            content: string;
+        };
+        /** RelationGraphComponent */
+        RelationGraphComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "RelationGraph";
+            props: components["schemas"]["GraphProps"];
         };
         /** Remediation */
         Remediation: {
@@ -2518,6 +11071,297 @@ export interface components {
              */
             created_at: string;
         };
+        /** RespondAction */
+        RespondAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "respond";
+            payload: components["schemas"]["RespondPayload"];
+        };
+        /** RespondPayload */
+        RespondPayload: {
+            /**
+             * Selected Key
+             * @enum {string}
+             */
+            selected_key: "A" | "B" | "C" | "D";
+        };
+        /** ResponseCandidateOption */
+        ResponseCandidateOption: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "knowledge_response";
+            focus: components["schemas"]["TeachingFocus"];
+            content_ref: components["schemas"]["LearningContentRef"];
+            /** Title */
+            title: string;
+            presentation: components["schemas"]["ResponsePresentation"];
+        };
+        /** ResponseDirectAnswer */
+        ResponseDirectAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "response";
+            /** Response */
+            response: components["schemas"]["MultipleResponse"] | components["schemas"]["PredictionResponse"] | components["schemas"]["ShortResponse"] | components["schemas"]["OrderingResponse"] | components["schemas"]["LineResponse"];
+            /** Explanation */
+            explanation: string;
+            /** Findings */
+            findings?: components["schemas"]["ReferenceFinding"][];
+        };
+        /** ResponseOption */
+        ResponseOption: {
+            /** Id */
+            id: string;
+            /** Text */
+            text: string;
+        };
+        /** ResponsePracticeFormats */
+        ResponsePracticeFormats: {
+            /**
+             * Practice 1
+             * @enum {string}
+             */
+            practice_1: "multiple" | "prediction" | "short" | "ordering" | "line_review";
+            /**
+             * Practice 2
+             * @enum {string}
+             */
+            practice_2: "multiple" | "prediction" | "short" | "ordering" | "line_review";
+        };
+        /** ResponsePracticeSet */
+        ResponsePracticeSet: {
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Questions */
+            questions: (components["schemas"]["MultipleQuestion"] | components["schemas"]["PredictionQuestion"] | components["schemas"]["ShortQuestion"] | components["schemas"]["OrderingQuestion"] | components["schemas"]["LineQuestion"])[];
+        };
+        /** ResponsePresentation */
+        ResponsePresentation: {
+            /**
+             * Type
+             * @default knowledge_response
+             * @constant
+             */
+            type: "knowledge_response";
+            /** Question */
+            question: components["schemas"]["MultipleQuestion"] | components["schemas"]["PredictionQuestion"] | components["schemas"]["ShortQuestion"] | components["schemas"]["OrderingQuestion"] | components["schemas"]["LineQuestion"];
+        };
+        /** ResponseResult */
+        ResponseResult: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Pack Id
+             * Format: uuid
+             */
+            pack_id: string;
+            /** Slot */
+            slot: string;
+            /** Response */
+            response: components["schemas"]["MultipleResponse"] | components["schemas"]["PredictionResponse"] | components["schemas"]["ShortResponse"] | components["schemas"]["OrderingResponse"] | components["schemas"]["LineResponse"];
+            /** Correct */
+            correct: boolean | null;
+            /**
+             * Profile Version
+             * @enum {string}
+             */
+            profile_version: "knowledge-multiple.v1" | "knowledge-prediction.v1" | "knowledge-order.v1" | "knowledge-line-location.v1" | "knowledge-reference.v1";
+            /** Explanation */
+            explanation: string;
+            /** Reference */
+            reference: components["schemas"]["MultipleResponse"] | components["schemas"]["PredictionResponse"] | components["schemas"]["ShortResponse"] | components["schemas"]["OrderingResponse"] | components["schemas"]["LineResponse"];
+            /** Findings */
+            findings: components["schemas"]["ReferenceFinding"][];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ResponseSubmission */
+        ResponseSubmission: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2";
+            /** Response */
+            response: components["schemas"]["MultipleResponse"] | components["schemas"]["PredictionResponse"] | components["schemas"]["ShortResponse"] | components["schemas"]["OrderingResponse"] | components["schemas"]["LineResponse"];
+        };
+        /** ResultFeedbackComponent */
+        ResultFeedbackComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "ResultFeedback";
+            props: components["schemas"]["FeedbackProps"];
+        };
+        /** ResumeTeaching */
+        ResumeTeaching: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "resume";
+        };
+        /** ReturnToMain */
+        ReturnToMain: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "return_to_main";
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+        };
+        /** ReviewActionReceipt */
+        ReviewActionReceipt: {
+            /**
+             * Schema Version
+             * @default learning_review_action.v1
+             * @constant
+             */
+            schema_version: "learning_review_action.v1";
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Artifact Revision */
+            artifact_revision: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "running" | "completed" | "cancelled" | "superseded";
+            /** Component Id */
+            component_id: string;
+            /**
+             * Result Owner
+             * @default tutor
+             * @constant
+             */
+            result_owner: "tutor";
+            /**
+             * Result Id
+             * Format: uuid
+             */
+            result_id: string;
+        };
+        /** ReviewActivity */
+        ReviewActivity: {
+            /**
+             * Kind
+             * @default memory_review
+             * @constant
+             */
+            kind: "memory_review";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Card Id
+             * Format: uuid
+             */
+            card_id: string;
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Card Revision */
+            card_revision: number;
+            /**
+             * Due At
+             * Format: date-time
+             */
+            due_at: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "due" | "presented" | "completed" | "cancelled";
+            /** Conversation Id */
+            conversation_id: string | null;
+            /** Presented At */
+            presented_at: string | null;
+            /** Source Receipt */
+            source_receipt: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            card: components["schemas"]["ReviewCard"];
+            /**
+             * Evidence Kind
+             * @default self_rating
+             * @constant
+             */
+            evidence_kind: "self_rating";
+        };
         /** ReviewCard */
         ReviewCard: {
             /**
@@ -2525,11 +11369,21 @@ export interface components {
              * Format: uuid
              */
             id: string;
+            /** Track Id */
+            track_id: string | null;
             /**
-             * Track Id
+             * Goal Id
              * Format: uuid
              */
-            track_id: string;
+            goal_id: string;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /** Node Key */
+            node_key?: string | null;
+            /** Source Receipt */
+            source_receipt?: string | null;
             /** Revision */
             revision: number;
             /**
@@ -2549,10 +11403,78 @@ export interface components {
             /** Reviewed At */
             reviewed_at: string | null;
             /**
+             * Algorithm Version
+             * @default legacy-fixed.v1
+             */
+            algorithm_version: string;
+            /**
+             * Parameter Version
+             * @default legacy-fixed.v1
+             */
+            parameter_version: string;
+            /** Scheduling State */
+            scheduling_state?: {
+                [key: string]: unknown;
+            } | null;
+            /**
              * Prompt
              * @default 不看课文，回忆如何遍历整数数组、筛选偶数并累加；空数组应输出什么？
              */
             prompt: string;
+        };
+        /** ReviewCompletion */
+        ReviewCompletion: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Component Id */
+            component_id: string;
+            /**
+             * Presentation Id
+             * Format: uuid
+             */
+            presentation_id: string;
+            /** Content Identity */
+            content_identity: string;
+            /**
+             * Attempt Id
+             * Format: uuid
+             */
+            attempt_id: string;
+            /**
+             * Evaluation Id
+             * Format: uuid
+             */
+            evaluation_id: string;
+            /**
+             * Evidence Kind
+             * @default learner_review_report.v1
+             * @constant
+             */
+            evidence_kind: "learner_review_report.v1";
+            /**
+             * Completed At
+             * Format: date-time
+             */
+            completed_at: string;
+        };
+        /** ReviewFindingComponent */
+        ReviewFindingComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "ReviewFinding";
+            props: components["schemas"]["FeedbackProps"];
         };
         /** ReviewInput */
         ReviewInput: {
@@ -2564,6 +11486,88 @@ export interface components {
              */
             rating: "again" | "good" | "easy";
         };
+        /** ReviewLog */
+        ReviewLog: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Card Id
+             * Format: uuid
+             */
+            card_id: string;
+            /**
+             * Response Id
+             * Format: uuid
+             */
+            response_id: string;
+            /**
+             * Evidence Kind
+             * @default self_rating
+             * @constant
+             */
+            evidence_kind: "self_rating";
+            /**
+             * Source Receipt
+             * Format: uuid
+             */
+            source_receipt: string;
+            /**
+             * Rating
+             * @enum {string}
+             */
+            rating: "again" | "good" | "easy";
+            /**
+             * Rating Contract
+             * @constant
+             */
+            rating_contract: "self-rating-three.v1";
+            /** Algorithm Version */
+            algorithm_version: string;
+            /** Parameter Version */
+            parameter_version: string;
+            /** Scheduler */
+            scheduler: {
+                [key: string]: unknown;
+            };
+            /** Previous State */
+            previous_state: {
+                [key: string]: unknown;
+            };
+            /** Next State */
+            next_state: {
+                [key: string]: unknown;
+            };
+            /** Algorithm Log */
+            algorithm_log: {
+                [key: string]: unknown;
+            };
+            /**
+             * Reviewed At
+             * Format: date-time
+             */
+            reviewed_at: string;
+            /**
+             * Due At
+             * Format: date-time
+             */
+            due_at: string;
+        };
+        /** ReviewReportView */
+        ReviewReportView: {
+            /** Component Id */
+            component_id: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "ready" | "completed" | "cancelled";
+            /** Allowed Actions */
+            allowed_actions: "complete_review"[];
+            completion: components["schemas"]["ReviewCompletion"] | null;
+        };
         /** ReviewStatus */
         ReviewStatus: {
             /** Expected Revision */
@@ -2573,6 +11577,47 @@ export interface components {
              * @enum {string}
              */
             status: "scheduled" | "paused";
+        };
+        /** RouteCurriculum */
+        RouteCurriculum: {
+            /**
+             * Contract
+             * @default route-curriculum.v1
+             * @constant
+             */
+            contract: "route-curriculum.v1";
+            /**
+             * Basis
+             * @default selected_materials
+             * @enum {string}
+             */
+            basis: "selected_materials" | "model_knowledge";
+            /** Technologies */
+            technologies: components["schemas"]["CurriculumTechnology"][];
+            /** Texts */
+            texts: components["schemas"]["CurriculumText"][];
+            project: components["schemas"]["CurriculumProject"];
+        };
+        /** RouteEnvironmentManifest */
+        RouteEnvironmentManifest: {
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Requirements */
+            requirements: components["schemas"]["EnvironmentRequirement"][];
+            /** Automatic Recipe Ids */
+            automatic_recipe_ids: string[];
+            /** Consent Required */
+            consent_required: components["schemas"]["EnvironmentRequirement"][];
+            /** Demands */
+            demands: components["schemas"]["EnvironmentDemand"][];
+            engine: components["schemas"]["EngineState"];
+            /** Gaps */
+            gaps?: string[];
         };
         /** Run */
         Run: {
@@ -2622,12 +11667,35 @@ export interface components {
              * @default teaching
              * @enum {string}
              */
-            purpose: "teaching" | "planning" | "lesson" | "item_supply" | "gate" | "transfer" | "evaluation" | "artifact";
+            purpose: "teaching" | "planning" | "lesson" | "item_supply" | "gate" | "transfer" | "evaluation" | "artifact" | "material_check";
+        };
+        /** RunAction */
+        RunAction: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Artifact Revision */
+            expected_artifact_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "run";
+            payload: components["schemas"]["Submission"];
         };
         /** RunnerClaim */
         RunnerClaim: {
             /** Runner Id */
             runner_id: string;
+            /** Program Environments */
+            program_environments?: (components["schemas"]["SqlEnvironment"] | components["schemas"]["PythonProjectEnvironment"] | components["schemas"]["ProjectEnvironment"] | components["schemas"]["WebEnvironment"] | components["schemas"]["HttpEnvironment"])[];
+            /**
+             * Example Terminal
+             * @default false
+             */
+            example_terminal: boolean;
         };
         /** RunnerReport */
         RunnerReport: {
@@ -2638,6 +11706,50 @@ export interface components {
             claim_token: string;
             /** Cases */
             cases: components["schemas"]["CaseOutput"][];
+            compilation?: components["schemas"]["CaseOutput"] | null;
+        };
+        /** SelectionState */
+        SelectionState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "selection";
+            /** Value */
+            value?: string | null;
+        };
+        /** SequenceDiagramComponent */
+        SequenceDiagramComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "SequenceDiagram";
+            props: components["schemas"]["SequenceProps"];
+        };
+        /** SequenceProps */
+        SequenceProps: {
+            /** Label */
+            label: string;
+            /** Participants */
+            participants: components["schemas"]["Participant"][];
+            /** Steps */
+            steps: components["schemas"]["SequenceStep"][];
+            /** State */
+            state: string;
+        };
+        /** SequenceStep */
+        SequenceStep: {
+            /** Source */
+            source: string;
+            /** Target */
+            target: string;
+            /** Label */
+            label: string;
+            /** Id */
+            id: string;
         };
         /** Session */
         Session: {
@@ -2649,6 +11761,101 @@ export interface components {
              * Format: date-time
              */
             expires_at: string;
+        };
+        /** SetContinuationPolicy */
+        SetContinuationPolicy: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "set_continuation_policy";
+            /**
+             * Policy
+             * @enum {string}
+             */
+            policy: "manual" | "after_result.v1";
+        };
+        /** SetTeachingMode */
+        SetTeachingMode: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "set_mode";
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "guided" | "free_reading";
+        };
+        /** SetTeachingTopic */
+        SetTeachingTopic: {
+            /**
+             * Client Action Id
+             * Format: uuid
+             */
+            client_action_id: string;
+            /** Expected Session Revision */
+            expected_session_revision: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "set_topic";
+            focus: components["schemas"]["TeachingFocus"];
+        };
+        /** ShortQuestion */
+        ShortQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            response_type: "short";
+            /**
+             * Assessment Mode
+             * @default reference_only
+             * @constant
+             */
+            assessment_mode: "reference_only";
+        };
+        /** ShortResponse */
+        ShortResponse: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "short";
+            /** Text */
+            text: string;
         };
         /** Snapshot */
         Snapshot: {
@@ -2672,6 +11879,16 @@ export interface components {
              * @default []
              */
             conversations: components["schemas"]["Conversation"][];
+            /**
+             * Teaching Sessions
+             * @default []
+             */
+            teaching_sessions: components["schemas"]["TeachingSession"][];
+            /**
+             * Teaching Branches
+             * @default []
+             */
+            teaching_branches: components["schemas"]["TeachingBranch"][];
             /**
              * Turns
              * @default []
@@ -2758,6 +11975,11 @@ export interface components {
              */
             python_attempts: components["schemas"]["PythonAttempt"][];
             /**
+             * Program Attempts
+             * @default []
+             */
+            program_attempts: components["schemas"]["ProgramPracticeAttempt"][];
+            /**
              * Execution Progress
              * @default []
              */
@@ -2782,6 +12004,11 @@ export interface components {
              * @default []
              */
             tool_activities: components["schemas"]["ToolActivity"][];
+            /**
+             * Learning Artifacts
+             * @default []
+             */
+            learning_artifacts: components["schemas"]["LearningArtifactSummary"][];
         };
         /** Source */
         Source: {
@@ -2847,6 +12074,17 @@ export interface components {
             /** Revision */
             revision: number;
         };
+        /** SourceReferenceComponent */
+        SourceReferenceComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "SourceReference";
+            props: components["schemas"]["CitationProps"];
+        };
         /** SourceRevision */
         SourceRevision: {
             /** Title */
@@ -2858,10 +12096,305 @@ export interface components {
             /** Expected Revision */
             expected_revision: number;
         };
+        /** SqlAnswer */
+        SqlAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "sql";
+            /** Query */
+            query: string;
+        };
+        /** SqlCase */
+        SqlCase: {
+            dataset: components["schemas"]["SqlDataset"];
+            expected: components["schemas"]["SqlTableResult"];
+        };
+        /** SqlColumn */
+        SqlColumn: {
+            /** Name */
+            name: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "integer" | "text" | "real" | "boolean";
+            /**
+             * Nullable
+             * @default true
+             */
+            nullable: boolean;
+            /**
+             * Primary Key
+             * @default false
+             */
+            primary_key: boolean;
+        };
+        /** SqlDataset */
+        SqlDataset: {
+            /** Rows */
+            rows: {
+                [key: string]: (string | number | boolean | null)[][];
+            };
+        };
+        /** SqlEnvironment */
+        SqlEnvironment: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "sql-query.v1";
+            /**
+             * Dialect
+             * @enum {string}
+             */
+            dialect: "sqlite" | "postgresql" | "mysql";
+            /** Runtime Version */
+            runtime_version: string;
+            /** Environment Release Id */
+            environment_release_id?: string | null;
+        };
+        /** SqlForeignKey */
+        SqlForeignKey: {
+            /** Column */
+            column: string;
+            /** References Table */
+            references_table: string;
+            /** References Column */
+            references_column: string;
+        };
+        /** SqlProgram */
+        SqlProgram: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "sql-query.v1";
+            /**
+             * Dialect
+             * @enum {string}
+             */
+            dialect: "sqlite" | "postgresql" | "mysql";
+            /** Runtime Version */
+            runtime_version?: string | null;
+            /** Environment Release Id */
+            environment_release_id?: string | null;
+            /** Query */
+            query: string;
+            schema_definition: components["schemas"]["SqlSchema"];
+            /** Datasets */
+            datasets: components["schemas"]["SqlDataset"][];
+        };
+        /** SqlQuestion */
+        SqlQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            language: "sql_query";
+            environment: components["schemas"]["SqlEnvironment"];
+            schema_definition: components["schemas"]["SqlSchema"];
+            /** Starter Query */
+            starter_query: string;
+            /**
+             * Comparison
+             * @enum {string}
+             */
+            comparison: "ordered" | "multiset";
+            /**
+             * Comparison Profile
+             * @default sql-result-typed.v1
+             * @constant
+             */
+            comparison_profile: "sql-result-typed.v1";
+            sample: components["schemas"]["SqlCase"];
+        };
+        /** SqlSchema */
+        SqlSchema: {
+            /** Tables */
+            tables: components["schemas"]["SqlTable"][];
+        };
+        /** SqlTable */
+        SqlTable: {
+            /** Name */
+            name: string;
+            /** Columns */
+            columns: components["schemas"]["SqlColumn"][];
+            /** Foreign Keys */
+            foreign_keys?: components["schemas"]["SqlForeignKey"][];
+        };
+        /** SqlTableResult */
+        SqlTableResult: {
+            /**
+             * Profile
+             * @default sql-table.v1
+             * @constant
+             */
+            profile: "sql-table.v1";
+            /** Columns */
+            columns: string[];
+            /** Rows */
+            rows: (string | null)[][];
+            /** Types */
+            types: ("integer" | "number" | "text" | "boolean" | "null")[][];
+        };
+        /** StageReply */
+        StageReply: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Text */
+            text: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Thinking Text */
+            thinking_text?: string | null;
+            /** Thinking Steps */
+            thinking_steps?: components["schemas"]["ThinkingStep"][];
+        };
+        /** StdioAnswer */
+        StdioAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "stdio";
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+        };
+        /** StdioCase */
+        StdioCase: {
+            /** Input */
+            input: string;
+            /** Expected */
+            expected: string;
+        };
+        /** StdioQuestion */
+        StdioQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            language: "project_stdio";
+            environment: components["schemas"]["ProjectEnvironment"];
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            sample: components["schemas"]["StdioCase"];
+            /**
+             * Comparison Profile
+             * @default stdio-text.v1
+             * @constant
+             */
+            comparison_profile: "stdio-text.v1";
+        };
+        /** StepPlayerComponent */
+        StepPlayerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "StepPlayer";
+            props: components["schemas"]["StepsProps"];
+        };
+        /** StepsProps */
+        StepsProps: {
+            /** Label */
+            label: string;
+            /** Items */
+            items: string[];
+            /** State */
+            state: string;
+        };
+        /** StudiedNode */
+        StudiedNode: {
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Node Key */
+            node_key: string;
+        };
         /** Submission */
         Submission: {
             /** Code */
             code: string;
+        };
+        /** SubmittedCodeFinding */
+        SubmittedCodeFinding: {
+            /** Line */
+            line: number;
+            /**
+             * Source Line
+             * @description Exact source line without CR/LF.
+             */
+            source_line: string;
+            /** Content */
+            content: string;
+        };
+        /** SubmittedCodeReviewBinding */
+        SubmittedCodeReviewBinding: {
+            /**
+             * Profile Version
+             * @default submitted-code-review.v1
+             * @enum {string}
+             */
+            profile_version: "submitted-code-review.v1" | "submitted-code-review.v2";
+            /** Component Id */
+            component_id: string;
+            /**
+             * Evaluation Id
+             * Format: uuid
+             */
+            evaluation_id: string;
+            attempt: components["schemas"]["PythonPracticeAttempt"];
+            task: components["schemas"]["PythonQuestion"];
+            /** Recorded Correct */
+            recorded_correct: boolean;
+            /** Findings */
+            findings: components["schemas"]["SubmittedCodeFinding"][];
         };
         /** SupplyDemand */
         SupplyDemand: {
@@ -2874,11 +12407,13 @@ export interface components {
             remediation_id: string | null;
             /** Python Remediation Id */
             python_remediation_id: string | null;
+            /** Program Remediation Id */
+            program_remediation_id?: string | null;
             /**
              * Kind
              * @enum {string}
              */
-            kind: "choice" | "python_io";
+            kind: "choice" | "python_io" | "sql_query" | "python_project" | "project_stdio" | "web_project" | "http_project";
             /**
              * Source Pack Id
              * Format: uuid
@@ -2916,6 +12451,81 @@ export interface components {
             /** Transfer Feedback Id */
             transfer_feedback_id?: string | null;
         };
+        /** TableProps */
+        TableProps: {
+            /** Label */
+            label: string;
+            /** Columns */
+            columns: string[];
+            /** Rows */
+            rows: string[][];
+        };
+        /** TavilyConfiguration */
+        TavilyConfiguration: {
+            /**
+             * Revision
+             * @default 0
+             */
+            revision: number;
+            /**
+             * Enabled
+             * @default false
+             */
+            enabled: boolean;
+            /**
+             * Credential Present
+             * @default false
+             */
+            credential_present: boolean;
+        };
+        /** TavilyConfigurationInput */
+        TavilyConfigurationInput: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Enabled */
+            enabled: boolean;
+            /** Api Key */
+            api_key?: string | null;
+        };
+        /** TeachingBranch */
+        TeachingBranch: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /** Generation */
+            generation: number;
+            /**
+             * Anchor Artifact Id
+             * Format: uuid
+             */
+            anchor_artifact_id: string;
+            /** Anchor Revision */
+            anchor_revision: number;
+            /** Content Identity */
+            content_identity: string;
+            focus: components["schemas"]["TeachingFocus"];
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "active" | "closed" | "superseded";
+            /**
+             * Opened At
+             * Format: date-time
+             */
+            opened_at: string;
+            /** Closed At */
+            closed_at: string | null;
+            /** Turn Count */
+            turn_count: number;
+        };
         /** TeachingFocus */
         TeachingFocus: {
             /**
@@ -2934,6 +12544,235 @@ export interface components {
             lesson_id?: string | null;
             /** Assessment Receipt Id */
             assessment_receipt_id?: string | null;
+        };
+        /** TeachingIntent */
+        TeachingIntent: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /** Generation */
+            generation: number;
+            focus: components["schemas"]["TeachingFocus"];
+            /** Artifact Id */
+            artifact_id: string | null;
+            /**
+             * Trigger Kind
+             * @enum {string}
+             */
+            trigger_kind: "artifact_action" | "expected_result" | "interaction_event" | "review_due" | "node_window";
+            /** Trigger Ref */
+            trigger_ref: string;
+            /** Priority */
+            priority: number;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "pending" | "dispatched" | "cancelled" | "superseded";
+            /** Wait Reason */
+            wait_reason: string | null;
+            /** Run Id */
+            run_id: string | null;
+            /** Run Status */
+            run_status?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Review Activity Id */
+            review_activity_id?: string | null;
+        };
+        /** TeachingPacing */
+        TeachingPacing: {
+            /**
+             * Next Step
+             * @enum {string}
+             */
+            next_step: "can_continue" | "wait_for_reply" | "wait_for_action" | "wrap_up";
+            /** Resume At */
+            resume_at: string;
+            /** Check Topic */
+            check_topic?: string | null;
+            practice_choice?: components["schemas"]["PracticeChoice"] | null;
+        };
+        /** TeachingSession */
+        TeachingSession: {
+            /**
+             * Conversation Id
+             * Format: uuid
+             */
+            conversation_id: string;
+            /** Revision */
+            revision: number;
+            /** Generation */
+            generation: number;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "guided" | "free_reading";
+            /** Paused */
+            paused: boolean;
+            focus: components["schemas"]["TeachingFocus"];
+            /** Active Branch Id */
+            active_branch_id: string | null;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /**
+             * Continuation Policy
+             * @default manual
+             * @enum {string}
+             */
+            continuation_policy: "manual" | "after_result.v1";
+            /**
+             * Continuation Generation
+             * @default 1
+             */
+            continuation_generation: number;
+            node_window?: components["schemas"]["NodeWindow"] | null;
+        };
+        /** TextAnswerComponent */
+        TextAnswerComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "TextAnswer";
+            props: components["schemas"]["TextAnswerProps"];
+        };
+        /** TextAnswerProps */
+        TextAnswerProps: {
+            /** Label */
+            label: string;
+            /** State */
+            state: string;
+        };
+        /** TextMaterialImport */
+        TextMaterialImport: {
+            /**
+             * Goal Id
+             * Format: uuid
+             */
+            goal_id: string;
+            /** Document Id */
+            document_id?: string | null;
+            /**
+             * Expected Revision
+             * @default 0
+             */
+            expected_revision: number;
+            /** Title */
+            title: string;
+            /** Source Url */
+            source_url: string;
+            /**
+             * Format
+             * @default text
+             * @enum {string}
+             */
+            format: "text" | "markdown";
+            /** Text */
+            text: string;
+            /**
+             * Authorized Use
+             * @constant
+             */
+            authorized_use: true;
+            /** Purposes */
+            purposes: ("reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing")[];
+            /** Use Until */
+            use_until?: string | null;
+            /** Retain Until */
+            retain_until?: string | null;
+        };
+        /** TextProps */
+        TextProps: {
+            /** Title */
+            title?: string | null;
+            /** Text */
+            text: string;
+        };
+        /** TextState */
+        TextState: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "text";
+            /**
+             * Value
+             * @default
+             * @constant
+             */
+            value: "";
+        };
+        /** ThinkingStep */
+        ThinkingStep: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "thinking" | "tool" | "review";
+            /** Title */
+            title: string;
+            /**
+             * Summary
+             * @default
+             */
+            summary: string;
+            /**
+             * Detail
+             * @default
+             */
+            detail: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "running" | "completed" | "waiting" | "failed" | "cancelled" | "unknown";
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /**
+             * Completed At
+             * @default null
+             */
+            completed_at: string | null;
+            /**
+             * Duration Ms
+             * @default null
+             */
+            duration_ms: number | null;
+            /**
+             * Tool Name
+             * @default null
+             */
+            tool_name: string | null;
         };
         /** ToolActivity */
         ToolActivity: {
@@ -3045,11 +12884,13 @@ export interface components {
             remediation_id: string | null;
             /** Python Remediation Id */
             python_remediation_id: string | null;
+            /** Program Remediation Id */
+            program_remediation_id?: string | null;
             /**
              * Kind
              * @enum {string}
              */
-            kind: "choice" | "python_io";
+            kind: "choice" | "python_io" | "sql_query" | "python_project" | "project_stdio" | "web_project" | "http_project";
             /**
              * Source Pack Id
              * Format: uuid
@@ -3091,9 +12932,10 @@ export interface components {
         TransferView: {
             transfer: components["schemas"]["TransferSummary"];
             /** Question */
-            question?: components["schemas"]["PublicQuestion"] | components["schemas"]["PythonQuestion"] | null;
+            question?: components["schemas"]["PublicQuestion"] | components["schemas"]["PythonQuestion"] | (components["schemas"]["SqlQuestion"] | components["schemas"]["ProjectQuestion"] | components["schemas"]["StdioQuestion"] | components["schemas"]["WebQuestion"] | components["schemas"]["HttpQuestion"]) | null;
             result?: components["schemas"]["TransferFeedback"] | null;
             python_attempt?: components["schemas"]["PythonAttempt"] | null;
+            program_attempt?: components["schemas"]["ProgramTransferAttempt"] | null;
             /**
              * Allowed Actions
              * @default []
@@ -3101,6 +12943,35 @@ export interface components {
             allowed_actions: ("open" | "submit" | "cancel")[];
             /** Blocked Reason */
             blocked_reason?: string | null;
+        };
+        /** TreeEntry */
+        TreeEntry: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** Children */
+            children?: components["schemas"]["TreeEntry"][];
+        };
+        /** TreeProps */
+        TreeProps: {
+            /** Label */
+            label: string;
+            /** Nodes */
+            nodes: components["schemas"]["TreeEntry"][];
+            /** State */
+            state: string;
+        };
+        /** TreeViewComponent */
+        TreeViewComponent: {
+            /** Id */
+            id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            component: "TreeView";
+            props: components["schemas"]["TreeProps"];
         };
         /** Turn */
         Turn: {
@@ -3136,6 +13007,27 @@ export interface components {
              *     }
              */
             context_focus: components["schemas"]["TeachingFocus"];
+            /** Learning Interaction */
+            learning_interaction?: (components["schemas"]["NoInteraction"] | components["schemas"]["ComposerInteraction"] | components["schemas"]["ArtifactInteraction"]) | null;
+            pacing?: components["schemas"]["TeachingPacing"] | null;
+            /** Teaching Branch Id */
+            teaching_branch_id?: string | null;
+            /** Teaching Intent Id */
+            teaching_intent_id?: string | null;
+            /** Thinking Text */
+            thinking_text?: string | null;
+            /** Thinking Steps */
+            thinking_steps?: components["schemas"]["ThinkingStep"][];
+            /** Stage Replies */
+            stage_replies?: components["schemas"]["StageReply"][];
+            /** Material Demand Id */
+            material_demand_id?: string | null;
+            /**
+             * Planning Requested
+             * @default false
+             */
+            planning_requested: boolean;
+            planning_state?: components["schemas"]["PlanningState"] | null;
         };
         /** TurnAccepted */
         TurnAccepted: {
@@ -3168,6 +13060,34 @@ export interface components {
              *     }
              */
             focus: components["schemas"]["TeachingFocus"];
+            /** Learning Candidate Id */
+            learning_candidate_id?: string | null;
+            /** Teaching Session Revision */
+            teaching_session_revision?: number | null;
+            /**
+             * Node Pacing
+             * @default false
+             */
+            node_pacing: boolean;
+            presentation_capabilities?: components["schemas"]["PresentationCapabilities"];
+        };
+        /** UnresolvedRegion */
+        UnresolvedRegion: {
+            /** Ordinal */
+            ordinal: number;
+            /** Kind */
+            kind: string;
+            /**
+             * Label
+             * @default
+             */
+            label: string;
+            /** Source Url */
+            source_url?: string | null;
+            /** Section Path */
+            section_path?: string[];
+            /** After Block */
+            after_block: number;
         };
         /** ValidationError */
         ValidationError: {
@@ -3182,6 +13102,146 @@ export interface components {
             /** Context */
             ctx?: Record<string, never>;
         };
+        /** ValuesProps */
+        ValuesProps: {
+            /** Label */
+            label: string;
+            /** Entries */
+            entries: components["schemas"]["NamedValue"][];
+        };
+        /** WebAnswer */
+        WebAnswer: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "web";
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+        };
+        /** WebCase */
+        WebCase: {
+            check: components["schemas"]["WebCheck"];
+            /** Expected */
+            expected: string | boolean;
+        };
+        /** WebCheck */
+        WebCheck: {
+            /** Key */
+            key: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "exists" | "text" | "style" | "click_text";
+            /** Selector */
+            selector: string;
+            /** Property */
+            property?: string | null;
+            /** Action Selector */
+            action_selector?: string | null;
+        };
+        /** WebCheckResult */
+        WebCheckResult: {
+            /**
+             * Protocol
+             * @default web-check-result.v1
+             * @constant
+             */
+            protocol: "web-check-result.v1";
+            /** Results */
+            results: components["schemas"]["WebCheckValue"][];
+        };
+        /** WebCheckValue */
+        WebCheckValue: {
+            /** Key */
+            key: string;
+            /** Actual */
+            actual: string | boolean | null;
+        };
+        /** WebEnvironment */
+        WebEnvironment: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "web-check.v1";
+            /**
+             * Language
+             * @default html-css
+             * @enum {string}
+             */
+            language: "html-css" | "javascript" | "typescript";
+            /** Runtime Version */
+            runtime_version: string;
+            /**
+             * Environment Release Id
+             * Format: uuid
+             */
+            environment_release_id: string;
+        };
+        /** WebProgram */
+        WebProgram: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            profile: "web-check.v1";
+            /**
+             * Language
+             * @default html-css
+             * @enum {string}
+             */
+            language: "html-css" | "javascript" | "typescript";
+            /** Runtime Version */
+            runtime_version: string;
+            /**
+             * Environment Release Id
+             * Format: uuid
+             */
+            environment_release_id: string;
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            /** Checks */
+            checks: components["schemas"]["WebCheck"][];
+        };
+        /** WebQuestion */
+        WebQuestion: {
+            /**
+             * Slot
+             * @enum {string}
+             */
+            slot: "practice_1" | "practice_2" | "assessment_1" | "assessment_2" | "remediation_1";
+            /** Title */
+            title: string;
+            /** Prompt */
+            prompt: string;
+            /** Difficulty */
+            difficulty: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["SourceRef"][];
+            /** Material Citations */
+            material_citations?: components["schemas"]["MaterialCitation"][];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            language: "web_project";
+            environment: components["schemas"]["WebEnvironment"];
+            /** Files */
+            files: components["schemas"]["ProgramFile"][];
+            /** Entrypoint */
+            entrypoint: string;
+            sample: components["schemas"]["WebCase"];
+            /**
+             * Comparison Profile
+             * @default web-check.v1
+             * @constant
+             */
+            comparison_profile: "web-check.v1";
+        };
     };
     responses: never;
     parameters: never;
@@ -3191,6 +13251,2800 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    material_demands_v1_material_demands_get: {
+        parameters: {
+            query: {
+                goal_id: string;
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialDemand"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_material_demand_v1_material_demands_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialDemandInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_demand_receipt_v1_material_demands_commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_demand_v1_material_demands__demand_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    prepare_text_material_v1_material_demands__demand_id__texts_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialTextJobInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reserve_material_upload_v1_material_demands__demand_id__uploads_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialUploadInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpload"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_upload_v1_material_uploads__upload_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpload"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_upload_receipt_v1_material_demands__demand_id__uploads_commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpload"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_file_job_receipt_v1_material_demands__demand_id__files_commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_job_cancellation_v1_material_jobs__job_id__cancellation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_document_revocation_v1_documents__document_id__versions__revision__revocation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+                revision: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    original_material_v1_material_uploads__upload_id__content_get: {
+        parameters: {
+            query: {
+                purpose: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+            };
+            header?: never;
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_original_material_v1_material_uploads__upload_id__content_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "content-length"?: number | null;
+            };
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/octet-stream": string;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpload"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    prepare_file_material_v1_material_demands__demand_id__files_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialFileJobInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    demand_jobs_v1_material_demands__demand_id__jobs_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_job_v1_material_jobs__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_material_job_v1_material_jobs__job_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_material_v1_material_searches_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialSearchInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSearch"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_search_status_v1_material_searches__search_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                search_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSearch"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_material_search_v1_material_searches__search_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                search_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSearch"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_selection_v1_material_selections__selection_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                selection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSelection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    compare_material_versions_v1_material_change_checks_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialChangeInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialChangeReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_change_check_v1_material_change_checks__check_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                check_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialChangeReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_change_review_v1_material_change_checks__check_id__review_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                check_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialChangeReview"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_material_change_review_v1_material_change_checks__check_id__review_cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                check_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialChangeReview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_update_preparation_v1_material_change_checks__check_id__preparation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                check_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpdatePreparation"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    prepare_material_update_v1_material_change_checks__check_id__offers_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                check_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialUpdatePrepareInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpdateOffer"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_update_offer_v1_material_update_offers__offer_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                offer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpdateOffer"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decide_material_update_v1_material_update_offers__offer_id__decisions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                offer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialUpdateDecisionInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpdateDecision"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_update_decision_receipt_v1_material_update_offers__offer_id__decisions__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                offer_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialUpdateDecision"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_dependency_preparations_v1_material_update_decisions__decision_id__repreparations_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                decision_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialRepreparation"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_material_sources_v1_material_sources_get: {
+        parameters: {
+            query: {
+                goal_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSource"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    register_material_source_v1_material_sources_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialSourceInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSource"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_registration_receipt_v1_material_sources_commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSource"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_v1_material_sources__source_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSource"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    check_material_source_v1_material_sources__source_id__checks_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                source_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialSourceAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSourceObservation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_check_receipt_v1_material_sources__source_id__checks__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSourceObservation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_check_receipt_v1_material_sources__source_id__checks_commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSourceObservation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revoke_material_source_v1_material_sources__source_id__revoke_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialSourceAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSource"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_revocation_receipt_v1_material_sources__source_id__revocation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSource"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_observation_v1_material_source_observations__observation_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                observation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialSourceObservation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_source_original_v1_material_source_observations__observation_id__original_get: {
+        parameters: {
+            query: {
+                purpose: string;
+            };
+            header?: never;
+            path: {
+                observation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_demand_discovery_v1_material_demands__demand_id__discovery_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialDiscovery"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_material_discovery_v1_material_demands__demand_id__discovery_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialDiscovery"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    notification_list_v1_notifications_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_notification_v1_notifications__notification_id__read_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                notification_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_candidate_v1_conversations__conversation_id__learning_artifact_candidates_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LearningCandidateInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearningCandidate"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_artifact_list_v1_conversations__conversation_id__learning_artifacts_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearningArtifactSummary"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_artifact_v1_conversations__conversation_id__learning_artifacts__artifact_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearningArtifactView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_artifact_action_v1_conversations__conversation_id__learning_artifacts__artifact_id__actions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RespondAction"] | components["schemas"]["RunAction"] | components["schemas"]["CancelAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearningActionReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_artifact_list_v2_v2_conversations__conversation_id__learning_artifacts_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": (components["schemas"]["LearningArtifactSummary"] | components["schemas"]["CompositionArtifactSummary"])[];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_artifact_v2_v2_conversations__conversation_id__learning_artifacts__artifact_id__get: {
+        parameters: {
+            query?: {
+                response_capability?: "learning_responses.v1" | null;
+                code_review_capability?: ("learning_code_review.v1" | "learning_code_review.v2") | null;
+                program_capability?: ("learning_programs.v1" | "learning_programs.v2") | null;
+                direct_answer_capability?: "learning_direct_answers.v1" | null;
+                hint_capability?: "learning_hints.v1" | null;
+                demo_capability?: "learning_demo_events.v1" | null;
+                example_capability?: ("learning_example_runs.v1" | "learning_example_runs.v2") | null;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearningArtifactView"] | components["schemas"]["CompositionArtifactView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_example_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExampleRunInput"] | components["schemas"]["PracticeSampleRunInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExampleRunResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    example_result_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs__command_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+                command_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExampleRunResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    send_example_input_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs__command_id__input_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+                command_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExampleTerminalLine"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExampleRunResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stop_example_v2_conversations__conversation_id__learning_artifacts__artifact_id__example_runs__command_id__stop_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+                command_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExampleRunResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    demonstration_history_v2_conversations__conversation_id__learning_artifacts__artifact_id__demos__component_id__completions_get: {
+        parameters: {
+            query: {
+                demo_capability: "learning_demo_events.v1";
+                before?: number | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+                component_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoHistory"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    composition_source_v2_conversations__conversation_id__learning_artifacts__artifact_id__sources__component_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+                component_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompositionSourceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_action_receipt_v2_conversations__conversation_id__learning_artifacts__artifact_id__actions__action_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompositionActionReceipt"] | components["schemas"]["LearningActionReceipt"] | components["schemas"]["DemoActionReceipt"] | components["schemas"]["ReviewActionReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    learning_artifact_action_v2_v2_conversations__conversation_id__learning_artifacts__artifact_id__actions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RespondAction"] | components["schemas"]["RunAction"] | components["schemas"]["CancelAction"] | components["schemas"]["CompositionRunAction"] | components["schemas"]["CompositionRespondAction"] | components["schemas"]["CompositionCancelRunAction"] | components["schemas"]["CompositionAnswerAction"] | components["schemas"]["CompositionProgramRunAction"] | components["schemas"]["CompositionDirectAnswerAction"] | components["schemas"]["CompositionHintAction"] | components["schemas"]["DemoStartAction"] | components["schemas"]["DemoEventAction"] | components["schemas"]["DemoCompleteAction"] | components["schemas"]["CompleteReviewAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompositionActionReceipt"] | components["schemas"]["LearningActionReceipt"] | components["schemas"]["DemoActionReceipt"] | components["schemas"]["ReviewActionReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    test_model_connection_v1_model_connections__connection_id__tests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                connection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelConnectionTestInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnectionTest"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    model_connection_test_v1_model_connection_tests__test_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                test_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnectionTest"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    model_connection_tests_v1_model_connection_tests_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnectionTest"][];
+                };
+            };
+        };
+    };
+    model_configuration_v1_model_configuration_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConfiguration"];
+                };
+            };
+        };
+    };
+    tavily_configuration_v1_material_search_configuration_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TavilyConfiguration"];
+                };
+            };
+        };
+    };
+    save_tavily_configuration_v1_material_search_configuration_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TavilyConfigurationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TavilyConfiguration"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    apply_model_preset_v1_model_presets__preset_id__post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                preset_id: "deepseek" | "qwen";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelPresetInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    use_model_connection_v1_model_connections__connection_id__use_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                connection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelConnectionUseInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConfiguration"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_custom_model_provider_v1_model_providers_custom_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelCustomProviderInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    model_connections_v1_model_connections_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnection"][];
+                };
+            };
+        };
+    };
+    create_model_connection_v1_model_connections_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelConnectionInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_model_connection_v1_model_connections__connection_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                connection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelConnectionDelete"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_model_connection_v1_model_connections__connection_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                connection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelConnectionPatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelConnection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    model_profiles_v1_model_profiles_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelProfile"][];
+                };
+            };
+        };
+    };
+    create_model_profile_v1_model_profiles_post: {
+        parameters: {
+            query?: {
+                assign_roles?: boolean;
+            };
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelProfileInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelProfile"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_model_profile_v1_model_profiles__profile_id__patch: {
+        parameters: {
+            query?: {
+                assign_roles?: boolean;
+            };
+            header?: never;
+            path: {
+                profile_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelProfilePatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelProfile"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    assign_model_role_v1_model_role_mappings__role__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                role: "tutor.v1" | "planner.v1" | "lesson.v1" | "delivery_review.v1" | "material_check.v1" | "material_review.v1" | "evaluation.v1" | "artifact.v1" | "item_author.v1" | "item_blind.v1" | "item_review.v1" | "gate_relation.v1" | "transfer_relation.v1" | "ocr" | "embedding" | "rerank";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelRoleAssignmentInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelRoleMapping"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_text_v1_material_texts_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TextMaterialImport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    legacy_material_v1_sources__source_id__material_compatibility_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                source_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LegacyMaterialImport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    document_version_v1_documents__document_id__versions__revision__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+                revision: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    document_blocks_v1_documents__document_id__versions__revision__blocks_get: {
+        parameters: {
+            query?: {
+                purpose?: "reference" | "planning" | "lesson" | "teaching" | "item_author" | "item_review" | "indexing";
+                after?: number;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                document_id: string;
+                revision: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentBlockPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    document_permission_v1_documents__document_id__versions__revision__permissions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+                revision: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentPermissionAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bind_material_v1_material_bindings_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialBindingInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialBinding"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    material_binding_v1_material_bindings__binding_id__get: {
+        parameters: {
+            query?: {
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                binding_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialBinding"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bound_material_blocks_v1_material_bindings__binding_id__blocks_get: {
+        parameters: {
+            query: {
+                expected_revision: number;
+                offset?: number;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                binding_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BoundMaterialPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     artifact_request_v1_conversations__conversation_id__artifact_requests_post: {
         parameters: {
             query?: never;
@@ -3514,6 +16368,68 @@ export interface operations {
             };
         };
     };
+    material_progress_v1_conversations__conversation_id__material_progress_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialPreparationProgress"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    repair_conversation_materials_v1_conversations__conversation_id__material_repair_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MaterialRecoveryResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     teaching_history_v1_conversations__conversation_id__history_get: {
         parameters: {
             query?: {
@@ -3601,6 +16517,44 @@ export interface operations {
             };
         };
     };
+    refresh_local_session_v1_local_sessions_refresh_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Session"];
+                };
+            };
+        };
+    };
+    end_local_session_v1_local_sessions_current_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     submit_goal_v1_goals_post: {
         parameters: {
             query?: never;
@@ -3641,6 +16595,103 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_goal_v1_goals__goal_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rename_goal_v1_goals__goal_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                goal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalRename"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Goal"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    goal_request_receipt_v1_goal_requests__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Accepted"];
                 };
             };
             /** @description Validation Error */
@@ -3758,6 +16809,307 @@ export interface operations {
             };
         };
     };
+    hide_conversation_v1_conversations__conversation_id__recent_entry_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Conversation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teaching_session_v2_conversations__conversation_id__teaching_session_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingSession"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    continue_node_v2_conversations__conversation_id__teaching_session_continue_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContinueNode"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnAccepted"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teaching_intents_v1_conversations__conversation_id__teaching_intents_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingIntent"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_teaching_intent_v1_conversations__conversation_id__teaching_intents__intent_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                intent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CancelTeachingIntent"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingIntent"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teaching_intent_cancellation_receipt_v1_conversations__conversation_id__teaching_intents__intent_id__cancel__action_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                intent_id: string;
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingIntent"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    control_teaching_session_v2_conversations__conversation_id__teaching_session_actions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OpenTeachingSession"] | components["schemas"]["SetTeachingMode"] | components["schemas"]["PauseTeaching"] | components["schemas"]["ResumeTeaching"] | components["schemas"]["ReturnToMain"] | components["schemas"]["SetTeachingTopic"] | components["schemas"]["SetContinuationPolicy"] | components["schemas"]["FinishTeachingNode"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingSession"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teaching_session_receipt_v2_conversations__conversation_id__teaching_session_actions__action_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingSession"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teaching_branches_v2_conversations__conversation_id__teaching_branches_get: {
+        parameters: {
+            query?: {
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeachingBranch"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     submit_turn_v1_conversations__conversation_id__turns_post: {
         parameters: {
             query?: never;
@@ -3777,6 +17129,38 @@ export interface operations {
         responses: {
             /** @description Successful Response */
             202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TurnAccepted"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    requested_turn_v1_conversations__conversation_id__turn_requests__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3863,6 +17247,38 @@ export interface operations {
             };
         };
     };
+    plan_confirmation_v1_plans__plan_id__confirmations__revision__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+                revision: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanConfirmation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_plan_history_v1_plans__plan_id__revisions_get: {
         parameters: {
             query?: {
@@ -3919,6 +17335,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LearningPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    route_environment_manifest_v1_plans__plan_id__environment_requirements__revision__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+                revision: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RouteEnvironmentManifest"];
                 };
             };
             /** @description Validation Error */
@@ -4055,6 +17503,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    question_bank_v1_plans__plan_id__question_bank_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BankNode"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pack_generation_v1_packs__pack_id__generation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenerationReport"];
                 };
             };
             /** @description Validation Error */
@@ -4229,6 +17739,68 @@ export interface operations {
         responses: {
             /** @description Successful Response */
             202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupplyDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    supply_request_receipt_v1_supply_requests__key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupplyDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_supply_demand_v1_supply_demands__demand_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4505,6 +18077,649 @@ export interface operations {
             };
         };
     };
+    practice_submission_v2_v2_packs__pack_id__execution_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PythonPracticeSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    practice_history_v2_v2_packs__pack_id__execution_practice_attempts_get: {
+        parameters: {
+            query: {
+                slot: string;
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonPracticeHistory"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    practice_attempt_v2_v2_python_practice_attempts__attempt_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    practice_request_v2_v2_python_practice_requests__key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_practice_v2_v2_python_practice_attempts__attempt_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PythonPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_practice_v2_packs__pack_id__program_practice_get: {
+        parameters: {
+            query?: {
+                remediation?: boolean;
+            };
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": (components["schemas"]["SqlQuestion"] | components["schemas"]["ProjectQuestion"] | components["schemas"]["StdioQuestion"] | components["schemas"]["WebQuestion"] | components["schemas"]["HttpQuestion"])[];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_submission_v2_packs__pack_id__program_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProgramPracticeSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_history_v2_packs__pack_id__program_practice_attempts_get: {
+        parameters: {
+            query: {
+                slot: string;
+                before?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramPracticeHistory"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_attempt_v2_program_practice_attempts__attempt_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_request_v2_program_practice_requests__key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_program_v2_program_practice_attempts__attempt_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramPracticeAttempt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_review_v2_packs__pack_id__program_review_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_program_gate_v2_packs__pack_id__program_gate_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_gate_request_receipt_v2_packs__pack_id__program_gate_requests__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_program_gate_v2_gates__gate_id__program_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProgramGateSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    program_gate_submission_receipt_v2_gates__gate_id__program_submissions__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_program_transfer_v2_program_attempts__attempt_id__transfer_requests_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransferRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_program_transfer_v2_transfers__transfer_id__program_submissions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProgramTransferSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    request_program_supply_v2_program_attempts__attempt_id__supply_demands_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SupplyRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupplyDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     request_execution_gate_v1_packs__pack_id__execution_gate_requests_post: {
         parameters: {
             query?: never;
@@ -4579,7 +18794,132 @@ export interface operations {
             };
         };
     };
+    transfer_request_receipt_v1_transfer_requests__key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_transfer_v1_transfers__transfer_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transfer_opening_receipt_v1_transfers__transfer_id__opening_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transfer_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transfer_submission_receipt_v1_transfers__transfer_id__submissions__key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                transfer_id: string;
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transfer_cancellation_receipt_v1_transfers__transfer_id__cancellation_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -4814,12 +19154,264 @@ export interface operations {
             };
         };
     };
+    get_concept_gate_v1_gates__gate_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     start_concept_gate_v1_concept_gates__gate_id__start_post: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_concept_gate_v1_gates__gate_id__start_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gate_start_receipt_v1_gates__gate_id__start_receipt_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gate_cancellation_receipt_v1_gates__gate_id__cancellation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    legacy_gate_request_receipt_v1_packs__pack_id__execution_gate_requests__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    legacy_gate_request_receipt_v1_packs__pack_id__gate_requests__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    concept_gate_submission_receipt_v1_concept_gates__gate_id__submissions__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    python_gate_submission_receipt_v1_concept_gates__gate_id__execution_submissions__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+                request_key: string;
             };
             cookie?: never;
         };
@@ -4883,6 +19475,37 @@ export interface operations {
         };
     };
     cancel_concept_gate_v1_concept_gates__gate_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                gate_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_concept_gate_v1_gates__gate_id__cancel_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -4993,6 +19616,105 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PracticeSet"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    response_practice_v2_packs__pack_id__response_practice_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponsePracticeSet"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_response_v2_packs__pack_id__responses_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResponseSubmission"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    response_results_v2_packs__pack_id__response_results_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                pack_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseResult"][];
                 };
             };
             /** @description Validation Error */
@@ -5375,6 +20097,594 @@ export interface operations {
             };
         };
     };
+    review_activities_v1_review_activities_get: {
+        parameters: {
+            query?: {
+                conversation_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewActivity"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_activity_v1_review_activities__activity_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewActivity"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    present_review_activity_v1_review_activities__activity_id__present_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresentReview"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewActivity"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    respond_review_activity_v1_review_activities__activity_id__responses_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewActivity"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_review_activity_v1_review_activities__activity_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewActivity"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_activity_receipt_v1_review_activities__activity_id__commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                activity_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewActivity"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_logs_v1_reviews__card_id__logs_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                card_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewLog"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_learning_evidence_v1_learning_evidence_get: {
+        parameters: {
+            query?: {
+                plan_id?: string | null;
+                node_key?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearningEvidenceProjection"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    proactive_preference_v1_conversations__conversation_id__proactive_preference_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProactivePreference"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_proactive_preference_v1_conversations__conversation_id__proactive_preference_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProactivePreferenceInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProactivePreference"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    proactive_preference_receipt_v1_conversations__conversation_id__proactive_preference_commands__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProactivePreference"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_environment_snapshot_v1_execution_environments_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecutionEnvironments"];
+                };
+            };
+        };
+    };
+    request_execution_environment_v1_environment_demands_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentDemandInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_environment_request_receipt_v1_environment_demand_requests__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decide_execution_environment_v1_environment_demands__demand_id__decisions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentDecisionInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentDecision"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_environment_decision_receipt_v1_environment_demands__demand_id__decisions__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentDecision"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rebuild_execution_environment_v1_environment_demands__demand_id__rebuild_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                demand_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentRebuildInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_environment_rebuild_receipt_v1_environment_demands__demand_id__rebuilds__request_key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                demand_id: string;
+                request_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentDemand"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_source_v1_goals__goal_id__sources_post: {
         parameters: {
             query?: never;
@@ -5517,6 +20827,212 @@ export interface operations {
             };
         };
     };
+    observe_execution_engine_internal_environment_engine_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EngineObservationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    claim_environment_preparation_internal_environment_preparations_claim_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentPreparationClaimInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentPreparationClaim"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    environment_preparation_progress_internal_environment_preparations__job_id__progress_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentPreparationProgress"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    environment_preparation_report_internal_environment_preparations__job_id__report_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentPreparationReport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnvironmentRelease"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    environment_release_unavailable_internal_environment_releases__release_id__unavailable_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                release_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentReleaseUnavailable"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_environment_release_internal_environment_releases__release_id__verify_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                release_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvironmentReleaseVerificationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     runner_claim_internal_executions_claim_post: {
         parameters: {
             query?: never;
@@ -5536,7 +21052,77 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ExecutionClaim"] | null;
+                    "application/json": components["schemas"]["ExecutionClaim"] | components["schemas"]["ProgramExecutionClaim"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    example_terminal_exchange_internal_executions__job_id__terminal_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExampleTerminalExchange"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_execution_internal_executions__job_id__verify_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExecutionVerificationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */

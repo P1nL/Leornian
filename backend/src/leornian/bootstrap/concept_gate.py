@@ -1,28 +1,39 @@
 import json
 
 from leornian.agent_runtime.contracts import RoleSpec
-from leornian.agent_runtime.gateway import ChatCompletionsGateway, ModelProtocolError
+from leornian.agent_runtime.gateway import ModelProtocolError
 from leornian.agent_runtime.repository import Runs
 from leornian.bootstrap.item_supply import ItemSupply
+from leornian.bootstrap.material_consumers import read_citations_in
+from leornian.bootstrap.model_configuration import configuration_scope, require_model_admission
 from leornian.bootstrap.relation_batches import RelationBatches
 from leornian.delivery.contracts import EventPayload
 from leornian.delivery.events import Events
 from leornian.modules.assessment.choices import Choices
-from leornian.modules.assessment.gate_contracts import GateItemResult, GateRelations, GateView
+from leornian.modules.assessment.gate_contracts import (
+    GateItemResult,
+    GateProgramResult,
+    GateRelations,
+    GateView,
+)
 from leornian.modules.assessment.gates import Gates
+from leornian.modules.assessment.programs import ProgramAssessment
 from leornian.modules.assessment.python_assessment import PythonAssessment
 from leornian.modules.assessment.remediation import Remediations
 from leornian.modules.identity.application import Identity
 from leornian.modules.identity.infrastructure import PgIdentityStore
+from leornian.modules.item_bank.contracts import PublicProgramQuestion
 from leornian.modules.item_bank.exposure import Exposures
 from leornian.modules.item_bank.python_contracts import PythonQuestion
 from leornian.modules.item_bank.supply import Packs
 from leornian.modules.item_bank.supply_contracts import PublicQuestion
 from leornian.modules.learning.lessons import Lessons
+from leornian.modules.learning.material_contracts import material_content_key
 from leornian.modules.learning.progress import Progress
 from leornian.modules.tutor.application import Tutor
 from leornian.modules.tutor.infrastructure import PgTutorStore
 from leornian.shared_kernel.errors import BusinessError
+from pydantic import TypeAdapter
 
 
 class ConceptGate:
@@ -51,9 +62,17 @@ class ConceptGate:
     def current(connection, actor, row):
         pack = Packs(connection).row(actor, row["pack_id"])
         plan, node, _materials = ItemSupply.current(connection, actor, pack)
+        if pack["kind"] == "python_io":
+            PythonAssessment(connection).require_training(actor, pack["id"])
+        elif pack["kind"] in {
+            "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+        }:
+            ProgramAssessment(connection).require_training(actor, pack["id"])
+            ItemSupply.require_program_release(connection, actor, pack, required=True)
         lesson = Lessons(connection).for_node(actor, plan.id, row["plan_revision"], row["node_key"])
         if not lesson or lesson.id != row["lesson_id"]:
             raise BusinessError("stale_version", "The bound lesson changed.")
+        ConceptGate.require_lesson_sources(connection, actor, plan, node, lesson)
         Progress(connection).require_prerequisites(actor, plan.id, row["plan_revision"], node)
         expected = (
             row["started_exposure_revision"]
@@ -68,6 +87,20 @@ class ConceptGate:
         if row["status"] not in {"preparing", "ready", "in_progress", "submitted"}:
             raise BusinessError("precondition_failed", "Gate is no longer active.")
         return pack
+
+    @staticmethod
+    def require_lesson_sources(connection, actor, plan, node, lesson):
+        allowed = {(ref.source_id, ref.revision) for ref in node.source_refs}
+        if {(ref.source_id, ref.revision) for ref in lesson.sources} != allowed:
+            raise BusinessError("source_not_current", "Lesson sources do not match the node.")
+        allowed_materials = {material_content_key(c.ref) for c in node.material_citations}
+        citations = [c for section in lesson.document.sections for c in section.material_citations]
+        if any(
+            c.purpose != "lesson" or material_content_key(c.ref) not in allowed_materials
+            for c in citations
+        ):
+            raise BusinessError("source_not_current", "Lesson materials do not match the node.")
+        read_citations_in(connection, actor, plan.goal_id, citations)
 
     @staticmethod
     def role(connection, actor, row):
@@ -148,7 +181,10 @@ class ConceptGate:
                 )
             packs = Packs(connection)
             pack = packs.row(actor, pack_id)
-            if pack["kind"] != required_kind:
+            program = pack["kind"] in {
+                "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+            }
+            if pack["kind"] != required_kind and not (required_kind == "program" and program):
                 raise BusinessError("precondition_failed", "Use the matching Gate endpoint.")
             plan, node, _ = ItemSupply.current(connection, actor, pack)
             if pack["plan_revision"] != data.expected_plan_revision:
@@ -156,6 +192,9 @@ class ConceptGate:
             gates.require_unseen_pack(actor, pack_id)
             if pack["kind"] == "python_io":
                 PythonAssessment(connection).require_training(actor, pack_id)
+            elif program:
+                ProgramAssessment(connection).require_training(actor, pack_id)
+                ItemSupply.require_program_release(connection, actor, pack, required=True)
             else:
                 results = Choices(connection).for_pack(actor, pack_id)
                 gates.require_training(
@@ -165,9 +204,7 @@ class ConceptGate:
             lesson = Lessons(connection).for_node(actor, plan.id, pack["plan_revision"], node.key)
             if not lesson:
                 raise BusinessError("precondition_failed", "Generate this node lesson first.")
-            allowed = {(ref.source_id, ref.revision) for ref in node.source_refs}
-            if {(ref.source_id, ref.revision) for ref in lesson.sources} != allowed:
-                raise BusinessError("source_not_current", "Lesson sources do not match the node.")
+            self.require_lesson_sources(connection, actor, plan, node, lesson)
             document = packs.published_document(actor, pack_id)
             revision, exposed = Exposures(connection).snapshot(actor)
             learning_context = self.learning_context(connection, actor, plan)
@@ -236,8 +273,10 @@ class ConceptGate:
             }
             if pack["kind"] == "python_io":
                 context["capability"] = "python_io"
+            elif program:
+                context["capability"] = pack["program_environment"]
             gates.require_new_review(actor, pack_id, revision, context)
-            ChatCompletionsGateway(self.settings).require_ready()
+            require_model_admission(self.settings)
             row = gates.create(
                 actor,
                 pack,
@@ -258,7 +297,12 @@ class ConceptGate:
                 "item_supply",
             )
             run = Runs(connection).create(
-                actor.id, conversation.id, turn.id, Identity.digest(token), "gate_relation.v1"
+                actor.id,
+                conversation.id,
+                turn.id,
+                Identity.digest(token),
+                "gate_relation.v1",
+                configuration_scope=configuration_scope(self.settings),
             )
             Runs(connection).bind_sources(
                 run.id,
@@ -275,6 +319,40 @@ class ConceptGate:
         with self.database.transaction() as connection:
             actor = Identity(PgIdentityStore(connection)).authenticate(token)
             row = Gates(connection).row(actor, gate_id)
+            return self.project(connection, actor, row)
+
+    def request_receipt(self, token, pack_id, key):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            gates = Gates(connection)
+            row = gates.previous(actor, key)
+            if not row or row["pack_id"] != pack_id:
+                raise BusinessError("not_found", "No committed Gate request for this original key.")
+            return gates.summary(row)
+
+    def start_receipt(self, token, gate_id):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            row = Gates(connection).row(actor, gate_id)
+            if row["started_at"] is None:
+                raise BusinessError("not_found", "This Gate has no committed start.")
+            return self.project(connection, actor, row)
+
+    def cancellation_receipt(self, token, gate_id):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            row = Gates(connection).row(actor, gate_id)
+            if row["status"] != "cancelled":
+                raise BusinessError("not_found", "This Gate has no committed cancellation.")
+            return self.project(connection, actor, row)
+
+    def submission_receipt(self, token, gate_id, key, *, policy):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            row = Gates(connection).row(actor, gate_id)
+            field = "submit_key" if policy == "concept-gate.v1" else "submission_key"
+            if row["policy_version"] != policy or row[field] != key:
+                raise BusinessError("not_found", "No committed Gate submission for this key.")
             return self.project(connection, actor, row)
 
     @staticmethod
@@ -305,10 +383,14 @@ class ConceptGate:
             gate=Gates.summary(row),
             questions=[
                 (
-                    PythonQuestion
-                    if row["policy_version"] == "python-io-gate.v1"
-                    else PublicQuestion
-                ).model_validate(q)
+                    TypeAdapter(PublicProgramQuestion).validate_python(q)
+                    if row["policy_version"] == "program-execution-gate.v1" else
+                    (
+                        PythonQuestion
+                        if row["policy_version"] == "python-io-gate.v1"
+                        else PublicQuestion
+                    ).model_validate(q)
+                )
                 for q in row["context_data"]["assessments"]
             ]
             if visible
@@ -316,6 +398,17 @@ class ConceptGate:
             results=[GateItemResult.model_validate(item) for item in (row["result"] or [])],
             allowed_actions=actions,
             blocked_reason=reason,
+            program_results=[
+                GateProgramResult(
+                    attempt_id=value["id"], **{field: value[field] for field in (
+                        "slot", "status", "passed_cases", "feedback", "error_code", "compilation",
+                    )},
+                )
+                for value in ProgramAssessment(connection).for_pack(actor, row["pack_id"], "gate")
+                if value["gate_id"] == row["id"]
+            ] if row["policy_version"] == "program-execution-gate.v1" and row["status"] in {
+                "passed", "not_passed", "blocked",
+            } else [],
         )
 
     def start(self, token, gate_id):

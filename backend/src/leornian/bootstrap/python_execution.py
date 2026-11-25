@@ -158,7 +158,11 @@ class PythonWorkflow:
             passed_cases=source["passed_cases"],
             explanation=source["feedback"] or "执行结果已保存。",
         )
-        Exposures(connection).record(actor, pack["id"], item, receipt)
+        identity = (
+            {"receipt_ref": source["id"]}
+            if source["policy_version"] == "python-practice.v2" else {}
+        )
+        Exposures(connection).record(actor, pack["id"], item, receipt, **identity)
         Evaluations(connection).enqueue(
             actor, pack["id"], "python", source["id"], item.public(), receipt
         )
@@ -178,8 +182,13 @@ class PythonWorkflow:
                     packs.status(pack["id"], "reviewing")
                     PythonWorkflow.continue_review_in(connection, actor, pack, digest)
         elif source["purpose"] == "training":
-            # Only the already-locked learner attempt is exposed, never qualification or gold tests.
+            # Every actual learner receipt is immutable; qualification/gold tests stay private.
             PythonWorkflow.feedback(connection, actor, pack, source)
+            from leornian.bootstrap.learning_artifacts import LearningArtifactWorkflow
+
+            LearningArtifactWorkflow.owner_result(
+                connection, actor, pack["id"], source["slot"], "python", source["id"], "completed"
+            )
         elif source["purpose"] == "transfer":
             transfers = Transfers(connection)
             transfers.complete_python(source["transfer_id"], source)
@@ -257,7 +266,7 @@ class PythonWorkflow:
             if remediation:
                 failed = [
                     row
-                    for row in PythonAssessment(connection).for_pack(actor, pack_id, "training")
+                    for row in PythonAssessment(connection).latest_training(actor, pack_id)
                     if row["slot"].startswith("practice_") and row["status"] == "not_passed"
                 ]
                 candidate = next(i for i in document.items if i.slot == "remediation_1")
@@ -278,21 +287,90 @@ class PythonWorkflow:
     def submit_training(self, token, pack_id, key, data):
         with self.database.transaction() as connection:
             actor = Identity(PgIdentityStore(connection, serialize_actor=True)).authenticate(token)
-            Gates(connection).require_no_exam(actor)
-            Transfers(connection).require_regular_practice(actor, pack_id, data.slot)
+            return self.submit_training_in(
+                connection, actor, Identity.digest(token), pack_id, key, data
+            )
+
+    @staticmethod
+    def submit_training_in(connection, actor, session_digest, pack_id, key, data):
+        return PythonWorkflow.submit_practice_in(
+            connection, actor, session_digest, pack_id, key, data, multiple=False
+        )
+
+    def submit_practice(self, token, pack_id, key, data):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection, serialize_actor=True)).authenticate(token)
+            return self.submit_practice_in(
+                connection, actor, Identity.digest(token), pack_id, key, data
+            )
+
+    @staticmethod
+    def submit_practice_in(connection, actor, session_digest, pack_id, key, data, *, multiple=True):
+        Gates(connection).require_no_exam(actor)
+        Transfers(connection).require_regular_practice(actor, pack_id, data.slot)
+        pack = Packs(connection).row(actor, pack_id)
+        ItemSupply.current(connection, actor, pack)
+        if pack["kind"] != "python_io":
+            raise BusinessError("precondition_failed", "Execution pack required.")
+        item = Packs(connection).opened_python_training(actor, pack_id, data.slot)
+        row, created = PythonAssessment(connection).create(
+            actor, pack_id, item, data.code, key, "training", practice=data if multiple else None
+        )
+        if created:
+            Execution(connection).enqueue_python(actor, row["id"], session_digest)
+            PythonWorkflow.event(connection, actor, pack_id)
+        from leornian.bootstrap.learning_artifacts import LearningArtifactWorkflow
+
+        LearningArtifactWorkflow.owner_result(
+            connection, actor, pack_id, data.slot, "python", row["id"],
+            "running" if row["status"] == "queued" else "completed",
+            new_attempt=multiple and created,
+        )
+        assessment = PythonAssessment(connection)
+        return assessment.practice_public(row) if multiple else assessment.public(row)
+
+    def practice_history(self, token, pack_id, slot, before=None, limit=20):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
             pack = Packs(connection).row(actor, pack_id)
             ItemSupply.current(connection, actor, pack)
-            if pack["kind"] != "python_io":
-                raise BusinessError("precondition_failed", "Execution pack required.")
-            # Exposure is owned by item_bank, so use its Facade rather than cross-owner SQL.
-            item = Packs(connection).opened_python_training(actor, pack_id, data.slot)
-            row, created = PythonAssessment(connection).create(
-                actor, pack_id, item, data.code, key, "training"
+            if pack["kind"] != "python_io" or slot not in {
+                "practice_1", "practice_2", "remediation_1"
+            }:
+                raise BusinessError("not_found", "Ordinary Python practice not found.")
+            return PythonAssessment(connection).practice_history(
+                actor, pack_id, slot, before, limit
             )
-            if created:
-                Execution(connection).enqueue_python(actor, row["id"], Identity.digest(token))
-                self.event(connection, actor, pack_id)
-            return PythonAssessment(connection).public(row)
+
+    def practice_attempt(self, token, attempt_id):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            assessment = PythonAssessment(connection)
+            return assessment.practice_public(assessment.row(actor, attempt_id))
+
+    def practice_request(self, token, key):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            return PythonAssessment(connection).practice_request(actor, key)
+
+    def cancel_practice(self, token, attempt_id):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection, serialize_actor=True)).authenticate(token)
+            return self.cancel_practice_in(connection, actor, attempt_id, Identity.digest(token))
+
+    @staticmethod
+    def cancel_practice_in(connection, actor, attempt_id, session_digest):
+        assessment = PythonAssessment(connection)
+        row = assessment.row(actor, attempt_id)
+        if row["purpose"] != "training" or row["policy_version"] != "python-practice.v2":
+            raise BusinessError(
+                "precondition_failed", "Only V2 ordinary practice can be cancelled."
+            )
+        if row["status"] == "queued":
+            Execution(connection).cancel_python(actor, attempt_id)
+            assessment.fail(attempt_id, "本次执行已取消；在途进程的迟到回执只保留事实。")
+            PythonWorkflow.after_result(connection, actor, row, session_digest, False)
+        return assessment.practice_public(assessment.row(actor, attempt_id))
 
     def submit_gate(self, token, gate_id, key, data):
         with self.database.transaction() as connection:

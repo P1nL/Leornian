@@ -1,8 +1,9 @@
 import logging
 
-from leornian.agent_runtime.gateway import ChatCompletionsGateway, ModelProtocolError
+from leornian.agent_runtime.gateway import ModelProtocolError
 from leornian.agent_runtime.repository import Runs
 from leornian.bootstrap.item_supply import ItemSupply
+from leornian.bootstrap.model_configuration import configuration_scope, require_model_admission
 from leornian.bootstrap.python_execution import PythonWorkflow
 from leornian.bootstrap.supply_demand import SupplyWorkflow
 from leornian.bootstrap.transfer import TransferWorkflow
@@ -140,6 +141,12 @@ class AutomaticSupply:
                 task = tasks.lock(actor, initial["id"])
                 if task["status"] == "cancelled":
                     return 0
+                if task["origin_run_id"]:
+                    origin = Runs(connection).get(actor.id, task["origin_run_id"])
+                    if origin.cancel_requested or origin.status == "cancelled":
+                        tasks.cancel(actor, task["root_pack_id"])
+                        ItemSupply.event(connection, actor.id, task["root_pack_id"])
+                        return 1
                 pack_id = task["head_pack_id"]
                 digest = task["session_digest"]
                 packs = Packs(connection)
@@ -148,7 +155,15 @@ class AutomaticSupply:
                 tutor = Tutor(PgTutorStore(connection))
                 conversation = tutor.conversation(actor, plan.goal_id)
                 tutor.get(actor, conversation.id, lock=True)
-                _, _, materials = ItemSupply.current(connection, actor, pack)
+                if (
+                    pack["status"] == "published"
+                    and not pack["supply_demand_id"]
+                    and (not plan.active or plan.active.revision != pack["plan_revision"])
+                ):
+                    # A successor route does not reopen completed historical supply.
+                    self.state(connection, task, "completed", "published", delay=30)
+                    return 0
+                plan, node, materials = ItemSupply.current(connection, actor, pack)
                 pack = packs.row(actor, pack_id, lock=True)
                 if pack["status"] == "cancelled":
                     tasks.cancel(actor, pack_id)
@@ -159,11 +174,7 @@ class AutomaticSupply:
                     else None
                 )
                 if demand:
-                    origin = (
-                        demand["python_remediation_id"]
-                        if demand["kind"] == "python_io"
-                        else demand["remediation_id"]
-                    )
+                    origin = Transfers.origin_id(demand)
                     if Transfers(connection).passed_for(actor, origin, kind=demand["kind"]):
                         self.state(connection, task, "completed", "deliverable")
                         return 0
@@ -200,6 +211,23 @@ class AutomaticSupply:
                 if gate and gate["status"] in {"in_progress", "submitted"}:
                     self.state(connection, task, "waiting", "yield_exam", delay=1)
                     return 0
+                if pack["automation_error"] == "program_environment_unavailable":
+                    self.state(
+                        connection, task, "waiting", "recover",
+                        "program_environment_unavailable", delay=30,
+                    )
+                    return 0
+                if pack["status"] == "authoring" and not packs.stages(pack_id):
+                    if task["model_configuration_scope"] != "user":
+                        require_model_admission(self.settings)
+                    ItemSupply.schedule(
+                        connection, actor, conversation.id, digest, pack, "author",
+                        configuration_scope=(
+                            task["model_configuration_scope"] or configuration_scope(self.settings)
+                        ),
+                    )
+                    self.state(connection, task, "running", "generate")
+                    return 1
                 if pack["status"] == "ready":
                     _, changed = packs.publish(actor, pack_id)
                     self.state(
@@ -292,7 +320,8 @@ class AutomaticSupply:
                     or pending_error == "conflicting_review_verdicts"
                 )
                 if revise:
-                    ChatCompletionsGateway(self.settings).require_ready()
+                    if task["model_configuration_scope"] != "user":
+                        require_model_admission(self.settings)
                     findings = self.findings(
                         connection, actor, pack, gate_feedback, transfer_feedback
                     )
@@ -308,6 +337,7 @@ class AutomaticSupply:
                             instruction=pack["instruction"],
                             predecessor_id=pack_id,
                             kind=pack["kind"],
+                            program_environment=pack["program_environment"],
                             automatic=True,
                             gate_feedback_id=gate_feedback.gate_id if gate_feedback else None,
                             transfer_feedback_id=(
@@ -323,12 +353,28 @@ class AutomaticSupply:
                         transfer_feedback=transfer_feedback if not gate_feedback else None,
                         session_digest=digest,
                         recovery_reason=recovery_reason,
+                        material_context=ItemSupply.prepare_material_context(
+                            connection, actor, plan, node
+                        ),
                     )
-                    ItemSupply.schedule(connection, actor, conversation.id, digest, child, "author")
+                    ItemSupply.schedule(
+                        connection,
+                        actor,
+                        conversation.id,
+                        digest,
+                        child,
+                        "author",
+                        configuration_scope=(
+                            task["model_configuration_scope"] or configuration_scope(self.settings)
+                        ),
+                    )
                     ItemSupply.event(connection, actor.id, child["id"])
                     return 1
                 if pack["status"] == "reviewing" and not pending:
-                    if pack["kind"] == "python_io":
+                    if pack["kind"] in {
+                        "python_io", "sql_query", "python_project",
+                        "project_stdio", "web_project", "http_project",
+                    }:
                         PythonWorkflow.continue_review_in(connection, actor, pack, digest)
                         self.state(connection, task, "running", "review")
                         return 1

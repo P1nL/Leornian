@@ -1,9 +1,10 @@
 import json
 
 from leornian.agent_runtime.contracts import RoleSpec, TurnAccepted
-from leornian.agent_runtime.gateway import ChatCompletionsGateway, ModelProtocolError
+from leornian.agent_runtime.gateway import ModelProtocolError
 from leornian.agent_runtime.repository import Runs
 from leornian.bootstrap.item_supply import ItemSupply
+from leornian.bootstrap.model_configuration import configuration_scope, require_model_admission
 from leornian.delivery.contracts import EventPayload
 from leornian.delivery.events import Events
 from leornian.modules.assessment.gates import Gates
@@ -83,7 +84,7 @@ class EvaluationWorkflow:
             tutor.get(actor, conversation.id, lock=True)
             if Runs(connection).actor_active(actor.id):
                 raise BusinessError("run_active", "Learner-requested active work takes priority.")
-            ChatCompletionsGateway(self.settings).require_ready()
+            require_model_admission(self.settings)
             turn, _ = tutor.request_turn(
                 conversation.id,
                 "evaluation:" + str(row["id"]),
@@ -91,7 +92,12 @@ class EvaluationWorkflow:
                 "evaluation",
             )
             run = Runs(connection).create(
-                actor.id, conversation.id, turn.id, Identity.digest(token), "evaluation.v1"
+                actor.id,
+                conversation.id,
+                turn.id,
+                Identity.digest(token),
+                "evaluation.v1",
+                configuration_scope=configuration_scope(self.settings),
             )
             pack = Packs(connection).row(actor, row["pack_id"])
             Runs(connection).bind_sources(

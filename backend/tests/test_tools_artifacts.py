@@ -104,7 +104,9 @@ def finish_job(tutor, settings, jobs, token, job, reject=0, thinking=False):
 def test_registry_is_single_schema_source_and_roles_default_to_no_tools():
     assert RoleSpec(messages=[]).allowed_tools == ()
     for tool in REGISTRY.values():
-        assert tool.wire()["function"]["parameters"] == tool.arguments.model_json_schema()
+        assert tool.wire()["function"]["parameters"] == (
+            tool.wire_arguments or tool.arguments
+        ).model_json_schema()
     decision = Decision(
         tools=[
             ToolCall(

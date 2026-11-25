@@ -6,6 +6,7 @@ from uuid import uuid4
 import httpx
 import pytest
 from fastapi.testclient import TestClient
+from test_program_items import environment, item_document
 
 from leornian.agent_runtime.gateway import ChatCompletionsGateway
 from leornian.agent_runtime.loop import AgentLoop
@@ -13,6 +14,8 @@ from leornian.bootstrap.item_supply import ItemSupply
 from leornian.bootstrap.knowledge import KnowledgeWorkflow
 from leornian.bootstrap.tutor import TutorWorkflow
 from leornian.entrypoints.api import create_app
+from leornian.modules.identity.application import Identity
+from leornian.modules.identity.infrastructure import PgIdentityStore
 from leornian.modules.item_bank.supply import Packs
 from leornian.modules.item_bank.supply_contracts import (
     REVIEW_ROLES,
@@ -116,6 +119,59 @@ def supply_setup(database, workflow, session):
     plan = workflow.snapshot(session.token).plans[0]
     tutor.confirm_plan(session.token, plan.id, 1)
     return ItemSupply(database, settings), tutor, settings, plan, source
+
+
+@pytest.mark.parametrize(
+    ("kind", "role"),
+    [("sql_query", role) for role in (*REVIEW_ROLES, "author", "blind")]
+    + [("python_project", "technical")],
+)
+def test_execution_role_preserves_public_sample_and_typed_sql_contract(
+    database, supply_setup, session, kind, role,
+):
+    flow, _, _, plan, source = supply_setup
+    env = environment(kind)
+    accepted = flow.submit(
+        session.token,
+        plan.id,
+        str(uuid4()),
+        PackRequest(
+            expected_plan_revision=1,
+            node_key="loops",
+            instruction="One supported execution kind with a public sample.",
+            kind=kind,
+            program_environment=env,
+        ),
+    )
+    with database.transaction() as connection:
+        actor = Identity(PgIdentityStore(connection)).authenticate(session.token)
+        pack = Packs(connection).row(actor, accepted.pack_id)
+        pack["document"] = item_document(source, env)
+        pack["status"] = (
+            "authoring" if role == "author" else "blind_solving" if role == "blind" else "reviewing"
+        )
+        spec = ItemSupply.role(
+            connection, actor, pack, {"role": role, "run_id": accepted.run_id},
+        )
+    instruction = spec.messages[0]["content"]
+    context = json.loads(spec.messages[1]["content"])
+    if role in REVIEW_ROLES:
+        assert "the exact public sample; the other two cases stay private" in instruction
+        assert "not hidden-test disclosure" in instruction
+        assert "boundary coverage and remediation alignment" in instruction
+        if kind == "sql_query":
+            assert "sql-table.v1 stores non-null cells as strings" in instruction
+            assert "types matrix and canonical value together" in instruction
+            assert context["candidate"]["items"][0]["sample"] in (
+                context["candidate"]["items"][0]["tests"]
+            )
+    elif role == "author":
+        assert "the exact public sample and two private cases" in instruction
+    else:
+        assert "no private datasets/tests" in instruction
+        assert "private expected outputs" in instruction
+        assert "candidate" not in context
+        assert all("tests" not in question for question in context["questions"])
 
 
 def request_data(*, automatic=False, **overrides):
@@ -224,9 +280,18 @@ def test_pack_full_pipeline_public_only_blind_and_private_assessment(
     blind_payload = json.dumps(observed["blind"])
     assert "correct_key" not in blind_payload and "Private explanation" not in blind_payload
     assert "previous_document" not in blind_payload and "review_feedback" not in blind_payload
+    blind_context = json.loads(observed["blind"]["messages"][-1]["content"])
+    assert set(blind_context) == {"objective", "node_title", "questions"}
+    for role in ("author", *REVIEW_ROLES):
+        context = json.loads(observed[role]["messages"][-1]["content"])
+        assert context["requested_item_kind"] == "choice"
+        assert context["learner_instruction"] == request_data().instruction
     for role in REVIEW_ROLES:
         assert "review_feedback" not in json.dumps(observed[role])
         assert "selected_key" not in json.dumps(observed[role])
+        instruction = observed[role]["messages"][0]["content"]
+        assert "not a request for every artifact or format" in instruction
+        assert "never waives correctness" in instruction
     assert supply.get(session.token, accepted.pack_id).status == "ready"
     assert len(supply.get(session.token, accepted.pack_id).passed_roles) == 6
     published = supply.publish(session.token, accepted.pack_id)
@@ -269,6 +334,60 @@ def test_pack_full_pipeline_public_only_blind_and_private_assessment(
     assert "correct_key" not in snapshot.model_dump_json()
     assert "Private explanation for assessment" not in snapshot.model_dump_json()
     assert tutor.get(session.token, accepted.run_id).status == "succeeded"
+
+
+def test_question_bank_projects_generation_without_opening_private_or_practice_items(
+    database, session, workflow, supply_setup,
+):
+    supply, tutor, settings, plan, source = supply_setup
+    headers = {"Authorization": "Bearer " + session.token}
+    client = TestClient(create_app(settings))
+    index = f"/v1/plans/{plan.id}/question-bank"
+    assert client.get(index, headers=headers).json() == [{
+        "node_key": "loops", "plan_revision": 1, "title": "Loops", "position": 1, "packs": [],
+    }]
+    accepted = supply.submit(session.token, plan.id, str(uuid4()), request_data())
+    path = f"/v1/packs/{accepted.pack_id}/generation"
+    other = {"Authorization": "Bearer " + workflow.create_session("Another learner").token}
+    assert client.get(path, headers=other).status_code == 404
+    assert client.get(index, headers=other).status_code == 404
+    pending = client.get(path, headers=headers).json()
+    assert [(stage["role"], stage["status"]) for stage in pending["stages"]] == [
+        ("author", "queued"),
+    ]
+    run_model(tutor, settings, accepted.run_id, {
+        **document(source), "public_notes": ["从本节目标选取考点。", "private draft"],
+    })
+    run_model(tutor, settings, stages(database, accepted.pack_id)[-1]["run_id"], {
+        **blind(), "public_notes": ["按公开题面独立作答。"],
+    })
+    checked = review(False)
+    checked["items"][0]["reason"] = "Unreleased key and hidden tests must not be displayed."
+    run_model(tutor, settings, stages(database, accepted.pack_id)[-1]["run_id"], {
+        **checked, "public_notes": ["核对题目是否用到尚未学习的知识。"],
+    })
+    finish(database, supply_setup, accepted)
+    directory = client.get(index, headers=headers).json()
+    assert [pack["id"] for pack in directory[0]["packs"]] == [str(accepted.pack_id)]
+    response = client.get(path, headers=headers)
+    report = response.json()
+    assert report["status"] == "changes_required" and report["published_at"] is None
+    assert [stage["role"] for stage in report["stages"]] == ["author", "blind", *REVIEW_ROLES]
+    author, solver, curriculum = report["stages"][:3]
+    assert author["public_notes"] == ["从本节目标选取考点。"] and author["item_count"] == 5
+    assert solver["blind_passed"] and solver["public_notes"] == ["按公开题面独立作答。"]
+    assert curriculum["decisions"] == dict.fromkeys(SLOTS, "revise")
+    assert curriculum["public_notes"] == ["核对题目是否用到尚未学习的知识。"]
+    assert report["stages"][-1]["public_notes"] == []
+    for private in (
+        "private draft", "Unreleased key", "Private explanation", "selected_key", "correct_key",
+        "Iteration decision", "relationship_reason", "reasoning_content",
+    ):
+        assert private not in response.text
+    with database.transaction(snapshot=True) as connection:
+        assert not connection.execute(
+            "SELECT 1 FROM item_bank.exposures WHERE pack_id=%s", (accepted.pack_id,),
+        ).fetchone()
 
 
 def test_review_failure_keeps_all_six_reports_then_allows_one_real_revision(
@@ -434,7 +553,34 @@ def test_revision_has_new_document_new_blind_and_new_six_role_reports(
     value = document(source)
     value["items"][2]["prompt"] = "Changed task: diagnose which counter update is outside the loop."
     run_model(tutor, settings, child.run_id, value)
-    finish(database, supply_setup, child)
+    with database.transaction() as connection:
+        parent_document = connection.execute(
+            "SELECT document FROM item_bank.packs WHERE id=%s", (first.pack_id,),
+        ).fetchone()["document"]
+    observed = {}
+
+    def observe(role, request):
+        context = json.loads(request["messages"][-1]["content"])
+        observed[role] = context
+        if role in REVIEW_ROLES:
+            assert context["revision_baseline"] == {
+                "pack_id": str(first.pack_id), "revision": 1, "kind": "choice",
+                "document": parent_document,
+            }
+            assert context["revision_scope"] == {
+                "predecessor_id": str(first.pack_id), "automatic": False,
+                "instruction_inherited": True, "predecessor_published": False,
+            }
+            assert "not itself learner exposure" in request["messages"][0]["content"]
+            assert "not the revision baseline" in request["messages"][0]["content"]
+            assert "review_feedback" not in context and "blind_validation" not in context
+        else:
+            assert role == "blind"
+            assert "revision_baseline" not in context and "previous_document" not in context
+            assert "revision_scope" not in context
+
+    finish(database, supply_setup, child, observe=observe)
+    assert set(observed) == {"blind", *REVIEW_ROLES}
     assert supply.get(session.token, child.pack_id).status == "ready"
     assert supply.get(session.token, first.pack_id).status == "changes_required"
     parent_ids = {s["run_id"] for s in stages(database, first.pack_id)}

@@ -59,6 +59,24 @@ def test_changed_payload_is_not_accepted_under_the_same_key(workflow, session):
     assert len(workflow.snapshot(session.token).jobs) == 1
 
 
+def test_goal_request_receipt_is_read_only_and_actor_scoped(database, workflow, session):
+    client = TestClient(create_app(Settings(database_url=database.url)))
+    key = str(uuid4())
+    accepted = submit(workflow, session, key)
+    path = f"/v1/goal-requests/{key}"
+    headers = {"Authorization": f"Bearer {session.token}"}
+    before = workflow.snapshot(session.token)
+    assert client.get(path).status_code == 401
+    other = workflow.create_session("Other receipt reader")
+    assert client.get(path, headers={"Authorization": f"Bearer {other.token}"}).status_code == 404
+    assert client.get(f"/v1/goal-requests/{uuid4()}", headers=headers).status_code == 404
+    assert client.get(path, headers=headers).json()["job_id"] == str(accepted.job_id)
+    assert client.get(path, headers=headers).json()["job_id"] == str(accepted.job_id)
+    assert workflow.snapshot(session.token) == before
+    workflow.process_goal(event_id(database, accepted.job_id))
+    assert client.get(path, headers=headers).json()["job_id"] == str(accepted.job_id)
+
+
 def test_concurrent_duplicate_requests_and_messages(database, workflow, session):
     key = str(uuid4())
     with ThreadPoolExecutor(max_workers=4) as executor:

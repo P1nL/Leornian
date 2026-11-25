@@ -6,13 +6,16 @@ from concurrent.futures import ThreadPoolExecutor
 
 from pydantic import ValidationError
 
-from leornian.agent_runtime.tools import REGISTRY, ToolProblem
+from leornian.agent_runtime.tools import NODE_WEB_TOOL, REGISTRY, ToolProblem
 from leornian.bootstrap.artifacts import ArtifactWorkflow
+from leornian.bootstrap.learning_artifacts import LearningArtifactWorkflow
 from leornian.modules.assessment.gates import Gates
 from leornian.modules.identity.application import Identity
 from leornian.modules.identity.infrastructure import PgIdentityStore
 from leornian.modules.tutor.application import Tutor
 from leornian.modules.tutor.artifacts import Artifacts
+from leornian.modules.tutor.composition_catalog import component_directory
+from leornian.modules.tutor.contracts import TeachingFocus
 from leornian.modules.tutor.infrastructure import PgTutorStore
 from leornian.shared_kernel.errors import BusinessError
 
@@ -82,6 +85,95 @@ class ToolRouter:
         store = Artifacts(connection)
         if name == "learning_get_context":
             return self.context()
+        if name == NODE_WEB_TOOL:
+            return {"status": "rejected", "code": "lookup_requires_single_call",
+                    "next_action": "Call the targeted lookup separately from other tools."}
+        if name == "get_learning_component_contracts":
+            return {
+                "status": "completed", "schema_version": "learning_composition.v2",
+                "components": component_directory(args.names),
+            }
+        if name in {"get_execution_environments", "request_execution_environment"}:
+            from leornian.bootstrap.execution_environment_tools import ExecutionEnvironmentTools
+            from leornian.modules.execution.environment_contracts import EnvironmentDemandInput
+
+            focus = TeachingFocus(**self.focus)
+            if name == "get_execution_environments":
+                return ExecutionEnvironmentTools.snapshot_in(
+                    connection, actor, focus,
+                ).model_dump(mode="json")
+            data = EnvironmentDemandInput.model_validate(
+                args.model_dump(exclude={"command_key"}),
+            )
+            return ExecutionEnvironmentTools.request_in(
+                connection, actor, self.row, args.command_key, data, focus,
+            ).model_dump(mode="json")
+        if name in {"request_learning_program_supply", "get_learning_program_supply"}:
+            from leornian.bootstrap.practice_supply import PracticeSupply
+
+            focus = TeachingFocus(**self.focus)
+            return (
+                PracticeSupply.request_in(
+                    connection, actor, conversation, self.row, focus, args, tool=name,
+                )
+                if name == "request_learning_program_supply" else
+                PracticeSupply.status_in(connection, actor, self.row, focus, args, tool=name)
+            )
+        if name in {"request_learning_practice_supply", "get_learning_practice_supply"}:
+            from leornian.bootstrap.practice_supply import PracticeSupply
+
+            focus = TeachingFocus(**self.focus)
+            return (
+                PracticeSupply.request_in(connection, actor, conversation, self.row, focus, args)
+                if name == "request_learning_practice_supply"
+                else PracticeSupply.status_in(connection, actor, self.row, focus, args)
+            )
+        if name in {
+            "prepare_learning_composition", "prepare_learning_practice_composition",
+            "prepare_learning_template",
+            "prepare_learning_response_composition",
+            "prepare_learning_code_review_composition",
+            "prepare_learning_code_review_composition_v2",
+            "prepare_learning_program_composition",
+            "prepare_learning_assisted_composition",
+            "prepare_learning_hint_composition",
+            "prepare_learning_demo_composition",
+        }:
+            from leornian.bootstrap.compositions import CompositionWorkflow
+
+            return CompositionWorkflow.prepare_in(
+                connection, actor, self.row, args,
+                template=name == "prepare_learning_template",
+                practice=name in {
+                    "prepare_learning_practice_composition",
+                    "prepare_learning_response_composition",
+                    "prepare_learning_program_composition",
+                    "prepare_learning_assisted_composition",
+                    "prepare_learning_hint_composition",
+                },
+                responses=name == "prepare_learning_response_composition",
+                code_review=name in {
+                    "prepare_learning_code_review_composition",
+                    "prepare_learning_code_review_composition_v2",
+                },
+                review_reports=name == "prepare_learning_code_review_composition_v2",
+                programs=name == "prepare_learning_program_composition",
+                assisted=name == "prepare_learning_assisted_composition",
+                hints=name == "prepare_learning_hint_composition",
+                demos=name == "prepare_learning_demo_composition",
+            )
+        if name in {
+            "list_learning_artifact_candidates", "list_learning_response_candidates",
+            "list_learning_program_candidates",
+        }:
+            if self.row["tool_contracts"].get(name) != 1:
+                raise BusinessError("precondition_failed", "Run has no candidate-list capability.")
+            return LearningArtifactWorkflow.candidates_in(
+                connection, actor, conversation.id, TeachingFocus(**self.focus),
+                args.before, args.limit,
+                responses=name == "list_learning_response_candidates",
+                programs=name == "list_learning_program_candidates",
+            )
         if name == "list_artifacts":
             items = store.list(actor, conversation.goal_id, self.focus, args.before, args.limit)
             return {

@@ -124,11 +124,16 @@ def test_complete_native_turn_and_multiturn_history(database, workflow, session,
     assert json.loads(tool_message["content"])["goal"]["title"] == "Python file organizer"
     snapshot = workflow.snapshot(session.token)
     assert snapshot.turns[0].turns[0].assistant_text == "Learn pathlib, then list the files."
-    assert [event.event_type for event in snapshot.events][-4:] == [
+    assert [
+        event.event_type for event in snapshot.events if event.event_type != "tutor.thinking"
+    ][-4:] == [
         "tutor.queued",
         "tutor.running",
         "tutor.tool_completed",
         "tutor.succeeded",
+    ]
+    assert [step.kind for step in snapshot.turns[0].turns[0].thinking_steps] == [
+        "thinking", "tool", "thinking",
     ]
     records = calls(database, run.id)
     assert all(record["status"] == "result_recorded" and record["applied"] for record in records)

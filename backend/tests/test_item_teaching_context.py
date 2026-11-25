@@ -49,6 +49,12 @@ def test_author_and_review_get_delivered_teaching_but_blind_stays_public_only(
         actor = Identity(PgIdentityStore(connection)).authenticate(session.token)
         row = Packs(connection).row(actor, pack.id)
         role = ItemSupply.role(connection, actor, row, {"role": "curriculum"})
+        technical = ItemSupply.role(connection, actor, row, {"role": "technical"})
     review = json.loads(role.messages[1]["content"])
     assert review["delivered_learning_context"] == delivered
     assert "blind_answers" not in review and "review_feedback" not in review
+    assert role.messages[0] == technical.messages[0]
+    assert role.messages[1]["content"].split(',"review_role":')[0] == (
+        technical.messages[1]["content"].split(',"review_role":')[0]
+    )
+    assert review["review_focus"] != json.loads(technical.messages[1]["content"])["review_focus"]

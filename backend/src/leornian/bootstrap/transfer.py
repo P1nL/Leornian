@@ -2,17 +2,18 @@ import json
 
 from leornian.agent_runtime.contracts import RoleSpec
 from leornian.agent_runtime.gateway import (
-    ChatCompletionsGateway,
     ModelProtocolError,
     parse_decision,
 )
 from leornian.agent_runtime.repository import Runs
 from leornian.bootstrap.item_supply import ItemSupply
+from leornian.bootstrap.model_configuration import configuration_scope, require_model_admission
 from leornian.bootstrap.relation_batches import RelationBatches
 from leornian.delivery.contracts import EventPayload
 from leornian.delivery.events import Events
 from leornian.modules.assessment.choices import Choices
 from leornian.modules.assessment.gates import Gates
+from leornian.modules.assessment.programs import ProgramAssessment
 from leornian.modules.assessment.python_assessment import PythonAssessment
 from leornian.modules.assessment.remediation import Remediations
 from leornian.modules.assessment.transfer_contracts import (
@@ -24,6 +25,7 @@ from leornian.modules.assessment.transfers import Transfers
 from leornian.modules.execution.application import Execution
 from leornian.modules.identity.application import Identity
 from leornian.modules.identity.infrastructure import PgIdentityStore
+from leornian.modules.item_bank.contracts import PublicProgramQuestion
 from leornian.modules.item_bank.exposure import Exposures
 from leornian.modules.item_bank.python_contracts import PythonQuestion
 from leornian.modules.item_bank.supply import Packs
@@ -33,6 +35,7 @@ from leornian.modules.tutor.application import Tutor
 from leornian.modules.tutor.evaluations import Evaluations
 from leornian.modules.tutor.infrastructure import PgTutorStore
 from leornian.shared_kernel.errors import BusinessError
+from pydantic import TypeAdapter
 
 
 class TransferWorkflow:
@@ -65,13 +68,37 @@ class TransferWorkflow:
                 raise BusinessError(
                     "precondition_failed", "A failed execution remediation is required."
                 )
+            assessment.require_latest_training(actor, origin)
             failed_slots = {
                 row["slot"]
-                for row in assessment.for_pack(actor, origin["pack_id"], "training")
+                for row in assessment.latest_training(actor, origin["pack_id"])
                 if row["slot"].startswith("practice_") and row["status"] == "not_passed"
             }
             if not failed_slots:
                 raise BusinessError("precondition_failed", "No failed execution practice is bound.")
+            return origin["pack_id"], failed_slots
+        if kind in {
+            "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+        }:
+            assessment = ProgramAssessment(connection)
+            origin = assessment.row(actor, remediation_id)
+            if (
+                origin["purpose"] != "training" or origin["slot"] != "remediation_1"
+                or origin["status"] != "not_passed"
+            ):
+                raise BusinessError(
+                    "precondition_failed", "A failed program remediation is required.",
+                )
+            latest = assessment.latest(actor, origin["pack_id"], "remediation_1")
+            if not latest or latest["id"] != origin["id"]:
+                raise BusinessError("stale_version", "The exact latest remediation changed.")
+            failed_slots = {
+                slot for slot in ("practice_1", "practice_2")
+                if (row := assessment.latest(actor, origin["pack_id"], slot))
+                and row["status"] == "not_passed"
+            }
+            if not failed_slots:
+                raise BusinessError("precondition_failed", "No failed program practice is bound.")
             return origin["pack_id"], failed_slots
         remediation = Remediations(connection).get(actor, remediation_id)
         if remediation.status != "not_passed" or not remediation.transfer_required:
@@ -90,13 +117,11 @@ class TransferWorkflow:
             SupplyTasks(connection).for_transfer(actor, row["id"], lock=True)
         pack = Packs(connection).row(actor, row["source_pack_id"])
         ItemSupply.current(connection, actor, pack)
-        origin = (
-            row["python_remediation_id"] if row["kind"] == "python_io" else row["remediation_id"]
-        )
+        origin = Transfers.origin_id(row)
         source_id, _ = TransferWorkflow.need(connection, actor, origin, row["kind"])
         if source_id != pack["id"] or pack["kind"] != row["kind"]:
             raise BusinessError("precondition_failed", "Transfer origin changed.")
-        policy = "python-io-transfer.v1" if row["kind"] == "python_io" else "concept-transfer.v2"
+        policy = Transfers.policy(row["kind"])
         if row["policy_version"] != policy or row["context_data"][
             "teaching_context"
         ] != TransferWorkflow.teaching_context(connection, actor):
@@ -237,7 +262,7 @@ class TransferWorkflow:
                 raise BusinessError("precondition_failed", "No known invalid relation to repair.")
             current = {**row, "status": "preparing"}
             self.current(connection, actor, current)
-            ChatCompletionsGateway(self.settings).require_ready()
+            require_model_admission(self.settings)
             baseline = self.relation_baseline(runs, run["id"], row)
             content = None
             if call.status == "result_recorded":
@@ -272,6 +297,21 @@ class TransferWorkflow:
             Identity.digest(token), remediation_id, key, data, required_kind=required_kind
         )
 
+    def program_kind(self, token, remediation_id):
+        with self.database.transaction(snapshot=True) as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            origin = ProgramAssessment(connection).row(actor, remediation_id)
+            kind = Packs(connection).row(actor, origin["pack_id"])["kind"]
+            if kind not in {
+                "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+            }:
+                raise BusinessError("precondition_failed", "A program practice origin is required.")
+            return kind
+
+    def request_program(self, token, remediation_id, key, data):
+        kind = self.program_kind(token, remediation_id)
+        return self.request(token, remediation_id, key, data, required_kind=kind)
+
     def request_digest(
         self,
         digest,
@@ -295,11 +335,7 @@ class TransferWorkflow:
             transfers = Transfers(connection)
             previous = transfers.previous(actor, key)
             if previous:
-                origin = (
-                    previous["python_remediation_id"]
-                    if required_kind == "python_io"
-                    else previous["remediation_id"]
-                )
+                origin = Transfers.origin_id(previous)
                 if (origin, previous["plan_revision"], previous["kind"]) != (
                     remediation_id,
                     data.expected_plan_revision,
@@ -341,7 +377,7 @@ class TransferWorkflow:
             pairs.extend(
                 {"left": candidate["key"], "right": "teaching_context"} for candidate in candidates
             )
-            ChatCompletionsGateway(self.settings).require_ready()
+            require_model_admission(self.settings)
             row = transfers.create(
                 actor,
                 remediation_id,
@@ -373,6 +409,7 @@ class TransferWorkflow:
                 turn.id,
                 digest,
                 "transfer_relation.v1",
+                configuration_scope=configuration_scope(self.settings),
             )
             Runs(connection).bind_sources(
                 run.id,
@@ -408,8 +445,13 @@ class TransferWorkflow:
                 if item["pack_id"] == str(row["candidate_pack_id"])
                 and item["question"]["slot"] == row["candidate_slot"]
             )
-            schema = PythonQuestion if row["kind"] == "python_io" else PublicQuestion
-            question = schema.model_validate(selected["question"])
+            question = (
+                TypeAdapter(PublicProgramQuestion).validate_python(selected["question"])
+                if row["kind"] not in {"choice", "python_io"} else
+                (PythonQuestion if row["kind"] == "python_io" else PublicQuestion).model_validate(
+                    selected["question"],
+                )
+            )
         if row["result_id"]:
             receipt = Choices(connection).get(actor, row["result_id"])
             result = TransferFeedback(
@@ -426,6 +468,9 @@ class TransferWorkflow:
             )
             if row["python_result_id"]
             else None,
+            program_attempt=ProgramAssessment.transfer_public(
+                ProgramAssessment(connection).row(actor, row["program_result_id"]),
+            ) if row["program_result_id"] else None,
             allowed_actions=actions,
             blocked_reason=reason,
         )
@@ -434,6 +479,31 @@ class TransferWorkflow:
         with self.database.transaction() as connection:
             actor = Identity(PgIdentityStore(connection)).authenticate(token)
             return self.project(connection, actor, Transfers(connection).row(actor, transfer_id))
+
+    def request_receipt(self, token, key):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            row = Transfers(connection).previous(actor, key)
+            if not row:
+                raise BusinessError("not_found", "Transfer request has not been recorded.")
+            return Transfers.summary(row)
+
+    def action_receipt(self, token, transfer_id, action, key=None):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection)).authenticate(token)
+            row = Transfers(connection).row(actor, transfer_id)
+            recorded = (
+                bool(row["opened_at"]) if action == "open" else
+                row["status"] == "cancelled" if action == "cancel" else
+                row["submit_key"] == key and any(
+                    row[field] for field in (
+                        "result_id", "python_result_id", "program_result_id",
+                    )
+                )
+            )
+            if not recorded:
+                raise BusinessError("not_found", "This exact transfer action is not recorded.")
+            return self.project(connection, actor, row)
 
     def open(self, token, transfer_id):
         with self.database.transaction() as connection:
@@ -488,6 +558,42 @@ class TransferWorkflow:
             )
             Execution(connection).enqueue_python(actor, attempt["id"], Identity.digest(token))
             transfers.queue_python(transfer_id, key, attempt["id"])
+            self.event(connection, actor.id, row)
+            return self.project(connection, actor, transfers.row(actor, transfer_id))
+
+    def submit_program(self, token, transfer_id, key, data):
+        with self.database.transaction() as connection:
+            actor = Identity(PgIdentityStore(connection, serialize_actor=True)).authenticate(token)
+            transfers = Transfers(connection)
+            row = transfers.row(actor, transfer_id, lock=True)
+            if row["kind"] in {"choice", "python_io"}:
+                raise BusinessError("precondition_failed", "A program successor is required.")
+            assessment = ProgramAssessment(connection)
+            if row["program_result_id"]:
+                attempt = assessment.row(actor, row["program_result_id"])
+                if (
+                    row["submit_key"] != key
+                    or attempt["answer"] != data.answer.model_dump(mode="json")
+                ):
+                    raise BusinessError("idempotency_conflict", "The successor answer is locked.")
+                return self.project(connection, actor, row)
+            Gates(connection).require_no_exam(actor)
+            self.current(connection, actor, row)
+            if row["status"] != "opened":
+                raise BusinessError(
+                    "precondition_failed", "Open this exact program successor first.",
+                )
+            item = Packs(connection).transfer_material(
+                actor, row["candidate_pack_id"], row["candidate_slot"],
+            )
+            attempt, _ = assessment.create(
+                actor, row["candidate_pack_id"], item, data.answer, key, "transfer",
+                transfer_id=transfer_id,
+            )
+            Execution(connection).enqueue_program(
+                actor, attempt["id"], Identity.digest(token), attempt["environment"],
+            )
+            transfers.queue_program(transfer_id, key, attempt["id"])
             self.event(connection, actor.id, row)
             return self.project(connection, actor, transfers.row(actor, transfer_id))
 
