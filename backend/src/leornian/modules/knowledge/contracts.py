@@ -5,6 +5,48 @@ from uuid import UUID
 
 from pydantic import Field, field_validator
 
+from leornian.modules.knowledge.goal_coverage_contracts import (
+    MaterialGoalVerdict as MaterialGoalVerdict,
+)
+from leornian.modules.knowledge.intake_contracts import (
+    MaterialPreparedScope as MaterialPreparedScope,
+)
+from leornian.modules.knowledge.material_contracts import (
+    DocumentBlock as DocumentBlock,
+)
+from leornian.modules.knowledge.material_contracts import (
+    DocumentPage as DocumentPage,
+)
+from leornian.modules.knowledge.material_contracts import (
+    MaterialPurpose as MaterialPurpose,
+)
+from leornian.modules.knowledge.material_contracts import (
+    MaterialRef as MaterialRef,
+)
+from leornian.modules.knowledge.retrieval_contracts import (
+    MaterialSearchSource as MaterialSearchSource,
+)
+from leornian.modules.knowledge.source_contracts import (
+    MaterialDiscovery as MaterialDiscovery,
+)
+from leornian.modules.knowledge.source_contracts import (
+    MaterialSource as MaterialSource,
+)
+from leornian.modules.knowledge.source_contracts import (
+    MaterialSourceAction as MaterialSourceAction,
+)
+from leornian.modules.knowledge.source_contracts import (
+    MaterialSourceInput as MaterialSourceInput,
+)
+from leornian.modules.knowledge.source_contracts import (
+    MaterialSourceObservation as MaterialSourceObservation,
+)
+from leornian.modules.knowledge.update_contracts import (
+    MaterialUpdateDependency as MaterialUpdateDependency,
+)
+from leornian.modules.knowledge.update_contracts import (
+    MaterialUpdateImpact as MaterialUpdateImpact,
+)
 from leornian.shared_kernel.contracts import Contract
 
 
