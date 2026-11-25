@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leornian · 本机应用</title><link rel="stylesheet" href="local-setup.css">
+<script src="local-setup.js" defer></script></head>
+<body><main>
+<h1>准备你的本机学习空间</h1>
+<p>应用管理自己的后台和隔离任务。课程语言环境在学习时按需授权，不修改全局 SDK。</p>
+<dl><div><dt>应用后台</dt><dd id="application">正在读取</dd></div>
+<div><dt>本机隔离引擎</dt><dd id="engine">正在读取</dd></div>
+<div><dt>课程环境</dt><dd>进入应用后，查看真实需求并允许、稍后或拒绝安装。</dd></div></dl>
+<p id="message" role="status">正在启动本应用的专用本机服务。</p>
+<div class="actions"><button data-action="start">重新检查并启动</button>
+<button data-action="engine_start">启动已有隔离引擎</button>
+<button data-action="engine_guide">官方安装说明</button></div>
+<p class="note">首次安装隔离引擎需要你在系统安装器中明确允许权限与重启。关闭学习界面保留学习记录；停止服务会先清理本应用的隔离任务。</p>
+</main></body></html>

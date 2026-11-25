@@ -10,6 +10,7 @@
     "frontendDist": "../dist"
   },
   "app": {
+    "withGlobalTauri": true,
     "windows": [{ "title": "Leornian", "width": 1280, "height": 880, "minWidth": 760, "minHeight": 600 }],
     "security": {
       "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:8088 ipc: http://ipc.localhost; style-src 'self'; img-src 'self' data:"
