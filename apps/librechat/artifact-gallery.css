@@ -1,0 +1,54 @@
+.demo-gallery {
+  --demo-gallery-padding: clamp(16px, 4vw, 56px);
+  flex: 1; min-height: 0; overflow-y: auto; padding: 28px var(--demo-gallery-padding) 72px;
+  scrollbar-width: thin; scrollbar-color: rgb(var(--border-medium)) transparent;
+  background: rgb(var(--surface-primary));
+}
+.demo-gallery-shell[data-reader-docked=true] .demo-gallery {
+  --demo-gallery-content-width: min(1320px, calc(100cqw - var(--demo-reader-width) - 2 * var(--demo-gallery-padding)));
+}
+.demo-gallery-heading, .demo-gallery-index, .demo-gallery-content, .demo-gallery-toolbar {
+  width: 100%; max-width: var(--demo-gallery-content-width, 1320px); margin-inline: auto;
+}
+.demo-gallery h1 { font-size: 28px; font-weight: 600; line-height: 1.3; margin: 22px 0 8px; text-wrap: balance; }
+.demo-gallery p { max-width: 78ch; text-wrap: pretty; }
+.demo-gallery-back { display: inline-flex; align-items: center; gap: 8px; color: rgb(var(--text-secondary)); min-height: 36px; }
+.demo-gallery a { text-underline-offset: 4px; }
+.demo-gallery a:hover { text-decoration: underline; }
+.demo-gallery-guide { margin-bottom: 24px; }
+.demo-gallery code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap: anywhere; }
+.demo-gallery-toolbar {
+  position: sticky; top: -28px; z-index: 10; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px;
+  padding-block: 14px; border-block: 1px solid rgb(var(--border-light)); background: rgb(var(--surface-primary));
+}
+.demo-gallery-toolbar label { margin: 0; font-weight: 500; }
+.demo-gallery-toolbar select { width: auto; max-width: 100%; }
+.demo-gallery-index { padding-block: 22px 30px; border-bottom: 1px solid rgb(var(--border-light)); }
+.demo-gallery-index > div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 10px 20px; padding-block: 6px; }
+.demo-gallery-index > div > span { font-weight: 500; }
+.demo-gallery-index ul { display: flex; flex-wrap: wrap; gap: 4px 18px; list-style: none; padding: 0; margin: 0; }
+.demo-gallery-index a { display: inline-block; min-height: 30px; color: rgb(var(--text-secondary)); }
+.demo-gallery-group { padding-top: 36px; }
+.demo-gallery-group h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; font-size: 21px; font-weight: 600; margin: 0 0 22px; }
+.demo-gallery-group h2 code { color: rgb(var(--text-secondary)); font-size: .875rem; font-weight: 400; }
+.demo-gallery-example { scroll-margin-top: 100px; min-width: 0; padding-bottom: 32px; }
+.demo-gallery-example + .demo-gallery-example { padding-top: 12px; }
+.demo-gallery-example-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.demo-gallery-example-heading > span { font-size: .9375rem; font-weight: 500; }
+.demo-gallery-example-heading a { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; font-size: .875rem; color: rgb(var(--text-secondary)); margin-left: auto; }
+.demo-gallery-source { color: rgb(var(--text-secondary)); font-size: .875rem; }
+.demo-gallery-source .demo-disclosure-toggle { min-height: 30px; }
+.demo-gallery-text-action { color: rgb(var(--text-primary)); text-decoration: underline; text-underline-offset: 4px; padding: 4px; }
+.demo-gallery-text-action:hover { background: rgb(var(--surface-hover)); }
+.demo-gallery-view-switch { width: 100%; max-width: var(--demo-gallery-content-width, 1320px); margin: 0 auto 18px; }
+.demo-gallery-view-switch .demo-workbench-tabs { min-height: 48px; }
+.demo-component-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.demo-component-heading h3 { margin: 0; }
+.demo-component-stage { padding: 22px 0; min-width: 0; }
+.demo-component-example { border-bottom: 1px solid rgb(var(--border-light)); }
+.demo-component-stage > :first-child { margin-top: 0; }
+.demo-component-stage .demo-tab-panels-auto { margin-top: 14px; }
+.demo-component-preview { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: stretch; }
+.demo-component-preview > * { min-width: 0; }
+.demo-component-preview .demo-preview { height: 100%; min-height: 300px; }
+.demo-component-stage > .demo-code-field, .demo-component-stage > .demo-pre { max-width: 960px; }

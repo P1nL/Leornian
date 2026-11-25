@@ -1,0 +1,109 @@
+.learning-demo {
+  --demo-spring-ease: cubic-bezier(.22, 1.4, .36, 1);
+  --demo-success: #198754;
+}
+.learning-demo, .demo-motion-dialog, .demo-workbench-dialog {
+  --demo-button-spring: linear(0, .12 6%, .42 12%, .77 20%, 1.02 28%, 1.16 36%, 1.08 48%, .99 65%, .985 78%, 1);
+  --demo-button-spring-duration: 480ms;
+}
+.learning-demo button, .demo-motion-dialog button, .demo-workbench-dialog button {
+  transition: color .22s ease, background-color .22s ease, border-color .22s ease,
+    opacity .22s ease, box-shadow .22s ease;
+}
+.learning-demo button:not(.demo-motion-button):not([role=tab]) {
+  transition: color .22s ease, background-color .22s ease, border-color .22s ease,
+    opacity .22s ease, transform var(--demo-button-spring-duration) var(--demo-button-spring);
+}
+.learning-demo button:not(.demo-motion-button):not([role=tab]):active:not(:disabled) { transform: scale(.95); }
+.demo-motion-button { position: relative; isolation: isolate; }
+.learning-demo .demo-action.demo-motion-button { background: transparent; border-color: transparent; box-shadow: none; }
+/* Only the painted shell grows on hover; the content and hit area stay still. */
+.demo-motion-button::before {
+  content: ''; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
+  border: 1px solid var(--demo-action-stroke); border-radius: inherit;
+  background: var(--demo-action-fill); box-shadow: var(--demo-action-shadow, none);
+  transform: scale(1);
+  transition: transform var(--demo-button-spring-duration) var(--demo-button-spring),
+    background-color .22s ease, border-color .22s ease;
+}
+.demo-motion-button:active:not(:disabled)::before { transform: scale(.94); }
+@media (prefers-reduced-motion: no-preference) {
+  .demo-motion-button:hover:not(:disabled):not(:active):not([data-suppress-hover=true])::before { transform: scale(1.025); }
+}
+.learning-demo .demo-motion-button[data-important=true] { width: 42px; height: 42px; min-width: 42px; min-height: 42px; padding: 0; border-radius: 50%; gap: 0; }
+.demo-motion-button[data-completed=true] { opacity: 1; }
+.demo-command-symbol { display: inline-grid; place-items: center; position: relative; width: 20px; height: 20px; flex: 0 0 20px; }
+.demo-command-glyph { display: grid; place-items: center; width: 100%; height: 100%; position: absolute; inset: 0; }
+.demo-command-glyph > svg { display: block; width: 100%; height: 100%; }
+.demo-completion-disc { fill: var(--demo-success); }
+.demo-motion-button[data-important=true][data-completed=true] .demo-command-glyph { color: var(--demo-success); }
+.demo-motion-button[data-action-state=attention] .demo-command-glyph { color: #b7791f; }
+.demo-command-spinner { animation: demo-command-spin .85s linear infinite; }
+.demo-command-label { position: relative; display: inline-flex; align-items: center; min-height: 23px; line-height: 1; white-space: nowrap; perspective: 200px; }
+/* Center the CJK glyph ink, rather than its line box, against the SVG. */
+.demo-motion-button[data-important=true] .demo-command-label { transform: translateY(.085em); }
+.demo-label-words { display: inline-flex; align-items: center; position: relative; line-height: 1; }
+.demo-label-letter { display: inline-block; line-height: 1; transform-origin: 50% 75%; }
+.learning-demo .demo-action[data-suppress-hover=true]:hover { --demo-action-fill: rgb(var(--surface-primary)); }
+.demo-workbench-tabs button { position: relative; isolation: isolate; border-bottom-color: transparent; }
+.demo-workbench-tabs button[aria-selected=true] { border-bottom-color: transparent; }
+.demo-tab-indicator { position: absolute; inset: 3px 0 0; z-index: -1; background: rgb(var(--surface-hover)); border-radius: 6px 6px 0 0; border-bottom: 2px solid rgb(var(--text-primary)); pointer-events: none; }
+.demo-tab-panels { position: relative; flex: 1; min-height: 0; min-width: 0; overflow: hidden; }
+.demo-tab-panel { position: absolute; inset: 0; }
+.demo-tab-panel[aria-hidden=true] { pointer-events: none; }
+.demo-tab-panels-auto { flex: initial; overflow: clip; }
+.demo-tab-panels-auto > .demo-tab-panel[aria-hidden=false] { position: relative; }
+.demo-tab-panels-auto > .demo-tab-panel[aria-hidden=true] { visibility: hidden; }
+.demo-workbench-editor > .demo-tab-panels { height: 100%; }
+.demo-case-panels { min-height: 13rem; }
+.demo-case-panels > .demo-tab-panel { overflow-y: auto; }
+.demo-motion-stage[data-leaving=true] .demo-label-letter,
+.demo-motion-dialog[data-state=closed] .demo-label-letter { animation: demo-stage-fold .18s ease-in both; }
+@keyframes demo-stage-fold { to { opacity: 0; transform: translateY(-4px) rotateX(80deg) scaleX(.3); } }
+.demo-choice {
+  border: 1px solid transparent; border-radius: 8px; padding: 9px 11px;
+  transition: background-color .22s ease, border-color .22s ease;
+}
+.demo-choice:has(input:checked) { background: rgb(var(--surface-secondary)); border-color: rgb(var(--border-light)); }
+.demo-choice:has(input:disabled) { cursor: default; }
+.learning-demo input:is([type=checkbox], [type=radio]) {
+  appearance: none; position: relative; display: inline-grid; place-content: center;
+  width: 20px; height: 20px; flex: 0 0 20px; vertical-align: middle; margin-top: 3px;
+  background: rgb(var(--surface-primary)); border: 1.5px solid rgb(var(--text-secondary)); border-radius: 5px;
+  cursor: pointer; transition: background-color .22s ease, border-color .22s ease, transform .3s var(--demo-spring-ease), opacity .22s ease;
+}
+.learning-demo input[type=radio] { border-radius: 50%; border-width: 2px; }
+.learning-demo input[type=checkbox]:active:not(:disabled) { transform: scale(.85); }
+.learning-demo input:is([type=checkbox], [type=radio]):checked { border-color: rgb(var(--text-primary)); background: rgb(var(--text-primary)); }
+.learning-demo input:is([type=checkbox], [type=radio])::after {
+  content: ''; display: block; opacity: 0; transform: scale(.25);
+  transition: transform .32s var(--demo-spring-ease), opacity .18s ease;
+}
+.learning-demo input[type=checkbox]::after { width: 6px; height: 10px; border: solid rgb(var(--surface-primary)); border-width: 0 2px 2px 0; transform: translateY(-1px) rotate(45deg) scale(.25); }
+.learning-demo input[type=radio]::after {
+  position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
+  border-radius: 50%; background: rgb(var(--surface-primary));
+  transform: translate(-50%, -50%) scale(.25);
+}
+.learning-demo input[type=checkbox]:checked::after { opacity: 1; transform: translateY(-1px) rotate(45deg) scale(1); }
+.learning-demo input[type=radio]:checked::after { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.learning-demo input:is([type=checkbox], [type=radio]):disabled { cursor: not-allowed; opacity: .65; }
+.demo-step-value { transition: background-color .25s ease, border-color .25s ease; }
+.demo-step-highlight { position: absolute; inset: 0; z-index: -1; border: 1px solid rgb(var(--border-medium)); border-radius: inherit; background: rgb(var(--surface-hover)); pointer-events: none; }
+.demo-animated-copy { display: inline-grid; position: relative; min-width: 0; max-width: 100%; vertical-align: baseline; }
+.demo-animated-copy[data-block=true] { display: grid; }
+.demo-copy-layer { grid-area: 1 / 1; min-width: 0; }
+.demo-copy-layer[data-leaving=true] { position: absolute; inset: 0; pointer-events: none; }
+.demo-collapse { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .28s cubic-bezier(.22, 1, .36, 1), opacity .18s ease; }
+.demo-collapse[data-open=true] { grid-template-rows: 1fr; opacity: 1; }
+.demo-collapse-clip { min-height: 0; overflow: hidden; }
+.demo-collapse-content { padding-block: 8px 2px; }
+.demo-disclosure-toggle { display: flex; align-items: center; gap: 7px; width: 100%; text-align: left; font: inherit; font-weight: 500; line-height: 1.5; padding-block: 3px; }
+.demo-disclosure-toggle > svg { flex: 0 0 16px; transition: transform .25s cubic-bezier(.22, 1, .36, 1); }
+.demo-disclosure-toggle[aria-expanded=true] > svg { transform: rotate(90deg); }
+.learning-demo .demo-disclosure-toggle:active:not(:disabled) { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .learning-demo *, .learning-demo *::before, .learning-demo *::after { animation: none !important; transition-duration: .01ms !important; }
+  .learning-demo button:active:not(:disabled), .learning-demo input:active:not(:disabled) { transform: none !important; }
+  .demo-motion-button::before { transform: none !important; }
+}

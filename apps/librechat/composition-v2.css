@@ -1,0 +1,39 @@
+.learning-composition-v2 {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.learning-composition-v2[data-layout="split"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.learning-composition-node { min-width: 0; }
+.learning-composition-node:empty { display: none; }
+.demo-artifact-body:has(> .learning-composition-v2 > .learning-composition-code-workbench) { padding: 8px; }
+.learning-composition-code-workbench { grid-column: 1 / -1; }
+.learning-composition-code-workbench .learning-composition-workbench-editor {
+  height: 100%;
+  min-height: 0;
+}
+.learning-composition-preview { grid-column: 1 / -1; }
+.learning-composition-preview .demo-html-editor-panel > .learning-composition-node {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.learning-composition-preview .demo-html-editor-panel .demo-code-field {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+.learning-composition-preview .demo-html-workbench-stacked {
+  display: grid;
+  gap: 12px;
+  height: auto;
+}
+.learning-composition-preview .demo-html-workbench-stacked > .demo-workbench-pane {
+  height: clamp(340px, 50vh, 480px);
+}
+.learning-composition-preview .demo-html-workbench-stacked > .demo-html-result {
+  height: clamp(280px, 45vh, 420px);
+}
