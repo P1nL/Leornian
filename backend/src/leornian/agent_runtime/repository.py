@@ -8,6 +8,7 @@ from psycopg.types.json import Jsonb
 
 from leornian.agent_runtime.contracts import Lease, Receipt, Run, StoredCall, ToolActivity
 from leornian.agent_runtime.tools import LEGACY_TOOLS, contracts
+from leornian.agent_runtime.visible_thinking import VisibleThinking
 from leornian.shared_kernel.errors import BusinessError
 
 RUN_COLUMNS = (
@@ -18,6 +19,7 @@ RUN_COLUMNS = (
     "WHEN 'transfer_relation.v1' THEN 'transfer' "
     "WHEN 'evaluation.v1' THEN 'evaluation' "
     "WHEN 'artifact.v1' THEN 'artifact' "
+    "WHEN 'material_check.v1' THEN 'material_check' "
     "ELSE 'item_supply' END AS purpose, "
     "(SELECT count(*) FROM runtime.tool_invocations t WHERE t.run_id = r.id) AS tool_count, "
     "((r.status = 'blocked_unknown' OR (r.status='failed' "
@@ -40,12 +42,14 @@ class Runs:
         digest: str,
         policy_version: str = "tutor.v1",
         tools: tuple[str, ...] | None = None,
+        configuration_scope: str = "user",
+        frozen_tools: dict | None = None,
     ) -> Run:
         run_id = uuid4()
         self.connection.execute(
             "INSERT INTO runtime.runs(id, actor_id, scope_id, input_ref, "
-            "session_digest, policy_version, tool_contracts) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            "session_digest, policy_version, tool_contracts, model_configuration_scope) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
             (
                 run_id,
                 actor_id,
@@ -54,7 +58,7 @@ class Runs:
                 digest,
                 policy_version,
                 Jsonb(
-                    contracts(
+                    frozen_tools if frozen_tools is not None else contracts(
                         tools
                         if tools is not None
                         else LEGACY_TOOLS
@@ -62,10 +66,23 @@ class Runs:
                         else ()
                     )
                 ),
+                configuration_scope,
             ),
         )
         self.connection.execute("INSERT INTO runtime.wakeups(run_id) VALUES (%s)", (run_id,))
         return self.get(actor_id, run_id)
+
+    def configuration_scope(self, run_id):
+        return self.connection.execute(
+            "SELECT model_configuration_scope FROM runtime.runs WHERE id=%s", (run_id,)
+        ).fetchone()["model_configuration_scope"]
+
+    def admission_snapshot(self, actor_id, run_id):
+        return self.connection.execute(
+            "SELECT actor_id,scope_id,input_ref,session_digest,policy_version,"
+            "model_configuration_scope,tool_contracts FROM runtime.runs "
+            "WHERE id=%s AND actor_id=%s", (run_id, actor_id),
+        ).fetchone()
 
     def calibration(self, endpoint, model, stage):
         rows = self.connection.execute(
@@ -105,6 +122,13 @@ class Runs:
         ).fetchone()
         return self.get(actor_id, row["id"])
 
+    def turn_run_ids(self, actor_id: UUID, conversation_id: UUID) -> dict[UUID, UUID]:
+        rows = self.connection.execute(
+            "SELECT id,input_ref FROM runtime.runs WHERE actor_id=%s AND scope_id=%s",
+            (actor_id, conversation_id),
+        ).fetchall()
+        return {row["input_ref"]: row["id"] for row in rows}
+
     def active(self, conversation_id: UUID) -> bool:
         return (
             self.connection.execute(
@@ -114,6 +138,14 @@ class Runs:
             ).fetchone()
             is not None
         )
+
+    def foreground(self, actor_id, conversation_id):
+        row = self.connection.execute(
+            "SELECT id FROM runtime.runs WHERE actor_id=%s AND scope_id=%s "
+            "AND status IN ('queued','running','blocked_unknown') LIMIT 1",
+            (actor_id, conversation_id),
+        ).fetchone()
+        return self.get(actor_id, row["id"]) if row else None
 
     def actor_active(self, actor_id):
         return (
@@ -201,6 +233,33 @@ class Runs:
             ]
         return history
 
+    def visible_thinking(self, actor_id: UUID, turn_ids: list[UUID]) -> dict[str, str]:
+        """Read old accepted authors through the same filter, without replaying calls."""
+        if not turn_ids:
+            return {}
+        rows = self.connection.execute(
+            "SELECT DISTINCT ON (r.input_ref) r.input_ref,c.response_body,c.request "
+            "FROM runtime.runs r JOIN runtime.external_calls c ON c.run_id=r.id "
+            "WHERE r.actor_id=%s AND r.input_ref=ANY(%s) AND r.status='succeeded' "
+            "AND c.status='result_recorded' AND c.applied AND c.response_body IS NOT NULL "
+            "AND COALESCE(c.policy_snapshot->>'stage',r.policy_version) "
+            "IN ('tutor.v1','planner.v1') ORDER BY r.input_ref,c.step DESC",
+            (actor_id, turn_ids),
+        ).fetchall()
+        result = {}
+        for row in rows:
+            message = json.loads(row["response_body"])["choices"][0]["message"]
+            text = message.get("reasoning_content")
+            if not isinstance(text, str):
+                continue
+            parts = []
+            thinking = VisibleThinking(parts.append, messages=row["request"].get("messages", ()))
+            thinking.feed(text)
+            thinking.finish()
+            if parts:
+                result[str(row["input_ref"])] = "".join(parts)
+        return result
+
     def bind_sources(self, run_id: UUID, refs: list[dict]) -> None:
         self.connection.execute(
             "UPDATE runtime.runs SET context_refs = %s WHERE id = %s",
@@ -264,6 +323,32 @@ class Runs:
         )
         return self.latest(run_id)
 
+    def prepare_operation(self, actor_id, operation_ref, endpoint, request, policy, manifest):
+        self.connection.execute(
+            "INSERT INTO runtime.external_calls"
+            "(id,actor_id,operation_ref,step,status,endpoint,request,"
+            "policy_snapshot,context_manifest) "
+            "VALUES (%s,%s,%s,1,'prepared',%s,%s,%s,%s)",
+            (
+                uuid4(),
+                actor_id,
+                operation_ref,
+                endpoint,
+                Jsonb(request),
+                Jsonb(policy),
+                Jsonb(manifest),
+            ),
+        )
+        return self.operation(operation_ref)
+
+    def operation(self, operation_ref):
+        row = self.connection.execute(
+            "SELECT id,step,status,endpoint,request,response_body,http_status,applied,"
+            "policy_snapshot,context_manifest FROM runtime.external_calls WHERE operation_ref=%s",
+            (operation_ref,),
+        ).fetchone()
+        return StoredCall(**row) if row else None
+
     def dispatch(self, call_id: UUID) -> bool:
         return (
             self.connection.execute(
@@ -272,6 +357,12 @@ class Runs:
                 (call_id,),
             ).fetchone()
             is not None
+        )
+
+    def skip_prepared(self, call_id):
+        self.connection.execute(
+            "UPDATE runtime.external_calls SET status='not_sent' WHERE id=%s AND status='prepared'",
+            (call_id,),
         )
 
     def record(
@@ -304,7 +395,8 @@ class Runs:
             else "unknown"
         )
         self.connection.execute(
-            "UPDATE runtime.external_calls SET status = %s, response_body = %s, http_status = %s, "
+            "UPDATE runtime.external_calls SET status = %s, response_body = "
+            "CASE WHEN request->>'content_purged'='true' THEN NULL ELSE %s END, http_status = %s, "
             "provider_request_id = %s, usage = %s, finish_reason=%s, "
             "recorded_at = now(), error_code = NULL "
             "WHERE id = %s AND status IN ('dispatching', 'unknown')",
@@ -317,6 +409,37 @@ class Runs:
                 finish_reason,
                 call_id,
             ),
+        )
+
+    def forget_operation_content(self, operation_ids):
+        self.connection.execute(
+            "UPDATE runtime.external_calls SET request=jsonb_build_object("
+            "'model',request->'model','content_purged',true),response_body=NULL "
+            "WHERE operation_ref=ANY(%s)", (operation_ids,),
+        )
+
+    def forget_run_content(self, run_ids):
+        self.connection.execute(
+            "UPDATE runtime.external_calls SET request=jsonb_build_object("
+            "'model',request->'model','content_purged',true),response_body=NULL,"
+            "context_manifest=jsonb_build_object('content_purged',true),"
+            "status=CASE WHEN status='prepared' THEN 'not_sent' "
+            "WHEN status='dispatching' THEN 'unknown' ELSE status END "
+            "WHERE run_id=ANY(%s)", (run_ids,),
+        )
+        self.connection.execute(
+            "UPDATE runtime.runs SET messages='[]',context_refs='[]',repair_base_messages=NULL,"
+            "cancel_requested=cancel_requested OR status NOT IN ('succeeded','failed','cancelled'),"
+            "status=CASE WHEN status IN ('succeeded','failed','cancelled') THEN status "
+            "ELSE 'cancelled' END,completed_at=COALESCE(completed_at,now()) "
+            "WHERE id=ANY(%s)", (run_ids,),
+        )
+
+    def cancel_operations(self, operation_ids):
+        self.connection.execute(
+            "UPDATE runtime.external_calls SET status=CASE WHEN status='prepared' "
+            "THEN 'not_sent' ELSE 'unknown' END WHERE operation_ref=ANY(%s) "
+            "AND status IN ('prepared','dispatching')", (operation_ids,),
         )
 
     def call_run(self, call_id: UUID) -> UUID:
@@ -335,21 +458,22 @@ class Runs:
     def tool(
         self,
         run_id: UUID,
-        call: StoredCall,
+        call_id: UUID,
         tool,
         result: dict,
         *,
         outcome="completed",
         duration_ms=0,
-    ) -> None:
+    ) -> UUID:
+        activity_id = uuid4()
         self.connection.execute(
             "INSERT INTO runtime.tool_invocations(id, run_id, external_call_id, provider_tool_id, "
             "name, arguments, result,outcome,duration_ms) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s,%s,%s)",
             (
-                uuid4(),
+                activity_id,
                 run_id,
-                call.id,
+                call_id,
                 tool.id,
                 tool.name,
                 Jsonb(tool.arguments),
@@ -358,6 +482,7 @@ class Runs:
                 duration_ms,
             ),
         )
+        return activity_id
 
     def applied(self, call_id: UUID) -> None:
         self.connection.execute(
@@ -369,6 +494,22 @@ class Runs:
             "SELECT count(*) AS count FROM runtime.tool_invocations WHERE run_id = %s",
             (run_id,),
         ).fetchone()["count"]
+
+    def tool_outputs(self, run_id, name):
+        return [
+            row["result"] for row in self.connection.execute(
+                "SELECT result FROM runtime.tool_invocations WHERE run_id=%s AND name=%s "
+                "ORDER BY created_at,id",
+                (run_id, name),
+            ).fetchall()
+        ]
+
+    def tool_results(self, run_id):
+        return self.connection.execute(
+            "SELECT t.name,t.result FROM runtime.tool_invocations t "
+            "JOIN runtime.external_calls c ON c.id=t.external_call_id WHERE t.run_id=%s "
+            "ORDER BY c.step,t.created_at,t.id", (run_id,),
+        ).fetchall()
 
     def activities(self, actor_id, run_id=None):
         return [

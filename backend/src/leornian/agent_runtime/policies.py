@@ -3,6 +3,7 @@
 import json
 import math
 from typing import Any
+from urllib.parse import urlsplit
 
 from leornian.shared_kernel.errors import BusinessError
 
@@ -18,6 +19,8 @@ STAGES = {
     "evaluation.v1": (6000, 180),
     "delivery_review.v1": (8192, 300),
     "artifact.v1": (12000, 600),
+    "material_check.v1": (8192, 300),
+    "material_review.v1": (8192, 300),
 }
 
 
@@ -50,13 +53,17 @@ def resolve_policy(settings, role, capability: dict) -> dict:
     thinking = overrides.get(role.policy_version, fallback)
     if thinking not in {None, "enabled", "disabled"}:
         raise BusinessError("model_unavailable", "Unsupported thinking configuration.")
+    if settings.model_output_budget_multiplier < 1:
+        raise BusinessError("model_unavailable", "Output budget multiplier must be positive.")
     base, timeout = STAGES[role.policy_version]
-    final_target = min(base * role.output_multiplier, maximum)
+    final_target = min(
+        base * settings.model_output_budget_multiplier * role.output_multiplier, maximum
+    )
     output = maximum if thinking == "enabled" else final_target
     margin = max(256, math.ceil(window * 0.005))
     if final_target + margin >= window:
         raise BusinessError("model_unavailable", "Output reservation cannot fit this channel.")
-    return {
+    policy = {
         "version": "stage-policy.v2",
         "stage": role.policy_version,
         "model": settings.model_name,
@@ -78,6 +85,19 @@ def resolve_policy(settings, role, capability: dict) -> dict:
         "response_bytes": max(256000, output * 32),
         "capability_source": capability.get("source", "operator"),
     }
+    if role.policy_version == "delivery_review.v1" and (
+        scope := role.context_manifest.get("review_scope")
+    ) in {"full", "operation_impact"}:
+        policy["review_scope"] = scope
+    if (
+        thinking == "enabled"
+        and (role.policy_version == "material_check.v1" or
+             policy.get("review_scope") == "operation_impact")
+        and urlsplit(settings.model_base_url).hostname == "api.deepseek.com"
+        and settings.model_name in {"deepseek-flash", "deepseek-v4-pro"}
+    ):
+        policy["reasoning_effort"] = "low"
+    return policy
 
 
 def allocate_output(request: dict, policy: dict) -> dict:

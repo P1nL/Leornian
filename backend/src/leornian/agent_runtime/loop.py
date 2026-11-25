@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Protocol
 from uuid import UUID
 
@@ -28,6 +29,7 @@ class RuntimePort(Protocol):
     def dispatch(self, lease: Lease, call_id: UUID) -> bool: ...
     def record(self, call_id: UUID, receipt=None, *, unknown: bool = False) -> None: ...
     def apply(self, lease: Lease, call: StoredCall, decision: Decision) -> bool: ...
+    def apply_web_lookup(self, lease: Lease, call: StoredCall) -> bool: ...
     def fail(self, lease: Lease, code: str) -> None: ...
     def block_unknown(self, lease: Lease) -> None: ...
 
@@ -49,6 +51,13 @@ class AgentLoop:
                 if role is None:
                     return
                 call = self.port.latest(lease)
+                gateway = (
+                    self.port.gateway_for(lease, role, call, self.gateway)
+                    if hasattr(self.port, "gateway_for")
+                    else self.gateway
+                )
+                if gateway is None:
+                    return
                 if call is None or call.applied:
                     supply = role.policy_version.startswith("item_") or (
                         role.policy_version == "transfer_relation.v1"
@@ -60,32 +69,33 @@ class AgentLoop:
                         call
                         and call.applied
                         and call.policy_snapshot
+                        and not call.context_manifest.get("node_web_lookup")
                         and role.messages
                         and role.messages[-1]["role"] == "tool"
                     ):
                         # Finish the tool turn under its original protocol/channel policy.
                         policy = dict(call.policy_snapshot)
                     elif (
-                        self.gateway.settings.delivery_enabled
-                        or self.gateway.settings.model_thinking == "enabled"
-                        or self.gateway.settings.model_stage_thinking.strip() not in {"", "{}"}
+                        gateway.settings.delivery_enabled
+                        or gateway.settings.model_thinking == "enabled"
+                        or gateway.settings.model_stage_thinking.strip() not in {"", "{}"}
                     ):
-                        policy = self.gateway.policy(role)
+                        policy = gateway.policy(role)
                     else:
                         policy = None
                     if policy:
                         policy["estimator_factor"] = self.port.token_calibration(
-                            self.gateway.endpoint,
-                            self.gateway.settings.model_name,
+                            gateway.endpoint,
+                            gateway.settings.model_name,
                             role.policy_version,
                         )
-                    request = self.gateway.request(
+                    request = gateway.request(
                         role.messages,
                         require_tool=call is None
                         and bool(role.allowed_tools)
                         and role.require_initial_tool,
                         allowed_tools=role.allowed_tools,
-                        json_output=role.policy_version != "tutor.v1"
+                        json_output=(role.json_output or role.policy_version != "tutor.v1")
                         and not bool(role.allowed_tools),
                         policy=policy,
                         optional_history=role.optional_history,
@@ -109,22 +119,36 @@ class AgentLoop:
                             if pair[0] in request["messages"]
                         ],
                     }
+                    if gateway.model_binding:
+                        manifest["model_binding"] = gateway.model_binding
+                    if call and call.status == "not_sent":
+                        manifest["replaces_unsent_call_id"] = str(call.id)
                     if policy:
                         policy["estimated_input_tokens"] = estimate_tokens(request)
-                    call = self.port.prepare(
-                        lease, self.gateway.endpoint, request, policy, manifest
-                    )
+                    call = self.port.prepare(lease, gateway.endpoint, request, policy, manifest)
                 if call is None:
                     return
+                lookup = bool(call.context_manifest.get("node_web_lookup"))
                 if call.status == "prepared":
-                    self.gateway.check_destination(call.endpoint, call.request)
+                    gateway.check_destination(call.endpoint, call.request)
                     if not self.port.dispatch(lease, call.id):
                         return
+                    if hasattr(self.port, "model_progress"):
+                        gateway.progress_callback = partial(
+                            self.port.model_progress, lease, role.policy_version,
+                        )
+                    gateway.thinking_callback = (
+                        partial(self.port.model_thinking, lease, role.policy_version)
+                        if hasattr(self.port, "model_thinking")
+                        and not lookup
+                        and role.policy_version in {"planner.v1", "tutor.v1"}
+                        else None
+                    )
                     with maintain_lease(
-                        self.port, lease, self.gateway.settings.heartbeat_seconds
+                        self.port, lease, gateway.settings.heartbeat_seconds
                     ) as lost:
                         try:
-                            receipt = self.gateway.send(
+                            receipt = gateway.send(
                                 call.endpoint, call.request, policy=call.policy_snapshot or None
                             )
                         except DeliveryUnknown:
@@ -139,6 +163,10 @@ class AgentLoop:
                 if call.status in {"dispatching", "unknown"}:
                     self.port.block_unknown(lease)
                     return
+                if lookup and call.status in {"result_recorded", "failed_known"}:
+                    if self.port.apply_web_lookup(lease, call):
+                        self.port.yield_run(lease)
+                    return
                 if call.status == "failed_known":
                     self.port.fail(lease, "provider_rejected")
                     return
@@ -147,7 +175,8 @@ class AgentLoop:
                 decision = parse_decision(
                     call.response_body,
                     max_chars=call.policy_snapshot.get("response_bytes", 16000),
-                    thinking_tools=call.request.get("thinking") == {"type": "enabled"}
+                    thinking_tools=(call.request.get("thinking") == {"type": "enabled"}
+                        or call.request.get("enable_thinking") is True)
                     and bool(call.request.get("tools")),
                     recover_arguments=role.recover_tool_errors,
                 )

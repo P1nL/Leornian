@@ -23,6 +23,43 @@ def test_malformed_model_bodies_are_known_validation_failures(body):
         parse_decision(body)
 
 
+def test_completed_thinking_with_whitespace_final_has_a_specific_known_error():
+    body = json.dumps({"choices": [{
+        "message": {
+            "role": "assistant", "content": " " * 545,
+            "reasoning_content": "owned-private-reasoning",
+        },
+        "finish_reason": "stop",
+    }]})
+    with pytest.raises(ModelProtocolError) as error:
+        parse_decision(body)
+    assert error.value.code == "empty_model_response"
+    assert "owned-private-reasoning" not in str(error.value)
+
+
+def test_json_output_guidance_preserves_thinking_and_does_not_mutate_source_messages():
+    settings = Settings(
+        model_enabled=True, model_base_url="https://provider.invalid/v1",
+        model_name="owned-test", model_api_key="owned-secret", model_thinking="enabled",
+    )
+    messages = [
+        {"role": "system", "content": "Return the required object."},
+        {"role": "user", "content": "Collect my learning requirements."},
+    ]
+    role = RoleSpec(policy_version="planner.v1", allowed_tools=(), messages=messages)
+    policy = resolve_policy(settings, role, {"context_window": 128000, "max_output_tokens": 32768})
+    gateway = ChatCompletionsGateway(settings)
+    for _ in range(2):
+        wire = gateway.request(
+            messages, require_tool=False, allowed_tools=(), json_output=True, policy=policy,
+        )
+        assert wire["thinking"] == {"type": "enabled"}
+        assert wire["response_format"] == {"type": "json_object"}
+        assert wire["messages"][0]["content"].count("Final output contract:") == 1
+        assert "never just whitespace" in wire["messages"][0]["content"]
+    assert messages[0]["content"] == "Return the required object."
+
+
 def test_gateway_does_not_follow_redirects_or_retry_transport_errors():
     settings = Settings(
         model_enabled=True,
@@ -122,6 +159,43 @@ def test_stage_thinking_override_is_frozen_in_policy_and_does_not_change_legacy_
     )
 
 
+@pytest.mark.parametrize("stage,manifest", [
+    ("material_check.v1", {}), ("delivery_review.v1", {"review_scope": "operation_impact"}),
+])
+def test_scoped_deepseek_checks_use_low_effort_without_lowering_capacity(stage, manifest):
+    settings = Settings(
+        model_enabled=True, model_base_url="https://api.deepseek.com",
+        model_name="deepseek-flash", model_api_key="owned-secret", model_thinking="enabled",
+    )
+    capability = {"context_window": 1048576, "max_output_tokens": 393216}
+    role = RoleSpec(policy_version=stage, context_manifest=manifest, allowed_tools=(), messages=[])
+    policy = resolve_policy(settings, role, capability)
+    gateway = ChatCompletionsGateway(replace(settings, model_thinking="disabled"))
+    wire = gateway.request(
+        [{"role": "user", "content": "Check the supplied evidence."}],
+        require_tool=False, allowed_tools=(), json_output=True, policy=policy,
+    )
+    assert wire["thinking"] == {"type": "enabled"}
+    assert wire["reasoning_effort"] == policy["reasoning_effort"] == "low"
+    assert wire["max_tokens"] == policy["model_max_output_tokens"] == 393216
+    assert "reasoning_effort" not in resolve_policy(
+        settings, RoleSpec(policy_version="planner.v1", messages=[]), capability,
+    )
+    assert "reasoning_effort" not in resolve_policy(
+        settings, RoleSpec(policy_version="delivery_review.v1", messages=[]), capability,
+    )
+    assert "reasoning_effort" not in resolve_policy(
+        replace(settings, model_base_url="https://provider.invalid/v1"), role, capability,
+    )
+    assert "reasoning_effort" not in resolve_policy(
+        replace(settings, model_thinking="disabled"), role, capability,
+    )
+    legacy = {key: value for key, value in policy.items() if key != "reasoning_effort"}
+    assert "reasoning_effort" not in gateway.request(
+        role.messages, require_tool=False, allowed_tools=(), policy=legacy,
+    )
+
+
 @pytest.mark.parametrize(
     "stage",
     ["tutor.v1", "planner.v1", "lesson.v1", "delivery_review.v1", "evaluation.v1"],
@@ -218,6 +292,127 @@ def test_thinking_output_uses_remaining_window_not_the_stage_body_reservation():
         policy["calibrated_input_tokens"] + wire["max_tokens"] + policy["estimate_margin"] == 40000
     )
     assert estimate_tokens(wire) * 1.1 <= policy["input_limit"]
+
+
+@pytest.mark.parametrize(
+    ("stage", "target", "timeout"),
+    [
+        ("tutor.v1", 65536, 300),
+        ("planner.v1", 65536, 300),
+        ("lesson.v1", 48000, 600),
+        ("item_author.v1", 65536, 600),
+        ("item_blind.v1", 65536, 600),
+        ("item_review.v1", 32768, 300),
+        ("gate_relation.v1", 32768, 300),
+        ("transfer_relation.v1", 32768, 300),
+        ("evaluation.v1", 24000, 180),
+        ("delivery_review.v1", 32768, 300),
+        ("artifact.v1", 48000, 600),
+    ],
+)
+def test_explicit_512k_budget_scales_stage_output_and_derived_limits(stage, target, timeout):
+    policy = resolve_policy(
+        Settings(
+            model_output_budget_multiplier=4, model_thinking="", model_stage_thinking="{}"
+        ),
+        RoleSpec(policy_version=stage, messages=[]),
+        {"context_window": 512000, "max_output_tokens": 131072},
+    )
+    assert policy["final_output_target_tokens"] == policy["max_output_tokens"] == target
+    assert policy["model_max_output_tokens"] == 131072
+    assert policy["estimate_margin"] == 2560
+    assert policy["input_limit"] == 512000 - target - 2560
+    assert policy["response_bytes"] == target * 32
+    assert policy["timeout_seconds"] == timeout
+
+
+def test_scaled_output_still_respects_channel_input_and_output_caps():
+    policy = resolve_policy(
+        Settings(
+            model_output_budget_multiplier=4, model_thinking="", model_stage_thinking="{}"
+        ),
+        RoleSpec(messages=[], output_multiplier=2),
+        {"context_window": 512000, "max_output_tokens": 32768, "max_input_tokens": 400000},
+    )
+    assert policy["final_output_target_tokens"] == policy["max_output_tokens"] == 32768
+    assert policy["input_limit"] == 400000
+    with pytest.raises(BusinessError) as error:
+        resolve_policy(
+            Settings(model_output_budget_multiplier=0),
+            RoleSpec(messages=[]),
+            {"context_window": 512000, "max_output_tokens": 131072},
+        )
+    assert error.value.code == "model_unavailable"
+
+
+def test_new_512k_configuration_does_not_recalculate_prepared_policy_or_default_targets():
+    settings = Settings(
+        model_enabled=True,
+        model_base_url="https://provider.invalid/v1",
+        model_name="owned-test",
+        model_api_key="owned-secret",
+        model_thinking="",
+        model_stage_thinking="{}",
+        model_context_tokens=512000,
+        model_max_output_tokens=131072,
+        model_output_budget_multiplier=4,
+    )
+    role = RoleSpec(messages=[])
+    gateway = ChatCompletionsGateway(settings)
+    policy = gateway.policy(role)
+    wire = gateway.request(
+        [{"role": "user", "content": "x" * 400000}],
+        require_tool=False,
+        allowed_tools=(),
+        policy=policy,
+    )
+    assert wire["max_tokens"] == 65536
+    assert policy["input_limit"] == 443904
+    default_settings = replace(settings, model_output_budget_multiplier=1)
+    assert (
+        ChatCompletionsGateway(default_settings).policy(role)["final_output_target_tokens"] == 16384
+    )
+    old_policy = resolve_policy(
+        default_settings, role, {"context_window": 128000, "max_output_tokens": 32768}
+    )
+    frozen = old_policy.copy()
+    old_wire = gateway.request(
+        [{"role": "user", "content": "Use the original prepared budget."}],
+        require_tool=False,
+        allowed_tools=(),
+        policy=old_policy,
+    )
+    assert old_policy == frozen
+    assert old_wire["max_tokens"] == 16384
+    assert old_policy["input_limit"] == 110976
+
+
+def test_512k_thinking_output_still_fits_the_remaining_window():
+    settings = Settings(
+        model_enabled=True,
+        model_base_url="https://provider.invalid/v1",
+        model_name="owned-test",
+        model_api_key="owned-secret",
+        model_thinking="enabled",
+        model_stage_thinking="{}",
+        model_context_tokens=512000,
+        model_max_output_tokens=131072,
+        model_output_budget_multiplier=4,
+    )
+    gateway = ChatCompletionsGateway(settings)
+    policy = gateway.policy(RoleSpec(messages=[]))
+    wire = gateway.request(
+        [{"role": "user", "content": "x" * 1200000}],
+        require_tool=False,
+        allowed_tools=(),
+        policy=policy,
+    )
+    assert policy["final_output_target_tokens"] == 65536
+    assert 65536 < wire["max_tokens"] < 131072
+    assert (
+        policy["calibrated_input_tokens"] + wire["max_tokens"] + policy["estimate_margin"] == 512000
+    )
+    assert policy["response_bytes"] == wire["max_tokens"] * 32
 
 
 def test_tool_reasoning_is_preserved_but_not_serialized_as_a_public_decision():

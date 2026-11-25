@@ -8,6 +8,13 @@ from leornian.platform.database import Database
 from leornian.platform.migrate import migrate
 
 
+@pytest.fixture(autouse=True)
+def explicit_development_model_scope(monkeypatch):
+    # Existing offline transports exercise the explicitly scoped developer channel.
+    # BYOK tests override Settings with "user" and cannot inherit a shared key.
+    monkeypatch.setenv("LEORNIAN_MODEL_CONFIGURATION_MODE", "development")
+
+
 @pytest.fixture(scope="session")
 def database():
     url = os.environ.get("LEORNIAN_TEST_DATABASE_URL")
