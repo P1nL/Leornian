@@ -1,0 +1,133 @@
+/*
+  "Mesh gradient background" from Animorio · https://animorio.com
+  License: free on your own sites and your clients’ sites, paid work included.
+  Not for resale, redistribution, templates or code collections · https://animorio.com/en/license/
+*/
+body.mesh-page { margin: 0; color-scheme: light dark; background: light-dark(#faf9f7,#18191b); }
+#relay-mesh {
+  --paper: var(--background,light-dark(#faf9f7,#18191b));
+  --ink: var(--foreground,light-dark(#222322,#ecece8));
+  --ink-soft: color-mix(in srgb,var(--ink) 70%,var(--paper));
+  --line: color-mix(in srgb,var(--ink) 26%,var(--paper));
+  --accent: light-dark(#ae411b,#ff9b72);
+  font: 400 var(--font-size-base,15px)/1.45 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+  color: var(--ink); background: var(--paper); container-type: inline-size;
+  width: 100%; max-width: 940px; margin-inline: auto; -webkit-font-smoothing: antialiased;
+}
+body.mesh-page #relay-mesh { padding: clamp(16px,3vw,38px); }
+#relay-mesh, #relay-mesh * { box-sizing: border-box; }
+#relay-mesh h2 { margin: 0; font-size: 1.35em; font-weight: 500; }
+#relay-mesh .ordinal, #relay-mesh .clock { color: var(--ink-soft); }
+#relay-mesh .stage {
+  position: relative; width: 100%; height: clamp(300px,53cqw,440px);
+  overflow: hidden; isolation: isolate; touch-action: none;
+}
+#relay-mesh .field, #relay-mesh .roles { position: absolute; inset: 0; width: 100%; height: 100%; }
+#relay-mesh .field.is-over, #relay-mesh .role { cursor: grab; }
+#relay-mesh .stage:has(.is-drag), #relay-mesh .field.is-drag, #relay-mesh .stage:has(.is-drag) .role { cursor: grabbing; }
+#relay-mesh .roles { pointer-events: none; }
+#relay-mesh .role {
+  position: absolute; top: 0; left: 0; pointer-events: auto;
+  font: inherit; font-weight: 500; line-height: 1.3;
+  padding: 4px 2px; color: var(--ink); white-space: nowrap;
+  border: 0; background: transparent; user-select: none; touch-action: none;
+}
+#relay-mesh .role[data-tone="quiet"] { color: var(--ink-soft); font-weight: 400; }
+#relay-mesh .role[aria-pressed="true"] { text-decoration: underline; text-underline-offset: .25em; }
+#relay-mesh .transport { padding: .75em 0 .2em; border-top: 1px solid var(--line); }
+#relay-mesh .caption, #relay-mesh .controls { display: flex; align-items: center; }
+#relay-mesh .caption { flex-wrap: wrap; gap: .2em .75em; }
+#relay-mesh .caption strong { color: var(--ink); font-weight: 500; }
+#relay-mesh .ordinal, #relay-mesh .clock { font-variant-numeric: tabular-nums; white-space: nowrap; }
+#relay-mesh .phase { color: var(--accent); }
+#relay-mesh .message { margin: .2em 0 .65em; color: var(--ink-soft); min-height: 1.45em; }
+#relay-mesh .controls { gap: .85em; }
+#relay-mesh .play {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; flex: none;
+  padding: 0; border: 0; border-radius: 50%; background: var(--ink); color: var(--paper);
+  cursor: pointer; transition: transform 140ms ease-out;
+}
+#relay-mesh .play-symbol {
+  width: 13px; height: 15px; background: currentColor;
+  clip-path: polygon(0 0,100% 50%,0 100%); transform: translateX(1px);
+}
+#relay-mesh .play[data-playing="true"] .play-symbol { width: 12px; height: 12px; clip-path: none; transform: none; }
+#relay-mesh .play:disabled { opacity: .45; cursor: default; }
+#relay-mesh button:focus-visible, #relay-mesh .timeline:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+#relay-mesh .play:enabled:active { transform: scale(.95); }
+#relay-mesh .timeline { position: relative; flex: 1 1 auto; height: 38px; min-width: 0; }
+#relay-mesh .rail { position: absolute; top: 50%; left: 7px; right: 7px; height: 2px; background: var(--line); pointer-events: none; }
+#relay-mesh .travel { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(var(--position,0)); }
+#relay-mesh .ticks i { position: absolute; bottom: 4px; width: 1px; height: 4px; background: var(--line); }
+#relay-mesh .thumb { position: absolute; top: 50%; left: var(--percent,0%); width: 11px; height: 11px; border-radius: 50%; background: var(--ink); transform: translate(-50%,-50%); }
+#relay-mesh input[type="range"] { display: block; position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; touch-action: pan-y; accent-color: var(--accent); }
+#relay-mesh .sequence {
+  --seq-row: max(38px, 2.5em);
+  --seq-head: max(44px, 3em);
+  --seq-gutter: 6.3em;
+  --seq-guide: color-mix(in srgb,var(--ink) 16%,var(--paper));
+  --seq-band: color-mix(in srgb,var(--accent) 9%,transparent);
+  margin-top: .8em; border-block: 1px solid var(--line);
+}
+#relay-mesh .seq-window {
+  height: calc(var(--seq-head) + 5 * var(--seq-row)); overflow: auto;
+  scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+  overflow-anchor: none; overscroll-behavior: contain;
+}
+#relay-mesh .seq-head, #relay-mesh .seq-row { display: grid; grid-template-columns: var(--seq-gutter) minmax(0,1fr); }
+#relay-mesh .seq-head, #relay-mesh .seq-sheet { min-width: calc(var(--seq-gutter) + 12em); }
+#relay-mesh .seq-head {
+  position: sticky; top: 0; z-index: 2; height: var(--seq-head);
+  background: var(--paper); border-bottom: 1px solid var(--line);
+}
+#relay-mesh .seq-head h3 { align-self: center; margin: 0; padding-inline-start: .6em; font: inherit; font-weight: 500; }
+#relay-mesh .seq-heads, #relay-mesh .seq-guides { display: grid; grid-template-columns: repeat(10,minmax(0,1fr)); }
+#relay-mesh .seq-heads > span { display: grid; place-items: center; position: relative; color: var(--ink-soft); }
+#relay-mesh .seq-heads [aria-current] { background: var(--seq-band); color: var(--ink); font-weight: 500; }
+#relay-mesh .seq-heads [aria-current]::after {
+  content: ""; position: absolute; bottom: 0; width: min(1.7em,80%); height: 2px; background: var(--accent);
+}
+#relay-mesh .seq-sheet { position: relative; min-height: calc(5 * var(--seq-row)); }
+#relay-mesh .seq-guides { position: absolute; inset: 0 0 0 var(--seq-gutter); pointer-events: none; }
+#relay-mesh .seq-guides > span { position: relative; }
+#relay-mesh .seq-guides > span::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--seq-guide);
+}
+#relay-mesh .seq-guides .executing { background: var(--seq-band); }
+#relay-mesh .seq-guides .executing::before { background: color-mix(in srgb,var(--accent) 55%,var(--paper)); }
+#relay-mesh .seq-list { position: relative; list-style: none; margin: 0; padding: 0; }
+#relay-mesh .seq-row { height: var(--seq-row); border: 0; }
+#relay-mesh .seq-action { align-self: center; padding-inline-start: .6em; color: var(--ink-soft); white-space: nowrap; }
+#relay-mesh .seq-path { position: relative; }
+#relay-mesh .seq-shaft {
+  position: absolute; top: 50%; height: 1px; transform: translateY(-50%);
+  color: color-mix(in srgb,var(--ink) 53%,var(--paper)); background: currentColor;
+}
+#relay-mesh .seq-shaft::before, #relay-mesh .seq-shaft::after {
+  content: ""; position: absolute; top: 50%; background: currentColor;
+}
+#relay-mesh .seq-shaft::before { left: 0; width: 5px; height: 5px; border-radius: 50%; transform: translate(-50%,-50%); }
+#relay-mesh .seq-shaft::after { right: 0; width: 7px; height: 9px; clip-path: polygon(0 0,100% 50%,0 100%); transform: translateY(-50%); }
+#relay-mesh .seq-shaft.reverse::before { left: 100%; }
+#relay-mesh .seq-shaft.reverse::after { left: 0; right: auto; transform: translateY(-50%) scaleX(-1); }
+#relay-mesh .seq-shaft.local::after { display: none; }
+#relay-mesh .seq-shaft.local::before { width: 9px; height: 9px; border: 2px solid currentColor; background: var(--paper); }
+#relay-mesh .seq-row[aria-current] { background: var(--seq-band); }
+#relay-mesh .seq-row[aria-current] .seq-action { color: var(--ink); font-weight: 500; }
+#relay-mesh .seq-row[aria-current] .seq-shaft { height: 2px; color: var(--accent); }
+@container (max-width: 510px) {
+  #relay-mesh .sequence { --seq-gutter: 5.1em; --seq-head: max(48px,3.4em); }
+  #relay-mesh .seq-heads > span > span { writing-mode: vertical-rl; text-orientation: upright; line-height: 1.1; }
+}
+@container (max-width: 480px) {
+  #relay-mesh .stage { height: clamp(330px,89cqw,392px); }
+  #relay-mesh .controls { gap: .55em; }
+  #relay-mesh .message { min-height: 2.9em; }
+}
+@container (max-width: 390px) {
+  #relay-mesh .caption { display: grid; grid-template-columns: max-content 1fr; }
+  #relay-mesh .caption strong { grid-area: 1 / 1 / 2 / -1; }
+  #relay-mesh .ordinal, #relay-mesh .phase { grid-row: 2; }
+}
+@media (pointer: coarse) { #relay-mesh .timeline { min-height: 44px; } #relay-mesh .play { width: 44px; height: 44px; } }
+@media (prefers-reduced-motion: reduce) { #relay-mesh button { transition: none; } }
