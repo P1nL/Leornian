@@ -1,16 +1,58 @@
 from datetime import datetime
-from typing import Literal
+from typing import Literal, get_args
 from uuid import UUID
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_serializer, model_validator
 
+from leornian.modules.execution.contracts import ProgramEnvironment
+from leornian.modules.item_bank.generation_contracts import (
+    IndependenceVerdict,
+    PackKind,
+    PackStatus,
+    ReviewRole,
+    ReviewVerdict,
+    Slot,
+    SupplyStageOutput,
+)
+from leornian.modules.item_bank.response_contracts import ResponsePracticeFormats
 from leornian.modules.knowledge.contracts import SourceRef
+from leornian.modules.learning.contracts import MaterialCitation, citation_key, material_content_key
 from leornian.shared_kernel.contracts import Contract
 
-Slot = Literal["practice_1", "practice_2", "assessment_1", "assessment_2", "remediation_1"]
 OptionKey = Literal["A", "B", "C", "D"]
-REVIEW_ROLES = ("curriculum", "difficulty", "technical", "ambiguity", "security", "adversarial")
+REVIEW_ROLES = get_args(ReviewRole)
 SLOTS = ("practice_1", "practice_2", "assessment_1", "assessment_2", "remediation_1")
+
+
+class PackMaterialContext(Contract):
+    contract: Literal["item-materials.v1"] = "item-materials.v1"
+    preparation: Literal["exact_origin", "curriculum_node"] = Field(
+        default="exact_origin", exclude_if=lambda value: value == "exact_origin",
+    )
+    origin_citations: list[MaterialCitation] = Field(default_factory=list, max_length=2000)
+    author_citations: list[MaterialCitation] = Field(default_factory=list, max_length=2000)
+    review_citations: list[MaterialCitation] = Field(default_factory=list, max_length=2000)
+
+    @property
+    def requires_material_selection(self):
+        return self.preparation == "curriculum_node" or bool(self.origin_citations)
+
+    @model_validator(mode="after")
+    def exact_role_content(self):
+        origins = {material_content_key(c.ref) for c in self.origin_citations}
+        for purpose, citations in (
+            ("item_author", self.author_citations), ("item_review", self.review_citations)
+        ):
+            keys = [citation_key(c) for c in citations]
+            if (
+                any(c.purpose != purpose for c in citations)
+                or len(keys) != len(set(keys))
+                or self.preparation == "exact_origin" and (
+                    {material_content_key(c.ref) for c in citations} != origins
+                )
+            ):
+                raise ValueError("Each item role needs its own exact node material binding.")
+        return self
 
 
 class PackRequest(Contract):
@@ -20,8 +62,10 @@ class PackRequest(Contract):
     predecessor_id: UUID | None = None
     gate_feedback_id: UUID | None = None
     transfer_feedback_id: UUID | None = None
-    kind: Literal["choice", "python_io"] = "choice"
+    kind: PackKind = "choice"
     automatic: bool = True
+    response_formats: ResponsePracticeFormats | None = None
+    program_environment: ProgramEnvironment | None = None
 
     @field_validator("instruction", mode="before")
     @classmethod
@@ -34,6 +78,22 @@ class PackRequest(Contract):
             raise ValueError("Feedback must identify the exact revision predecessor.")
         if self.gate_feedback_id and self.transfer_feedback_id:
             raise ValueError("Only one exact quality feedback origin is allowed.")
+        if self.response_formats is not None and self.kind != "response":
+            raise ValueError("Response formats require a response pack.")
+        if self.kind in {
+            "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+        }:
+            expected = {
+                "sql_query": "sql-query.v1", "python_project": "python-project-io.v1",
+                "project_stdio": "project-stdio.v1", "web_project": "web-check.v1",
+                "http_project": "project-http.v1",
+            }[self.kind]
+            if self.program_environment is None or self.program_environment.profile != expected:
+                raise ValueError(
+                    "Program supply requires an explicit matching environment version.",
+                )
+        elif self.program_environment is not None:
+            raise ValueError("Only program supply can bind a program environment.")
         return self
 
 
@@ -48,10 +108,21 @@ class PublicQuestion(Contract):
     prompt: str = Field(min_length=1, max_length=1800)
     options: list[ChoiceOption] = Field(min_length=4, max_length=4)
     difficulty: int = Field(ge=1, le=5)
-    source_refs: list[SourceRef] = Field(min_length=1, max_length=3)
+    source_refs: list[SourceRef] = Field(max_length=3)
+    material_citations: list[MaterialCitation] = Field(default_factory=list, max_length=2000)
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_shape(self, handler):
+        data = handler(self)
+        # Old candidate identities and saved exposure snapshots must not change.
+        if not self.material_citations:
+            data.pop("material_citations", None)
+        return data
 
     @model_validator(mode="after")
     def distinct_options(self):
+        if not self.source_refs and not self.material_citations:
+            raise ValueError("A question needs an exact supplied citation.")
         if {option.key for option in self.options} != {"A", "B", "C", "D"}:
             raise ValueError("Exactly four distinct option keys are required.")
         if len({option.text.strip().casefold() for option in self.options}) != 4:
@@ -67,7 +138,7 @@ class AuthoredQuestion(PublicQuestion):
         return PublicQuestion(**self.model_dump(exclude={"correct_key", "explanation"}))
 
 
-class PackDocument(Contract):
+class PackDocument(SupplyStageOutput):
     items: list[AuthoredQuestion] = Field(min_length=5, max_length=5)
 
     @model_validator(mode="after")
@@ -93,7 +164,7 @@ class BlindAnswer(Contract):
     selected_key: OptionKey
 
 
-class BlindSolution(Contract):
+class BlindSolution(SupplyStageOutput):
     answers: list[BlindAnswer] = Field(min_length=5, max_length=5)
 
     @model_validator(mode="after")
@@ -105,13 +176,21 @@ class BlindSolution(Contract):
 
 class ItemReview(Contract):
     slot: Slot
-    verdict: Literal["pass", "revise", "reject"]
+    verdict: ReviewVerdict
     reason: str = Field(min_length=1, max_length=600)
+    material_citations: list[MaterialCitation] = Field(default_factory=list, max_length=2000)
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_shape(self, handler):
+        data = handler(self)
+        if not self.material_citations:
+            data.pop("material_citations", None)
+        return data
 
 
-class ReviewDocument(Contract):
+class ReviewDocument(SupplyStageOutput):
     items: list[ItemReview] = Field(min_length=5, max_length=5)
-    assessment_independence: Literal["supported", "revise", "reject"]
+    assessment_independence: IndependenceVerdict
     relationship_reason: str = Field(min_length=1, max_length=900)
 
     @model_validator(mode="after")
@@ -137,18 +216,8 @@ class PackSummary(Contract):
     gate_feedback_id: UUID | None = None
     transfer_feedback_id: UUID | None = None
     supply_demand_id: UUID | None = None
-    kind: Literal["choice", "python_io"] = "choice"
-    status: Literal[
-        "authoring",
-        "blind_solving",
-        "qualifying",
-        "reviewing",
-        "changes_required",
-        "ready",
-        "published",
-        "failed",
-        "cancelled",
-    ]
+    kind: PackKind = "choice"
+    status: PackStatus
     reviewed_roles: list[str]
     passed_roles: list[str]
     blind_passed: bool | None
@@ -163,6 +232,8 @@ class PackSummary(Contract):
     automation_status: Literal["running", "waiting", "completed", "cancelled"] | None = None
     automation_action: str | None = None
     automation_reason: str | None = None
+    response_formats: ResponsePracticeFormats | None = None
+    program_environment: ProgramEnvironment | None = None
 
 
 class PackAccepted(Contract):

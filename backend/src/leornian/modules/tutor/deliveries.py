@@ -1,5 +1,6 @@
 """Tutor owns delivery coordination, not plans, lessons, grading or mastery."""
 
+import json
 from datetime import datetime
 from typing import Literal
 from uuid import UUID, uuid4
@@ -23,6 +24,8 @@ class DeliveryTask(Contract):
     cancel_requested: bool
     can_resume: bool = False
     required_input: list[str] = []
+    last_progress_at: datetime | None = None
+    reason_code: str | None = None
 
 
 class DeliveryResume(Contract):
@@ -103,13 +106,29 @@ class Deliveries:
 
     @staticmethod
     def summary(row):
+        blockage = row.get("context_manifest", {}).get("material_blockage") if row["status"] in {
+            "waiting_input", "waiting_config", "waiting_dependency",
+        } else None
+        required_input = (
+            [item.get("repair_instruction", "") for item in row["issues"]]
+            if row["status"] == "waiting_input" else []
+        )
+        if required_input and row.get("context_manifest", {}).get("learning_hint_contract") == 1:
+            # Private review findings may quote levels the learner has not requested.
+            required_input = [
+                "The hint review needs more input. "
+                "Add clarification in the original task to resume."
+            ]
         return DeliveryTask(
             **{key: row[key] for key in DeliveryTask.model_fields if key in row},
-            can_resume=row["status"] in {"waiting_input", "waiting_dependency", "waiting_config"}
-            and not row["cancel_requested"],
-            required_input=[item.get("repair_instruction", "") for item in row["issues"]]
-            if row["status"] == "waiting_input"
-            else [],
+            can_resume=row["status"] in {
+                "waiting_input", "waiting_dependency", "waiting_config", "blocked_protocol",
+            }
+            and not row["cancel_requested"]
+            and blockage not in {"material_discovery_exhausted", "material_quality_pending"},
+            required_input=required_input,
+            reason_code="delivery_protocol_stalled"
+            if row["status"] == "blocked_protocol" else blockage,
         )
 
     def page(self, actor, before=None, limit=50):
@@ -128,6 +147,102 @@ class Deliveries:
             (Jsonb(messages), Jsonb(manifest), task_id),
         )
 
+    def accepted_plan_review(self, conversation_id, turn_id, turn_run_ids):
+        rows = self.connection.execute(
+            "SELECT c.id,c.review_call_id,c.issues,d.context_manifest "
+            "FROM tutor.delivery_checks c JOIN tutor.delivery_tasks d ON d.id=c.task_id "
+            "JOIN unnest(%s::uuid[],%s::uuid[]) AS r(run_id,turn_id) ON r.run_id=d.run_id "
+            "JOIN tutor.turns t ON t.id=r.turn_id "
+            "WHERE t.conversation_id=%s AND t.id<>%s AND t.completed_at IS NOT NULL "
+            "AND d.kind='planning' AND c.verdict='accepted' AND c.review_call_id IS NOT NULL "
+            "AND (t.created_at,t.id)<(SELECT created_at,id FROM tutor.turns WHERE id=%s) "
+            "ORDER BY t.created_at DESC,c.created_at DESC",
+            (list(turn_run_ids.values()), list(turn_run_ids), conversation_id, turn_id, turn_id),
+        ).fetchall()
+        for row in rows:
+            try:
+                candidate = json.loads(row["issues"]["candidate"])
+            except (ValueError, TypeError, KeyError):
+                continue
+            route = candidate.get("route") if isinstance(candidate, dict) else None
+            if route:
+                return {
+                    "check_id": str(row["id"]), "review_call_id": str(row["review_call_id"]),
+                    "route": route,
+                    "requirements": row["context_manifest"].get("route_requirements", {}).get(
+                        "learner_stated", {},
+                    ),
+                }
+        return None
+
+    def await_route_materials(
+        self, task_id, material_demand=None, *, turn_id=None, blockage=None, route_draft=None,
+    ):
+        manifest = self.connection.execute(
+            "SELECT context_manifest FROM tutor.delivery_tasks WHERE id=%s", (task_id,),
+        ).fetchone()["context_manifest"]
+        retained = manifest.get("retained_planning_refs", [])
+        for ref in manifest.get("material_context_refs", []):
+            if ref not in retained:
+                retained.append(ref)
+        updates = {"retained_planning_refs": retained, "material_blockage": blockage}
+        if route_draft is not None:
+            updates["planning_route_draft"] = route_draft.model_dump(mode="json")
+        self.connection.execute(
+            "UPDATE tutor.delivery_tasks SET author_messages='[]',candidate=NULL,"
+            "candidate_call_id=NULL,fragments='[]',phase='author',"
+            "context_manifest=(context_manifest-'material_preparation') || "
+            "'{\"route_discussion\":1,\"planning_requested\":true,"
+            "\"awaiting_route_materials\":true}'::jsonb || %s "
+            "WHERE id=%s",
+            (Jsonb(updates), task_id),
+        )
+        if material_demand:
+            self.connection.execute(
+                "UPDATE tutor.delivery_tasks SET context_manifest=context_manifest||%s::jsonb "
+                "WHERE id=%s",
+                (Jsonb({"material_demand": {
+                    "id": str(material_demand.id), "revision": material_demand.revision,
+                }}), task_id),
+            )
+        if turn_id:
+            self.connection.execute(
+                "UPDATE tutor.delivery_tasks SET context_manifest=context_manifest||%s::jsonb "
+                "WHERE id=%s",
+                (Jsonb({"material_wait_turn_id": str(turn_id)}), task_id),
+            )
+
+    def node_material_available(self, demand_id):
+        self.connection.execute(
+            "UPDATE tutor.delivery_tasks SET next_action_at=now() WHERE kind='teaching' "
+            "AND NOT cancel_requested AND status='waiting_dependency' AND author_messages='[]' "
+            "AND focus->>'kind'='node' AND context_manifest->'material_demand'->>'id'=%s",
+            (str(demand_id),),
+        )
+
+    def material_ready(self, demand_id):
+        self.connection.execute(
+            "UPDATE tutor.delivery_tasks d SET next_action_at=now(),status='waiting_dependency' "
+            "WHERE NOT cancel_requested AND "
+            "(status='waiting_dependency' OR (status='waiting_input' AND EXISTS("
+            "SELECT 1 FROM tutor.turns t "
+            "WHERE t.id::text=d.context_manifest->>'material_wait_turn_id' "
+            "AND t.planning_state->>'material_blocked'='true' "
+            "AND NOT EXISTS(SELECT 1 FROM tutor.turns newer "
+            "WHERE newer.conversation_id=t.conversation_id AND newer.purpose='planning' "
+            "AND (newer.created_at,newer.id)>(t.created_at,t.id))))) "
+            "AND context_manifest->>'awaiting_route_materials'='true' "
+            "AND context_manifest->>'planning_requested'='true' "
+            "AND context_manifest->'material_demand'->>'id'=%s", (str(demand_id),),
+        )
+
+    def continue_route_discussion(self, task_id):
+        self.connection.execute(
+            "UPDATE tutor.delivery_tasks SET next_action_at=now(),"
+            "context_manifest=context_manifest-'awaiting_route_materials' "
+            "WHERE id=%s AND status='waiting_dependency'", (task_id,),
+        )
+
     def state(self, task_id, status, *, issues=None):
         self.connection.execute(
             "UPDATE tutor.delivery_tasks SET status=%s,updated_at=now(),"
@@ -139,7 +254,8 @@ class Deliveries:
     def candidate(self, row, call_id, text, messages):
         self.connection.execute(
             "UPDATE tutor.delivery_tasks SET candidate_call_id=%s,candidate=%s,status='checking',"
-            "revision=revision+1,candidate_input=%s,phase='review',updated_at=now() WHERE id=%s",
+            "revision=revision+1,candidate_input=%s,phase='review',updated_at=now(),"
+            "last_progress_at=now(),protocol_repair='{}' WHERE id=%s",
             (call_id, text, Jsonb(messages), row["id"]),
         )
 
@@ -162,6 +278,10 @@ class Deliveries:
                     }
                 ),
             ),
+        )
+        self.connection.execute(
+            "UPDATE tutor.delivery_tasks SET last_progress_at=now(),protocol_repair='{}' "
+            "WHERE id=%s", (row["id"],),
         )
 
     def rejected_unchanged(self, row, candidate):
@@ -204,6 +324,10 @@ class Deliveries:
 
     def fragments(self, task_id, fragments):
         self.connection.execute(
-            "UPDATE tutor.delivery_tasks SET fragments=%s WHERE id=%s",
-            (Jsonb(fragments), task_id),
+            "UPDATE tutor.delivery_tasks SET last_progress_at=CASE "
+            "WHEN jsonb_array_length(%s::jsonb)>jsonb_array_length(fragments) THEN now() "
+            "ELSE last_progress_at END,protocol_repair=CASE "
+            "WHEN jsonb_array_length(%s::jsonb)>jsonb_array_length(fragments) THEN '{}'::jsonb "
+            "ELSE protocol_repair END,fragments=%s WHERE id=%s",
+            (Jsonb(fragments), Jsonb(fragments), Jsonb(fragments), task_id),
         )

@@ -1,15 +1,22 @@
-from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
 from pydantic import Field, model_validator
 
+from leornian.modules.assessment.contracts import PythonAttempt as PythonAttempt
+from leornian.modules.assessment.contracts import PythonPracticeAttempt as PythonPracticeAttempt
+from leornian.modules.assessment.contracts import PythonPracticeHistory as PythonPracticeHistory
 from leornian.modules.assessment.contracts import Submission
 from leornian.shared_kernel.contracts import Contract
 
 
 class PythonTraining(Submission):
     slot: Literal["practice_1", "practice_2", "remediation_1"]
+
+
+class PythonPracticeSubmission(PythonTraining):
+    previous_attempt_id: UUID | None = None
+    retry: bool = False
 
 
 class GateProgram(Submission):
@@ -24,21 +31,6 @@ class PythonGateSubmission(Contract):
         if {item.slot for item in self.programs} != {"assessment_1", "assessment_2"}:
             raise ValueError("Submit both programs together, exactly once.")
         return self
-
-
-class PythonAttempt(Contract):
-    id: UUID
-    pack_id: UUID
-    slot: str
-    gate_id: UUID | None
-    transfer_id: UUID | None
-    code: str
-    status: Literal["queued", "passed", "not_passed", "error"]
-    passed_cases: int
-    total_cases: Literal[3] = 3
-    feedback: str | None
-    created_at: datetime
-    completed_at: datetime | None
 
 
 class PythonReceipt(Contract):

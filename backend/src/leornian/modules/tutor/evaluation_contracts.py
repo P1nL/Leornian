@@ -16,7 +16,7 @@ class EvaluationDocument(Contract):
 class Evaluation(Contract):
     id: UUID
     pack_id: UUID
-    source_kind: Literal["choice", "transfer", "python"]
+    source_kind: Literal["choice", "transfer", "python", "program"]
     source_id: UUID
     correct: bool
     run_id: UUID | None

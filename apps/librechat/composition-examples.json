@@ -1,0 +1,57 @@
+[
+  {
+    "schema_version": "learning_composition.v1",
+    "title": "BFS · 图与队列同步",
+    "scene": {
+      "type": "bfs",
+      "nodes": ["A", "B", "C", "D", "E"],
+      "edges": [
+        { "source": "A", "target": "B" },
+        { "source": "A", "target": "C" },
+        { "source": "B", "target": "D" },
+        { "source": "C", "target": "D" },
+        { "source": "C", "target": "E" }
+      ],
+      "start": "A",
+      "views": ["graph", "queue", "code", "variables"]
+    }
+  },
+  {
+    "schema_version": "learning_composition.v1",
+    "title": "BFS · 从 C 开始",
+    "scene": {
+      "type": "bfs",
+      "nodes": ["A", "B", "C", "D"],
+      "edges": [
+        { "source": "C", "target": "A" },
+        { "source": "A", "target": "B" },
+        { "source": "B", "target": "C" }
+      ],
+      "start": "C",
+      "views": ["graph", "queue"]
+    }
+  },
+  {
+    "schema_version": "learning_composition.v1",
+    "title": "审查累加函数",
+    "scene": {
+      "type": "code_review",
+      "prompt": "选择有问题的代码行，保存理由后提交审查。",
+      "code": "def total(values):\n    result = 0\n    for value in values:\n        result = value\n    return result"
+    }
+  },
+  {
+    "schema_version": "learning_composition.v1",
+    "title": "修复累加函数",
+    "scene": {
+      "type": "code_repair",
+      "prompt": "返回整数列表的和，空列表返回 0。修改后可对照原始代码。",
+      "code": "def total(values):\n    result = 0\n    for value in values:\n        result = value\n    return result",
+      "cases": [
+        { "input": "[1, 2, 3]", "expected": "6" },
+        { "input": "[]", "expected": "0" }
+      ],
+      "views": ["editor", "diff", "cases"]
+    }
+  }
+]

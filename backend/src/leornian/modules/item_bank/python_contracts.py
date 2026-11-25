@@ -1,9 +1,11 @@
 from typing import Annotated, Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, model_serializer, model_validator
 
+from leornian.modules.item_bank.generation_contracts import SupplyStageOutput
 from leornian.modules.item_bank.supply_contracts import SLOTS, Slot
 from leornian.modules.knowledge.contracts import SourceRef
+from leornian.modules.learning.contracts import MaterialCitation
 from leornian.shared_kernel.contracts import Contract
 
 InputInt = Annotated[int, Field(strict=True, ge=-1_000_000, le=1_000_000)]
@@ -23,7 +25,21 @@ class PythonQuestion(Contract):
     starter_code: str = Field(min_length=1, max_length=2000)
     sample: PythonCase
     difficulty: int = Field(ge=1, le=5)
-    source_refs: list[SourceRef] = Field(min_length=1, max_length=3)
+    source_refs: list[SourceRef] = Field(max_length=3)
+    material_citations: list[MaterialCitation] = Field(default_factory=list, max_length=2000)
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_shape(self, handler):
+        data = handler(self)
+        if not self.material_citations:
+            data.pop("material_citations", None)
+        return data
+
+    @model_validator(mode="after")
+    def cited(self):
+        if not self.source_refs and not self.material_citations:
+            raise ValueError("A question needs an exact supplied citation.")
+        return self
 
 
 class PythonItem(PythonQuestion):
@@ -42,7 +58,7 @@ class PythonItem(PythonQuestion):
         return PythonQuestion(**self.model_dump(exclude={"tests", "explanation"}))
 
 
-class PythonPack(Contract):
+class PythonPack(SupplyStageOutput):
     items: list[PythonItem] = Field(min_length=5, max_length=5)
 
     @model_validator(mode="after")
@@ -59,7 +75,7 @@ class BlindProgram(Contract):
     code: str = Field(min_length=1, max_length=4000)
 
 
-class BlindPrograms(Contract):
+class BlindPrograms(SupplyStageOutput):
     programs: list[BlindProgram] = Field(min_length=5, max_length=5)
 
     @model_validator(mode="after")

@@ -1,0 +1,1582 @@
+[
+  {
+    "component": "Explanation",
+    "category": "content",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "text": {
+          "maxLength": 400,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TextProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "SourceReference",
+    "category": "content",
+    "props_schema": {
+      "$defs": {
+        "MaterialCitation": {
+          "additionalProperties": false,
+          "properties": {
+            "binding_id": {
+              "format": "uuid",
+              "title": "Binding Id",
+              "type": "string"
+            },
+            "binding_revision": {
+              "minimum": 1,
+              "title": "Binding Revision",
+              "type": "integer"
+            },
+            "purpose": {
+              "enum": [
+                "reference",
+                "planning",
+                "lesson",
+                "teaching",
+                "item_author",
+                "item_review",
+                "indexing"
+              ],
+              "title": "Purpose",
+              "type": "string"
+            },
+            "ref": {
+              "$ref": "#/$defs/MaterialRef"
+            }
+          },
+          "required": [
+            "binding_id",
+            "binding_revision",
+            "purpose",
+            "ref"
+          ],
+          "title": "MaterialCitation",
+          "type": "object"
+        },
+        "MaterialRef": {
+          "additionalProperties": false,
+          "properties": {
+            "document_id": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            },
+            "document_revision": {
+              "minimum": 1,
+              "title": "Document Revision",
+              "type": "integer"
+            },
+            "block_id": {
+              "format": "uuid",
+              "title": "Block Id",
+              "type": "string"
+            },
+            "span": {
+              "$ref": "#/$defs/MaterialSpan"
+            },
+            "content_digest": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Content Digest",
+              "type": "string"
+            },
+            "selection_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Selection Id"
+            }
+          },
+          "required": [
+            "document_id",
+            "document_revision",
+            "block_id",
+            "span",
+            "content_digest"
+          ],
+          "title": "MaterialRef",
+          "type": "object"
+        },
+        "MaterialSpan": {
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "minimum": 0,
+              "title": "Start",
+              "type": "integer"
+            },
+            "end": {
+              "exclusiveMinimum": 0,
+              "title": "End",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "title": "MaterialSpan",
+          "type": "object"
+        },
+        "SourceRef": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "format": "uuid",
+              "title": "Source Id",
+              "type": "string"
+            },
+            "revision": {
+              "title": "Revision",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "source_id",
+            "revision"
+          ],
+          "title": "SourceRef",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "citation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MaterialCitation"
+            },
+            {
+              "$ref": "#/$defs/SourceRef"
+            }
+          ],
+          "title": "Citation"
+        }
+      },
+      "required": [
+        "label",
+        "citation"
+      ],
+      "title": "CitationProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [
+      "open_source"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "CodeBlock",
+    "category": "code",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "state"
+      ],
+      "title": "CodeProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "code"
+    ],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "CodeEditor",
+    "category": "code",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "state"
+      ],
+      "title": "CodeProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "code",
+      "files"
+    ],
+    "outputs": [
+      "change"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "CodeDiff",
+    "category": "code",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        },
+        "before": {
+          "maxLength": 20000,
+          "title": "Before",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "state",
+        "before"
+      ],
+      "title": "DiffProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "code"
+    ],
+    "outputs": [
+      "change"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "DataTable",
+    "category": "data",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "columns": {
+          "items": {
+            "maxLength": 120,
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Columns",
+          "type": "array"
+        },
+        "rows": {
+          "items": {
+            "items": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "maxItems": 100,
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "columns",
+        "rows"
+      ],
+      "title": "TableProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "KeyValueList",
+    "category": "data",
+    "props_schema": {
+      "$defs": {
+        "NamedValue": {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Name",
+              "type": "string"
+            },
+            "value": {
+              "maxLength": 500,
+              "title": "Value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ],
+          "title": "NamedValue",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/NamedValue"
+          },
+          "maxItems": 30,
+          "title": "Entries",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "entries"
+      ],
+      "title": "ValuesProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "IsolatedPreview",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Title",
+          "type": "string"
+        },
+        "html_state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Html State",
+          "type": "string"
+        },
+        "css_state": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Css State"
+        }
+      },
+      "required": [
+        "title",
+        "html_state"
+      ],
+      "title": "PreviewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [
+      "preview"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "TreeView",
+    "category": "visual",
+    "props_schema": {
+      "$defs": {
+        "TreeEntry": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+              "title": "Id",
+              "type": "string"
+            },
+            "label": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Label",
+              "type": "string"
+            },
+            "children": {
+              "items": {
+                "$ref": "#/$defs/TreeEntry"
+              },
+              "maxItems": 30,
+              "title": "Children",
+              "type": "array"
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "title": "TreeEntry",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/TreeEntry"
+          },
+          "maxItems": 30,
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "nodes",
+        "state"
+      ],
+      "title": "TreeProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "selection"
+    ],
+    "outputs": [
+      "select"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "RelationGraph",
+    "category": "visual",
+    "props_schema": {
+      "$defs": {
+        "GraphEdge": {
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Source",
+              "type": "string"
+            },
+            "target": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Target",
+              "type": "string"
+            },
+            "label": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "minLength": 1,
+                  "pattern": "\\S",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Label"
+            }
+          },
+          "required": [
+            "source",
+            "target"
+          ],
+          "title": "GraphEdge",
+          "type": "object"
+        },
+        "GraphNode": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Id",
+              "type": "string"
+            },
+            "label": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Label",
+              "type": "string"
+            },
+            "x": {
+              "maximum": 1000000,
+              "minimum": -1000000,
+              "title": "X",
+              "type": "number"
+            },
+            "y": {
+              "maximum": 1000000,
+              "minimum": -1000000,
+              "title": "Y",
+              "type": "number"
+            }
+          },
+          "required": [
+            "id",
+            "label",
+            "x",
+            "y"
+          ],
+          "title": "GraphNode",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/GraphNode"
+          },
+          "maxItems": 30,
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/GraphEdge"
+          },
+          "maxItems": 80,
+          "title": "Edges",
+          "type": "array"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "nodes",
+        "edges",
+        "state"
+      ],
+      "title": "GraphProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "selection"
+    ],
+    "outputs": [
+      "select"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "SequenceDiagram",
+    "category": "visual",
+    "props_schema": {
+      "$defs": {
+        "Participant": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Id",
+              "type": "string"
+            },
+            "label": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Label",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "title": "Participant",
+          "type": "object"
+        },
+        "SequenceStep": {
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Source",
+              "type": "string"
+            },
+            "target": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Target",
+              "type": "string"
+            },
+            "label": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Label",
+              "type": "string"
+            },
+            "id": {
+              "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+              "title": "Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source",
+            "target",
+            "label",
+            "id"
+          ],
+          "title": "SequenceStep",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "participants": {
+          "items": {
+            "$ref": "#/$defs/Participant"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Participants",
+          "type": "array"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/SequenceStep"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "participants",
+        "steps",
+        "state"
+      ],
+      "title": "SequenceProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "playback"
+    ],
+    "outputs": [
+      "step"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmPlayer",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "description": "Algorithm inputs, never model-generated frames or executable algorithms.",
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "algorithm": {
+          "enum": [
+            "binary_search",
+            "brackets",
+            "bfs",
+            "grid_paths",
+            "combination_sum",
+            "interval_scan",
+            "bitwise",
+            "geometry"
+          ],
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        },
+        "input": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Input",
+          "type": "string"
+        },
+        "show_code": {
+          "default": true,
+          "title": "Show Code",
+          "type": "boolean"
+        },
+        "show_variables": {
+          "default": true,
+          "title": "Show Variables",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "label",
+        "algorithm",
+        "state",
+        "input"
+      ],
+      "title": "AlgorithmProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "playback"
+    ],
+    "outputs": [
+      "step"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmSequence",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmContainer",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmGraph",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmGrid",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmRecursion",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmIntervals",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmBits",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AlgorithmGeometry",
+    "category": "visual",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "timeline": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Timeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "timeline"
+      ],
+      "title": "AlgorithmViewProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "ChoiceAnswer",
+    "category": "answer",
+    "props_schema": {
+      "$defs": {
+        "Option": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Id",
+              "type": "string"
+            },
+            "text": {
+              "maxLength": 500,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Text",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "text"
+          ],
+          "title": "Option",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "maxItems": 20,
+          "minItems": 2,
+          "title": "Options",
+          "type": "array"
+        },
+        "multiple": {
+          "default": false,
+          "title": "Multiple",
+          "type": "boolean"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "options",
+        "state"
+      ],
+      "title": "ChoiceProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "choice"
+    ],
+    "outputs": [
+      "change"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "TextAnswer",
+    "category": "answer",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "state"
+      ],
+      "title": "TextAnswerProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "text"
+    ],
+    "outputs": [
+      "change"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "OrderingAnswer",
+    "category": "answer",
+    "props_schema": {
+      "$defs": {
+        "Option": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,39}$",
+              "title": "Id",
+              "type": "string"
+            },
+            "text": {
+              "maxLength": 500,
+              "minLength": 1,
+              "pattern": "\\S",
+              "title": "Text",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "text"
+          ],
+          "title": "Option",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "maxItems": 30,
+          "minItems": 2,
+          "title": "Items",
+          "type": "array"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "items",
+        "state"
+      ],
+      "title": "OrderingProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "order"
+    ],
+    "outputs": [
+      "change"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "LineRangeAnswer",
+    "category": "answer",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "code_state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "Code State",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "code_state",
+        "state"
+      ],
+      "title": "AnnotationProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "annotations"
+    ],
+    "outputs": [
+      "save",
+      "remove"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "ParameterControl",
+    "category": "answer",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        },
+        "minimum": {
+          "maximum": 1000000,
+          "minimum": -1000000,
+          "title": "Minimum",
+          "type": "number"
+        },
+        "maximum": {
+          "maximum": 1000000,
+          "minimum": -1000000,
+          "title": "Maximum",
+          "type": "number"
+        },
+        "step": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "title": "Step",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "state",
+        "minimum",
+        "maximum"
+      ],
+      "title": "ParameterProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "number"
+    ],
+    "outputs": [
+      "change"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "StepPlayer",
+    "category": "process",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "maxLength": 400,
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
+        },
+        "state": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "items",
+        "state"
+      ],
+      "title": "StepsProps",
+      "type": "object"
+    },
+    "state_kinds": [
+      "playback"
+    ],
+    "outputs": [
+      "step"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "AnswerFeedback",
+    "category": "feedback",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "for_component": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "For Component",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "for_component"
+      ],
+      "title": "FeedbackProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "ResultFeedback",
+    "category": "feedback",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "for_component": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "For Component",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "for_component"
+      ],
+      "title": "FeedbackProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "ReviewFinding",
+    "category": "feedback",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "for_component": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "For Component",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "for_component"
+      ],
+      "title": "FeedbackProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "ArtifactAction",
+    "category": "actions",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "event": {
+          "enum": [
+            "submit_answer",
+            "submit_review",
+            "check_code",
+            "preview",
+            "cancel"
+          ],
+          "title": "Event",
+          "type": "string"
+        },
+        "for_component": {
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "title": "For Component",
+          "type": "string"
+        },
+        "primary": {
+          "default": false,
+          "title": "Primary",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "label",
+        "event",
+        "for_component"
+      ],
+      "title": "ActionProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [
+      "request"
+    ],
+    "authority": "presentation_only; host owns permission, execution and results"
+  },
+  {
+    "component": "ActionGroup",
+    "category": "actions",
+    "props_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "members": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Members",
+          "type": "array"
+        }
+      },
+      "required": [
+        "members"
+      ],
+      "title": "GroupProps",
+      "type": "object"
+    },
+    "state_kinds": [],
+    "outputs": [],
+    "authority": "presentation_only; host owns permission, execution and results"
+  }
+]

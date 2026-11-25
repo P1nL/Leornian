@@ -6,18 +6,44 @@ from psycopg import Connection
 from psycopg.types.json import Jsonb
 
 from leornian.modules.identity.contracts import Actor
+from leornian.modules.item_bank.assistance_contracts import (
+    ChoiceDirectAnswer,
+    ProgramDirectAnswer,
+    PythonDirectAnswer,
+    ResponseDirectAnswer,
+)
 from leornian.modules.item_bank.exposure import Exposures
+from leornian.modules.item_bank.generation_contracts import (
+    BankPack,
+    GenerationReport,
+    GenerationStage,
+)
+from leornian.modules.item_bank.program_contracts import (
+    HttpPack,
+    ProjectPack,
+    SqlPack,
+    StdioPack,
+    WebPack,
+)
 from leornian.modules.item_bank.python_contracts import PythonPack
+from leornian.modules.item_bank.response_contracts import (
+    BlindResponses,
+    ResponsePack,
+    ResponsePracticeSet,
+    compare_response,
+)
 from leornian.modules.item_bank.supply_contracts import (
     REVIEW_ROLES,
     BlindSolution,
     PackDocument,
+    PackMaterialContext,
     PackRequest,
     PackSummary,
     PracticeSet,
     ReviewDocument,
 )
 from leornian.modules.item_bank.tasks import SupplyTasks
+from leornian.modules.learning.contracts import citation_key
 from leornian.shared_kernel.errors import BusinessError
 
 
@@ -37,6 +63,14 @@ class Packs:
             raise BusinessError("not_found", "Item pack not found.")
         return row
 
+    def published_for_node(self, actor, plan_id, revision, node_key, before=None, limit=20):
+        return self.connection.execute(
+            "SELECT * FROM item_bank.packs WHERE actor_id=%s AND plan_id=%s "
+            "AND plan_revision=%s AND node_key=%s AND status='published' "
+            "AND (%s::uuid IS NULL OR id<%s) ORDER BY id DESC LIMIT %s",
+            (actor.id, plan_id, revision, node_key, before, before, limit),
+        ).fetchall()
+
     def request(
         self,
         actor,
@@ -50,7 +84,25 @@ class Packs:
         transfer_feedback=None,
         session_digest=None,
         recovery_reason=None,
+        material_context: PackMaterialContext | None = None,
     ) -> tuple[dict, bool]:
+        response_formats = (
+            data.response_formats.model_dump(mode="json") if data.response_formats else None
+        )
+        program_environment = (
+            data.program_environment.model_dump(mode="json") if data.program_environment else None
+        )
+        if data.predecessor_id:
+            parent = self.row(actor, data.predecessor_id, lock=True)
+            if program_environment != parent["program_environment"]:
+                raise BusinessError(
+                    "precondition_failed", "A revision must preserve its exact program environment."
+                )
+            if response_formats is not None and response_formats != parent["response_formats"]:
+                raise BusinessError(
+                    "precondition_failed", "A revision must preserve requested practice formats."
+                )
+            response_formats = parent["response_formats"]
         old = self.connection.execute(
             "SELECT * FROM item_bank.packs WHERE actor_id = %s AND idempotency_key = %s",
             (actor.id, key),
@@ -66,6 +118,8 @@ class Packs:
                 data.transfer_feedback_id,
                 data.kind,
                 old["automatic"] if data.predecessor_id else data.automatic,
+                response_formats,
+                program_environment,
             )
             if (
                 tuple(
@@ -80,6 +134,8 @@ class Packs:
                         "transfer_feedback_id",
                         "kind",
                         "automatic",
+                        "response_formats",
+                        "program_environment",
                     )
                 )
                 != expected
@@ -137,8 +193,9 @@ class Packs:
             "INSERT INTO item_bank.packs(id, actor_id, plan_id, plan_revision, node_key, "
             "idempotency_key, instruction, predecessor_id, revision, status, sources,"
             "gate_feedback_id,revision_feedback,supply_demand_id,transfer_feedback_id,"
-            "transfer_feedback,kind,automatic,automation_session_digest) "
-            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,'authoring',%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            "transfer_feedback,kind,automatic,automation_session_digest,material_context,"
+            "response_formats,program_environment) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,'authoring',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
             (
                 pack_id,
                 actor.id,
@@ -158,6 +215,9 @@ class Packs:
                 data.kind,
                 automatic,
                 session_digest if automatic else None,
+                Jsonb(material_context.model_dump(mode="json")) if material_context else None,
+                Jsonb(response_formats) if response_formats is not None else None,
+                Jsonb(program_environment) if program_environment is not None else None,
             ),
         )
         if automatic:
@@ -225,6 +285,8 @@ class Packs:
             automation_status=task["status"] if task else None,
             automation_action=task["action"] if task else None,
             automation_reason=task["reason"] if task else None,
+            response_formats=row["response_formats"],
+            program_environment=row["program_environment"],
         )
 
     def list(self, actor) -> list[PackSummary]:
@@ -235,12 +297,63 @@ class Packs:
         ).fetchall()
         return [self.summary(actor, row["id"]) for row in rows]
 
+    def directory(self, actor, plan_id):
+        return [BankPack(**row) for row in self.connection.execute(
+            "SELECT id,plan_revision,node_key,revision,kind,status,created_at,"
+            "predecessor_id,supply_task_id FROM item_bank.packs WHERE actor_id=%s AND plan_id=%s "
+            "ORDER BY created_at DESC,id DESC", (actor.id, plan_id),
+        ).fetchall()]
+
+    def generation_report(self, actor, pack_id, get_run):
+        pack = self.row(actor, pack_id)
+        stages = []
+        for stage in self.stages(pack_id):
+            role, result = stage["role"], stage["result"] or {}
+            run = get_run(actor.id, stage["run_id"])
+            details = {}
+            if result and role == "author":
+                details["item_count"] = len(pack["document"]["items"])
+            elif result and role == "blind":
+                details["item_count"] = len(result.get("programs", result.get("answers", [])))
+                details["blind_passed"] = self.blind_passed(pack, result)
+            elif result and role in REVIEW_ROLES:
+                review = ReviewDocument.model_validate(result)
+                details["decisions"] = {item.slot: item.verdict for item in review.items}
+                details["independence"] = review.assessment_independence
+            stages.append(GenerationStage(
+                role=role, status=run.status, started_at=run.created_at,
+                completed_at=run.completed_at, public_notes=result.get("public_notes", []),
+                **details,
+            ))
+        qualifications = {}
+        if pack["kind"] not in {"choice", "response"}:
+            table = ("python_qualifications" if pack["kind"] == "python_io"
+                     else "program_qualifications")
+            qualifications = {row["state"]: row["total"] for row in self.connection.execute(
+                f"SELECT coalesce(outcome,'pending') AS state,count(*) AS total "
+                f"FROM item_bank.{table} WHERE pack_id=%s GROUP BY outcome", (pack_id,),
+            ).fetchall()}
+        return GenerationReport(pack_id=pack_id, status=pack["status"], stages=stages,
+                                qualifications=qualifications, published_at=pack["published_at"])
+
     def status(self, pack_id, value):
         self.connection.execute(
             "UPDATE item_bank.packs SET status = %s WHERE id = %s", (value, pack_id)
         )
 
+    def environment_unavailable(self, pack_id):
+        self.connection.execute(
+            "UPDATE item_bank.packs SET automation_error='program_environment_unavailable' "
+            "WHERE id=%s", (pack_id,),
+        )
+
     def record_author(self, row, run_id, document: PackDocument):
+        if not self.matches_response_formats(row, document):
+            raise BusinessError(
+                "invalid_item_output", "Ordinary questions must match requested response formats."
+            )
+        if not self.matches_program_environment(row, document):
+            raise BusinessError("invalid_item_output", "The frozen program environment changed.")
         if row["supply_demand_id"]:
             demand = self.connection.execute(
                 "SELECT allowed_difficulties,context_data "
@@ -259,22 +372,33 @@ class Packs:
                         "invalid_item_output", "Supply candidates violate the bound training need."
                     )
         allowed = {(ref["source_id"], ref["revision"]) for ref in row["sources"]}
+        context = self.material_context(row)
+        allowed_materials = (
+            {citation_key(c) for c in context.author_citations} if context else set()
+        )
         for item in document.items:
             refs = [(str(ref.source_id), ref.revision) for ref in item.source_refs]
-            if len(refs) != len(set(refs)) or not set(refs) <= allowed:
+            citations = [citation_key(c) for c in item.material_citations]
+            if (
+                len(refs) != len(set(refs)) or not set(refs) <= allowed
+                or len(citations) != len(set(citations))
+                or not set(citations) <= allowed_materials
+            ):
                 raise BusinessError("invalid_item_output", "Question cites an unbound source.")
+        item_document = document.model_dump(mode="json", exclude={"public_notes"})
         if row["predecessor_id"]:
             parent = self.connection.execute(
                 "SELECT document FROM item_bank.packs WHERE id = %s",
                 (row["predecessor_id"],),
             ).fetchone()
-            if document.model_dump(mode="json") == parent["document"]:
+            if item_document == parent["document"]:
                 raise BusinessError("invalid_item_output", "A revision must change actual content.")
         self.connection.execute(
             "UPDATE item_bank.packs SET document = %s WHERE id = %s AND document IS NULL",
-            (Jsonb(document.model_dump(mode="json")), row["id"]),
+            (Jsonb(item_document), row["id"]),
         )
-        self.record_stage(run_id, {"validated": True})
+        notes = document.model_dump(include={"public_notes"})
+        self.record_stage(run_id, {"validated": True, **notes})
         self.status(row["id"], "blind_solving")
 
     def record_stage(self, run_id, result):
@@ -283,7 +407,79 @@ class Packs:
             (Jsonb(result), run_id),
         )
 
+    @staticmethod
+    def material_context(row) -> PackMaterialContext | None:
+        value = row.get("material_context")
+        return PackMaterialContext.model_validate(value) if value is not None else None
+
+    def bind_prepared_materials(self, actor, row, role, citations):
+        """Freeze a role's node material only after its preparation has completed."""
+        current = self.row(actor, row["id"])
+        context = self.material_context(current)
+        field = "author_citations" if role == "author" else "review_citations"
+        previous = getattr(context, field)
+        if not citations or previous and previous != citations:
+            raise BusinessError("stale_version", "Prepared item materials changed.")
+        value = PackMaterialContext.model_validate({
+            **context.model_dump(), field: citations,
+        }).model_dump(mode="json")
+        self.connection.execute(
+            "UPDATE item_bank.packs SET material_context=%s WHERE id=%s AND actor_id=%s",
+            (Jsonb(value), row["id"], actor.id),
+        )
+        row["material_context"] = value
+
+    @staticmethod
+    def valid_review_citations(row, report):
+        context = Packs.material_context(row)
+        allowed = {citation_key(c) for c in context.review_citations} if context else set()
+        for item in report.items:
+            citations = [citation_key(c) for c in item.material_citations]
+            if (
+                (allowed and not citations) or len(citations) != len(set(citations))
+                or not set(citations) <= allowed
+            ):
+                return False
+        return True
+
+    @staticmethod
+    def matches_response_formats(row, document):
+        formats = row.get("response_formats")
+        return formats is None or (
+            row["kind"] == "response"
+            and all(
+                item.public().response_type == formats[item.slot]
+                for item in document.items if item.slot in formats
+            )
+        )
+
+    @staticmethod
+    def matches_program_environment(row, document):
+        if row["kind"] not in {
+            "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+        }:
+            return row.get("program_environment") is None
+        return bool(row.get("program_environment")) and all(
+            item.environment.model_dump(mode="json") == row["program_environment"]
+            for item in document.items
+        )
+
+    def record_review(self, row, run_id, report):
+        if not self.valid_review_citations(row, report):
+            raise BusinessError("invalid_item_output", "Review needs its exact supplied citations.")
+        self.record_stage(run_id, report.model_dump(mode="json"))
+
     def blind_passed(self, row, result):
+        if row["kind"] in {
+            "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+        }:
+            receipts = self.connection.execute(
+                "SELECT slot,outcome FROM item_bank.program_qualifications WHERE pack_id=%s",
+                (row["id"],),
+            ).fetchall()
+            if len(receipts) != 5 or any(r["outcome"] is None for r in receipts):
+                return None
+            return all(r["outcome"] == "passed" for r in receipts)
         if row["kind"] == "python_io":
             receipts = self.connection.execute(
                 "SELECT slot,outcome FROM item_bank.python_qualifications WHERE pack_id=%s",
@@ -292,10 +488,30 @@ class Packs:
             if len(receipts) != 5 or any(r["outcome"] is None for r in receipts):
                 return None
             return all(r["outcome"] == "passed" for r in receipts)
+        if row["kind"] == "response":
+            comparisons = self.response_blind_checks(row, result)
+            return (
+                False if False in comparisons
+                else None if None in comparisons
+                else True
+            )
         document = PackDocument.model_validate(row["document"])
         solution = BlindSolution.model_validate(result)
         gold = {item.slot: item.correct_key for item in document.items}
         return all(gold[answer.slot] == answer.selected_key for answer in solution.answers)
+
+    @staticmethod
+    def response_blind_checks(row, result):
+        document = ResponsePack.model_validate(row["document"])
+        answers = BlindResponses.model_validate(result)
+        gold = {item.slot: item for item in document.items}
+        try:
+            return [
+                compare_response(gold[a.slot].public(), a.response, gold[a.slot].answer)
+                for a in answers.answers
+            ]
+        except ValueError:
+            return [False]
 
     def eligible(self, row) -> bool:
         stages = self.stages(row["id"])
@@ -303,11 +519,19 @@ class Packs:
         reviews = {s["role"]: s["result"] for s in stages if s["role"] in REVIEW_ROLES}
         return bool(
             row["document"]
+            and self.matches_response_formats(row, self.document(row))
+            and self.matches_program_environment(row, self.document(row))
             and blind
-            and self.blind_passed(row, blind)
+            and (
+                False not in self.response_blind_checks(row, blind)
+                if row["kind"] == "response" and blind
+                else self.blind_passed(row, blind)
+            )
             and set(reviews) == set(REVIEW_ROLES)
             and all(
-                value and ReviewDocument.model_validate(value).passed for value in reviews.values()
+                value and ReviewDocument.model_validate(value).passed
+                and self.valid_review_citations(row, ReviewDocument.model_validate(value))
+                for value in reviews.values()
             )
         )
 
@@ -361,10 +585,70 @@ class Packs:
             )
         return self.document(row)
 
+    def direct_answer(self, actor, pack_id, slot):
+        if slot not in {"practice_1", "practice_2"}:
+            raise BusinessError("precondition_failed", "Only ordinary practice allows assistance.")
+        row = self.row(actor, pack_id)
+        document = self.published_document(actor, pack_id)
+        if not self.connection.execute(
+            "SELECT 1 FROM item_bank.exposures WHERE pack_id=%s AND slot=%s", (pack_id, slot),
+        ).fetchone():
+            raise BusinessError(
+                "precondition_failed", "The exact practice must be delivered first.",
+            )
+        item = next(item for item in document.items if item.slot == slot)
+        if row["kind"] == "response":
+            content = ResponseDirectAnswer(**item.answer.model_dump())
+        elif row["kind"] in {
+            "python_io", "sql_query", "python_project",
+            "project_stdio", "web_project", "http_project",
+        }:
+            blind = next(
+                stage["result"] for stage in self.stages(pack_id) if stage["role"] == "blind"
+            )
+            reference = next(answer for answer in blind["programs"] if answer["slot"] == slot)
+            content = (
+                PythonDirectAnswer(code=reference["code"], explanation=item.explanation)
+                if row["kind"] == "python_io"
+                else ProgramDirectAnswer(answer=reference["answer"], explanation=item.explanation)
+            )
+        else:
+            content = ChoiceDirectAnswer(
+                correct_key=item.correct_key, explanation=item.explanation,
+            )
+        return item, content
+
     @staticmethod
     def document(row):
-        schema = PythonPack if row["kind"] == "python_io" else PackDocument
-        return schema.model_validate(row["document"])
+        return Packs.document_schema(row["kind"]).model_validate(row["document"])
+
+    @staticmethod
+    def document_schema(kind):
+        return {
+            "python_io": PythonPack, "choice": PackDocument, "response": ResponsePack,
+            "sql_query": SqlPack, "python_project": ProjectPack,
+            "project_stdio": StdioPack, "web_project": WebPack, "http_project": HttpPack,
+        }[kind]
+
+    def response_practice(self, actor, pack_id):
+        row = self.row(actor, pack_id)
+        if row["kind"] != "response":
+            raise BusinessError("precondition_failed", "Use the matching published response pack.")
+        document = self.published_document(actor, pack_id)
+        questions = [item.public() for item in document.items if item.slot.startswith("practice_")]
+        for question in questions:
+            Exposures(self.connection).record(actor, pack_id, question)
+        return ResponsePracticeSet(pack_id=pack_id, questions=questions)
+
+    def response_material(self, actor, pack_id, slot):
+        row = self.row(actor, pack_id)
+        if row["kind"] != "response" or slot not in {"practice_1", "practice_2"}:
+            raise BusinessError("precondition_failed", "An ordinary response practice is required.")
+        if not self.connection.execute(
+            "SELECT 1 FROM item_bank.exposures WHERE pack_id=%s AND slot=%s", (pack_id, slot)
+        ).fetchone():
+            raise BusinessError("precondition_failed", "Open the exact response practice first.")
+        return next(i for i in self.published_document(actor, pack_id).items if i.slot == slot)
 
     @staticmethod
     def require_choice(row):
@@ -390,6 +674,40 @@ class Packs:
             (pack_id,),
         ).fetchall()
         return len(rows) == 5 and all(row["outcome"] is not None for row in rows)
+
+    def register_program_qualification(self, pack_id, slot, attempt_id):
+        self.connection.execute(
+            "INSERT INTO item_bank.program_qualifications(pack_id,slot,attempt_id) "
+            "VALUES(%s,%s,%s) ON CONFLICT DO NOTHING", (pack_id, slot, attempt_id),
+        )
+
+    def program_qualification_result(self, pack_id, attempt_id, status):
+        changed = self.connection.execute(
+            "UPDATE item_bank.program_qualifications SET outcome=%s WHERE pack_id=%s "
+            "AND attempt_id=%s AND outcome IS NULL RETURNING slot",
+            (status, pack_id, attempt_id),
+        ).fetchone()
+        if not changed:
+            return False
+        rows = self.connection.execute(
+            "SELECT outcome FROM item_bank.program_qualifications WHERE pack_id=%s", (pack_id,),
+        ).fetchall()
+        return len(rows) == 5 and all(row["outcome"] is not None for row in rows)
+
+    def opened_program_training(self, actor, pack_id, slot):
+        row = self.row(actor, pack_id)
+        if (
+            row["kind"] not in {
+                "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+            }
+            or slot not in {"practice_1", "practice_2", "remediation_1"}
+        ):
+            raise BusinessError("precondition_failed", "An ordinary program practice is required.")
+        if not self.connection.execute(
+            "SELECT 1 FROM item_bank.exposures WHERE pack_id=%s AND slot=%s", (pack_id, slot),
+        ).fetchone():
+            raise BusinessError("precondition_failed", "Open the exact program practice first.")
+        return next(i for i in self.published_document(actor, pack_id).items if i.slot == slot)
 
     def remediation_material(self, actor, pack_id, failed_slot):
         document = self.published_document(actor, pack_id)
@@ -439,6 +757,7 @@ class Packs:
         for pack in rows:
             if (
                 pack["kind"] != source_pack["kind"]
+                or pack.get("program_environment") != source_pack.get("program_environment")
                 or not self.eligible(pack)
                 or {(ref["source_id"], ref["revision"]) for ref in pack["sources"]} != source_refs
             ):

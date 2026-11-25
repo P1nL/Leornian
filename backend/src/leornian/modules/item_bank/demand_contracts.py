@@ -2,10 +2,9 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import Field
-
 from leornian.modules.item_bank.supply_contracts import PackSummary
 from leornian.shared_kernel.contracts import Contract
+from pydantic import Field
 
 
 class SupplyRequest(Contract):
@@ -24,7 +23,13 @@ class SupplyDemand(Contract):
     id: UUID
     remediation_id: UUID | None
     python_remediation_id: UUID | None
-    kind: Literal["choice", "python_io"]
+    program_remediation_id: UUID | None = Field(
+        default=None, exclude_if=lambda value: value is None,
+    )
+    kind: Literal[
+        "choice", "python_io", "sql_query", "python_project",
+        "project_stdio", "web_project", "http_project",
+    ]
     source_pack_id: UUID
     plan_revision: int
     allowed_difficulties: list[int]

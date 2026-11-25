@@ -23,7 +23,7 @@ class Evaluations:
 
     def receipt_context(self, actor, receipt_id):
         row = self.connection.execute(
-            "SELECT pack_id,source_kind,source_id,context_data FROM tutor.evaluations "
+            "SELECT id,pack_id,source_kind,source_id,context_data FROM tutor.evaluations "
             "WHERE actor_id=%s AND source_id=%s",
             (actor.id, receipt_id),
         ).fetchone()

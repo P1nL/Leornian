@@ -27,7 +27,10 @@ class Demands:
         ).fetchone()
 
     def create(self, actor, remediation_id, pack, key, data, difficulties, context):
-        origin = "python_remediation_id" if pack["kind"] == "python_io" else "remediation_id"
+        origin = (
+            "remediation_id" if pack["kind"] == "choice" else
+            "python_remediation_id" if pack["kind"] == "python_io" else "program_remediation_id"
+        )
         if self.connection.execute(
             f"SELECT 1 FROM item_bank.supply_demands WHERE actor_id=%s AND {origin}=%s",
             (actor.id, remediation_id),
@@ -38,14 +41,15 @@ class Demands:
         demand_id = uuid4()
         self.connection.execute(
             "INSERT INTO item_bank.supply_demands(id,actor_id,remediation_id,"
-            "python_remediation_id,kind,source_pack_id,"
+            "python_remediation_id,program_remediation_id,kind,source_pack_id,"
             "plan_revision,idempotency_key,instruction,allowed_difficulties,context_data) "
-            "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
             (
                 demand_id,
                 actor.id,
                 remediation_id if pack["kind"] == "choice" else None,
                 remediation_id if pack["kind"] == "python_io" else None,
+                remediation_id if pack["kind"] not in {"choice", "python_io"} else None,
                 pack["kind"],
                 pack["id"],
                 data.expected_plan_revision,
@@ -76,6 +80,7 @@ class Demands:
                     "id",
                     "remediation_id",
                     "python_remediation_id",
+                    "program_remediation_id",
                     "kind",
                     "source_pack_id",
                     "plan_revision",

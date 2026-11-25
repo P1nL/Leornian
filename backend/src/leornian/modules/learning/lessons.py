@@ -12,6 +12,11 @@ from leornian.modules.learning.contracts import (
     LessonRequestInput,
     PlanNode,
 )
+from leornian.modules.learning.material_contracts import (
+    MaterialCitation,
+    citation_key,
+    material_content_key,
+)
 from leornian.modules.learning.planning import Plans
 from leornian.shared_kernel.errors import BusinessError
 
@@ -95,7 +100,7 @@ class Lessons:
         )
         if node is None:
             raise BusinessError("not_found", "Node not found in the confirmed plan.")
-        if not node.source_refs:
+        if not node.source_refs and not node.material_citations:
             raise BusinessError(
                 "source_not_current", "Add admitted sources before generating this lesson."
             )
@@ -108,6 +113,7 @@ class Lessons:
         run_id: UUID,
         document: LessonDocument,
         materials: list[Material],
+        material_citations: list[MaterialCitation] | None = None,
     ) -> GeneratedLesson:
         node = self.current(actor, request, lock=True)
         allowed = {(ref.source_id, ref.revision) for ref in node.source_refs}
@@ -116,9 +122,22 @@ class Lessons:
             raise BusinessError(
                 "source_not_current", "Lesson sources must match the confirmed node."
             )
+        supplied = material_citations or []
+        if (
+            {material_content_key(c.ref) for c in supplied}
+            != {material_content_key(c.ref) for c in node.material_citations}
+            or any(c.purpose != "lesson" for c in supplied)
+        ):
+            raise BusinessError(
+                "source_not_current", "Lesson materials must match the confirmed node."
+            )
+        allowed_citations = {citation_key(c) for c in supplied}
         for section in document.sections:
             refs = [(ref.source_id, ref.revision) for ref in section.source_refs]
-            if not set(refs) <= allowed or len(set(refs)) != len(refs):
+            if (
+                not set(refs) <= allowed or len(set(refs)) != len(refs)
+                or not {citation_key(c) for c in section.material_citations} <= allowed_citations
+            ):
                 raise BusinessError(
                     "invalid_lesson_output", "Lesson section cites an unbound source."
                 )
@@ -145,6 +164,13 @@ class Lessons:
         if not row:
             raise BusinessError("not_found", "Lesson document not found.")
         return GeneratedLesson(**row)
+
+    def for_run(self, actor, run_id):
+        row = self.connection.execute(
+            "SELECT " + DOCUMENT_COLUMNS + "WHERE r.actor_id=%s AND d.produced_by_run=%s",
+            (actor.id, run_id),
+        ).fetchone()
+        return GeneratedLesson(**row) if row else None
 
     def latest_for_plan(
         self,

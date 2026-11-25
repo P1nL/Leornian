@@ -10,6 +10,22 @@ class Transfers:
     def __init__(self, connection):
         self.connection = connection
 
+    @staticmethod
+    def origin_column(kind):
+        if kind == "choice":
+            return "remediation_id"
+        return "python_remediation_id" if kind == "python_io" else "program_remediation_id"
+
+    @staticmethod
+    def origin_id(row):
+        return row[Transfers.origin_column(row["kind"])]
+
+    @staticmethod
+    def policy(kind):
+        if kind == "choice":
+            return "concept-transfer.v2"
+        return "python-io-transfer.v1" if kind == "python_io" else "program-transfer.v1"
+
     def row(self, actor, transfer_id, *, lock=False):
         row = self.connection.execute(
             "SELECT * FROM assessment.transfer_checks WHERE actor_id=%s AND id=%s"
@@ -49,7 +65,7 @@ class Transfers:
         ).fetchone()
 
     def current_for_origin(self, actor, remediation_id, kind):
-        origin = "python_remediation_id" if kind == "python_io" else "remediation_id"
+        origin = self.origin_column(kind)
         return self.connection.execute(
             "SELECT * FROM assessment.transfer_checks WHERE actor_id=%s "
             f"AND {origin}=%s AND status IN "
@@ -59,7 +75,7 @@ class Transfers:
         ).fetchone()
 
     def require_available(self, actor, remediation_id, *, kind="choice"):
-        origin = "python_remediation_id" if kind == "python_io" else "remediation_id"
+        origin = self.origin_column(kind)
         row = self.connection.execute(
             f"SELECT id FROM assessment.transfer_checks WHERE actor_id=%s AND {origin}=%s "
             "AND (status IN ('preparing','ready','opened','submitted',"
@@ -117,7 +133,7 @@ class Transfers:
             "JOIN assessment.transfer_checks t ON t.id=c.transfer_id "
             "WHERE c.actor_id=%s AND c.pack_id=%s AND (%s::text IS NULL OR c.slot=%s) "
             "AND (t.status='preparing' OR ((t.status IN ('ready','opened','submitted') "
-            "OR (t.kind='python_io' AND t.opened_at IS NOT NULL)) "
+            "OR (t.kind!='choice' AND t.opened_at IS NOT NULL)) "
             "AND t.candidate_pack_id=c.pack_id AND t.candidate_slot=c.slot)) LIMIT 1",
             (actor.id, pack_id, slot, slot),
         ).fetchone()
@@ -131,16 +147,17 @@ class Transfers:
         transfer_id = uuid4()
         self.connection.execute(
             "INSERT INTO assessment.transfer_checks(id,actor_id,remediation_id,"
-            "python_remediation_id,kind,policy_version,source_pack_id,"
+            "python_remediation_id,program_remediation_id,kind,policy_version,source_pack_id,"
             "plan_id,plan_revision,node_key,idempotency_key,exposure_revision,context_data,comparisons)"
-            " VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            " VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
             (
                 transfer_id,
                 actor.id,
                 remediation_id if pack["kind"] == "choice" else None,
                 remediation_id if pack["kind"] == "python_io" else None,
+                remediation_id if pack["kind"] not in {"choice", "python_io"} else None,
                 pack["kind"],
-                "python-io-transfer.v1" if pack["kind"] == "python_io" else "concept-transfer.v2",
+                self.policy(pack["kind"]),
                 pack["id"],
                 pack["plan_id"],
                 pack["plan_revision"],
@@ -254,7 +271,7 @@ class Transfers:
         )
 
     def passed_for(self, actor, remediation_id, *, kind="choice"):
-        origin = "python_remediation_id" if kind == "python_io" else "remediation_id"
+        origin = self.origin_column(kind)
         return (
             self.connection.execute(
                 "SELECT 1 FROM assessment.transfer_checks WHERE actor_id=%s "
@@ -262,6 +279,23 @@ class Transfers:
                 (actor.id, remediation_id),
             ).fetchone()
             is not None
+        )
+
+    def queue_program(self, transfer_id, key, attempt_id):
+        self.connection.execute(
+            "UPDATE assessment.transfer_checks SET status='submitted',submit_key=%s,"
+            "program_result_id=%s WHERE id=%s AND status='opened'",
+            (key, attempt_id, transfer_id),
+        )
+
+    def complete_program(self, transfer_id, attempt):
+        self.connection.execute(
+            "UPDATE assessment.transfer_checks SET status=%s,error_code=%s,completed_at=now() "
+            "WHERE id=%s AND status='submitted' AND program_result_id=%s",
+            (
+                attempt["status"], attempt["error_code"] if attempt["status"] == "error" else None,
+                transfer_id, attempt["id"],
+            ),
         )
 
     def block_run(self, run_id, code, cancelled=False):

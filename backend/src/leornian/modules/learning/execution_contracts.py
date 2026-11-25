@@ -10,5 +10,5 @@ class ExecutionProgress(Contract):
     plan_id: UUID
     plan_revision: int
     node_key: str
-    policy_version: Literal["python-io-gate.v1"]
+    policy_version: Literal["python-io-gate.v1", "program-execution-gate.v1"]
     completed_at: datetime

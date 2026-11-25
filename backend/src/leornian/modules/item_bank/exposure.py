@@ -15,7 +15,7 @@ class Exposures:
         ).fetchone()
         return row["revision"] if row else 0
 
-    def record(self, actor, pack_id, question, feedback=None):
+    def record(self, actor, pack_id, question, feedback=None, *, receipt_ref=None):
         self.connection.execute(
             "INSERT INTO item_bank.exposure_heads(actor_id) VALUES(%s) ON CONFLICT DO NOTHING",
             (actor.id,),
@@ -39,9 +39,9 @@ class Exposures:
             )
         inserted = self.connection.execute(
             "INSERT INTO item_bank.exposure_facts"
-            "(actor_id,pack_id,slot,kind,public_content) VALUES(%s,%s,%s,%s,%s) "
+            "(actor_id,pack_id,slot,kind,public_content,receipt_key) VALUES(%s,%s,%s,%s,%s,%s) "
             "ON CONFLICT DO NOTHING RETURNING slot",
-            (actor.id, pack_id, public.slot, kind, Jsonb(data)),
+            (actor.id, pack_id, public.slot, kind, Jsonb(data), str(receipt_ref or "")),
         ).fetchone()
         if inserted:
             self.connection.execute(
@@ -56,12 +56,21 @@ class Exposures:
     def snapshot(self, actor):
         revision = self.revision(actor, lock=True)
         rows = self.connection.execute(
-            "SELECT DISTINCT ON (pack_id,slot) pack_id,slot,public_content "
-            "FROM item_bank.exposure_facts WHERE actor_id=%s "
+            "SELECT DISTINCT ON (pack_id,slot) pack_id,slot,public_content,'' AS receipt_key "
+            "FROM item_bank.exposure_facts WHERE actor_id=%s AND receipt_key='' "
             "ORDER BY pack_id,slot,(kind='feedback') DESC",
             (actor.id,),
         ).fetchall()
+        rows += self.connection.execute(
+            "SELECT pack_id,slot,public_content,receipt_key FROM item_bank.exposure_facts "
+            "WHERE actor_id=%s AND receipt_key<>'' ORDER BY exposed_at,pack_id,slot,receipt_key",
+            (actor.id,),
+        ).fetchall()
         return revision, [
-            {"key": str(row["pack_id"]) + ":" + row["slot"], **row["public_content"]}
+            {
+                "key": str(row["pack_id"]) + ":" + row["slot"]
+                + (":" + row["receipt_key"] if row["receipt_key"] else ""),
+                **row["public_content"],
+            }
             for row in rows
         ]

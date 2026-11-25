@@ -1,7 +1,5 @@
 from uuid import uuid4
 
-from psycopg.types.json import Jsonb
-
 from leornian.modules.assessment.gate_contracts import (
     ConceptCompletion,
     GateItemResult,
@@ -11,6 +9,7 @@ from leornian.modules.assessment.gate_contracts import (
 )
 from leornian.modules.assessment.transfers import Transfers
 from leornian.shared_kernel.errors import BusinessError
+from psycopg.types.json import Jsonb
 
 
 class Gates:
@@ -153,7 +152,10 @@ class Gates:
                 Jsonb(exposures),
                 Jsonb(context),
                 Jsonb(pairs),
-                "python-io-gate.v1" if pack["kind"] == "python_io" else "concept-gate.v1",
+                "python-io-gate.v1" if pack["kind"] == "python_io" else
+                "program-execution-gate.v1" if pack["kind"] in {
+                    "sql_query", "python_project", "project_stdio", "web_project", "http_project",
+                } else "concept-gate.v1",
             ),
         )
         return self.row(actor, gate_id)
@@ -291,5 +293,26 @@ class Gates:
             "UPDATE assessment.concept_gates SET status=%s,completed_at=now() "
             "WHERE id=%s AND status='submitted'",
             ("passed" if passed else "not_passed", row["id"]),
+        )
+        return self.row(actor, row["id"])
+
+    def queue_program(self, actor, row, key):
+        if row["status"] != "in_progress" or row["policy_version"] != "program-execution-gate.v1":
+            raise BusinessError("precondition_failed", "Start the exact program Gate first.")
+        self.connection.execute(
+            "UPDATE assessment.concept_gates SET status='submitted',submission_key=%s WHERE id=%s",
+            (key, row["id"]),
+        )
+
+    def complete_program(self, actor, row, passed, *, error_code=None):
+        if row["policy_version"] != "program-execution-gate.v1":
+            raise BusinessError("precondition_failed", "The exact program Gate is required.")
+        self.connection.execute(
+            "UPDATE assessment.concept_gates SET status=%s,error_code=%s,completed_at=now() "
+            "WHERE id=%s AND status='submitted'",
+            (
+                "blocked" if error_code else "passed" if passed else "not_passed",
+                error_code, row["id"],
+            ),
         )
         return self.row(actor, row["id"])

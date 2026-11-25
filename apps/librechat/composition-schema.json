@@ -1,0 +1,239 @@
+{
+  "$defs": {
+    "BfsScene": {
+      "additionalProperties": false,
+      "description": "One shared timeline; adjacency follows the supplied edge order.",
+      "properties": {
+        "type": {
+          "const": "bfs",
+          "title": "Type",
+          "type": "string"
+        },
+        "nodes": {
+          "items": {
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{0,15}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/DirectedEdge"
+          },
+          "maxItems": 36,
+          "title": "Edges",
+          "type": "array"
+        },
+        "start": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,15}$",
+          "title": "Start",
+          "type": "string"
+        },
+        "views": {
+          "description": "Unique views; graph is required. All views share one playback step.",
+          "items": {
+            "enum": [
+              "graph",
+              "queue",
+              "code",
+              "variables"
+            ],
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Views",
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "nodes",
+        "edges",
+        "start",
+        "views"
+      ],
+      "title": "BfsScene",
+      "type": "object"
+    },
+    "CodeRepairScene": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "code_repair",
+          "title": "Type",
+          "type": "string"
+        },
+        "prompt": {
+          "maxLength": 400,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Prompt",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Code",
+          "type": "string"
+        },
+        "cases": {
+          "items": {
+            "$ref": "#/$defs/PublicCase"
+          },
+          "maxItems": 12,
+          "title": "Cases",
+          "type": "array"
+        },
+        "views": {
+          "description": "Unique views; editor is required. Diff compares the draft with original code.",
+          "items": {
+            "enum": [
+              "editor",
+              "diff",
+              "cases"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Views",
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "prompt",
+        "code",
+        "cases",
+        "views"
+      ],
+      "title": "CodeRepairScene",
+      "type": "object"
+    },
+    "CodeReviewScene": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "code_review",
+          "title": "Type",
+          "type": "string"
+        },
+        "prompt": {
+          "maxLength": 400,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Prompt",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "prompt",
+        "code"
+      ],
+      "title": "CodeReviewScene",
+      "type": "object"
+    },
+    "DirectedEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,15}$",
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,15}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "title": "DirectedEdge",
+      "type": "object"
+    },
+    "PublicCase": {
+      "additionalProperties": false,
+      "properties": {
+        "input": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Input",
+          "type": "string"
+        },
+        "expected": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Expected",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "expected"
+      ],
+      "title": "PublicCase",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "The host separately binds this proposal to an authorized artifact/revision.",
+  "properties": {
+    "schema_version": {
+      "const": "learning_composition.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 80,
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Title",
+      "type": "string"
+    },
+    "scene": {
+      "discriminator": {
+        "mapping": {
+          "bfs": "#/$defs/BfsScene",
+          "code_repair": "#/$defs/CodeRepairScene",
+          "code_review": "#/$defs/CodeReviewScene"
+        },
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BfsScene"
+        },
+        {
+          "$ref": "#/$defs/CodeReviewScene"
+        },
+        {
+          "$ref": "#/$defs/CodeRepairScene"
+        }
+      ],
+      "title": "Scene"
+    }
+  },
+  "required": [
+    "schema_version",
+    "title",
+    "scene"
+  ],
+  "title": "LearningComposition",
+  "type": "object"
+}

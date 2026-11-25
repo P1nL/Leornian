@@ -4,7 +4,12 @@ from uuid import UUID
 
 from pydantic import Field, model_validator
 
-from leornian.modules.item_bank.contracts import PublicQuestion, PythonQuestion
+from leornian.modules.execution.contracts import CaseOutput
+from leornian.modules.item_bank.contracts import (
+    PublicProgramQuestion,
+    PublicQuestion,
+    PythonQuestion,
+)
 from leornian.shared_kernel.contracts import Contract
 
 
@@ -32,7 +37,7 @@ class GateRevisionFeedback(Contract):
 
     gate_id: UUID
     pack_id: UUID
-    policy_version: Literal["concept-gate.v1", "python-io-gate.v1"]
+    policy_version: Literal["concept-gate.v1", "python-io-gate.v1", "program-execution-gate.v1"]
     relation_report: GateRelations
     reviewed_context: dict
     actual_exposures: list[dict]
@@ -69,7 +74,9 @@ class GateSummary(Contract):
     plan_revision: int
     node_key: str
     lesson_id: UUID
-    policy_version: Literal["concept-gate.v1", "python-io-gate.v1"] = "concept-gate.v1"
+    policy_version: Literal[
+        "concept-gate.v1", "python-io-gate.v1", "program-execution-gate.v1",
+    ] = "concept-gate.v1"
     relation_run_id: UUID | None
     status: Literal[
         "preparing",
@@ -87,12 +94,27 @@ class GateSummary(Contract):
     completed_at: datetime | None
 
 
+class GateProgramResult(Contract):
+    slot: Literal["assessment_1", "assessment_2"]
+    attempt_id: UUID
+    status: Literal["passed", "not_passed", "error"]
+    passed_cases: int = Field(ge=0, le=3)
+    feedback: str | None
+    error_code: str | None
+    compilation: CaseOutput | None = Field(
+        default=None, exclude_if=lambda value: value is None,
+    )
+
+
 class GateView(Contract):
     gate: GateSummary
-    questions: list[PublicQuestion | PythonQuestion] = []
+    questions: list[PublicQuestion | PythonQuestion | PublicProgramQuestion] = []
     results: list[GateItemResult] = []
     allowed_actions: list[Literal["start", "submit", "cancel"]] = []
     blocked_reason: str | None = None
+    program_results: list[GateProgramResult] = Field(
+        default_factory=list, exclude_if=lambda values: not values,
+    )
 
 
 class Remediation(Contract):

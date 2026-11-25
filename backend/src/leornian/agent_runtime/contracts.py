@@ -22,12 +22,15 @@ class RoleSpec(Contract):
         "evaluation.v1",
         "delivery_review.v1",
         "artifact.v1",
+        "material_check.v1",
+        "material_review.v1",
     ] = "tutor.v1"
     allowed_tools: tuple[str, ...] = ()
     recover_tool_errors: bool = False
     require_initial_tool: bool = True
     messages: list[dict[str, Any]]
     completion_driven: bool = False
+    json_output: bool = False
     output_multiplier: int = 1
     optional_history: list[list[dict[str, Any]]] = []
     context_manifest: dict[str, Any] = {}
@@ -53,6 +56,7 @@ class Run(Contract):
         "transfer",
         "evaluation",
         "artifact",
+        "material_check",
     ] = "teaching"
 
 

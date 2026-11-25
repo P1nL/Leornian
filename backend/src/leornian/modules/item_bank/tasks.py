@@ -29,6 +29,12 @@ class SupplyTasks:
             (task_id, actor.id),
         ).fetchone()
 
+    def get(self, actor, task_id):
+        return self.connection.execute(
+            "SELECT * FROM item_bank.supply_tasks WHERE id=%s AND actor_id=%s",
+            (task_id, actor.id),
+        ).fetchone()
+
     def for_transfer(self, actor, transfer_id, *, lock=False):
         task = self.connection.execute(
             "SELECT * FROM item_bank.supply_tasks WHERE actor_id=%s AND transfer_id=%s"
@@ -60,6 +66,13 @@ class SupplyTasks:
             "UPDATE item_bank.packs SET supply_task_id=%s WHERE id=%s", (task_id, pack_id)
         )
         return task_id
+
+    def bind_origin(self, actor, task_id, run_id, configuration_scope):
+        self.connection.execute(
+            "UPDATE item_bank.supply_tasks SET origin_run_id=%s,model_configuration_scope=%s,"
+            "action='yield_foreground' WHERE id=%s AND actor_id=%s AND origin_run_id IS NULL",
+            (run_id, configuration_scope, task_id, actor.id),
+        )
 
     def candidates(self, limit=20, pack_id=None):
         return self.connection.execute(

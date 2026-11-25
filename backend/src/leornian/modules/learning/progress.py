@@ -1,6 +1,11 @@
-from leornian.modules.assessment.contracts import ConceptCompletion, PythonCompletion
+from leornian.modules.assessment.contracts import (
+    ConceptCompletion,
+    ProgramCompletion,
+    PythonCompletion,
+)
 from leornian.modules.learning.contracts import NodeProgress
 from leornian.modules.learning.execution_contracts import ExecutionProgress
+from leornian.modules.learning.reviews import Reviews
 from leornian.shared_kernel.errors import BusinessError
 
 
@@ -36,7 +41,7 @@ class Progress:
         ).fetchone()
         if not inserted:
             return False
-        return (
+        changed = (
             self.connection.execute(
                 "INSERT INTO learning.node_progress(actor_id,plan_id,plan_revision,node_key,"
                 "evidence_gate_id) VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING "
@@ -51,6 +56,12 @@ class Progress:
             ).fetchone()
             is not None
         )
+        if changed:
+            Reviews(self.connection).schedule_node_completed(
+                actor, completion.plan_id, completion.plan_revision, completion.node_key,
+                completion.gate_id,
+            )
+        return changed
 
     def list(self, actor):
         return [
@@ -64,7 +75,13 @@ class Progress:
         ]
 
     def apply_python(self, actor, completion: PythonCompletion):
-        return (
+        return self._apply_execution(actor, completion)
+
+    def apply_program(self, actor, completion: ProgramCompletion):
+        return self._apply_execution(actor, completion)
+
+    def _apply_execution(self, actor, completion):
+        changed = (
             self.connection.execute(
                 "INSERT INTO learning.execution_evidence"
                 "(gate_id,actor_id,plan_id,plan_revision,node_key,policy_version) "
@@ -80,6 +97,12 @@ class Progress:
             ).fetchone()
             is not None
         )
+        if changed:
+            Reviews(self.connection).schedule_node_completed(
+                actor, completion.plan_id, completion.plan_revision, completion.node_key,
+                completion.gate_id,
+            )
+        return changed
 
     def python_list(self, actor):
         return [

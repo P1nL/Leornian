@@ -2,12 +2,16 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import Field, model_validator
-
 from leornian.modules.assessment.gate_contracts import RelationCheck
+from leornian.modules.assessment.program_contracts import ProgramTransferAttempt
 from leornian.modules.assessment.python_contracts import PythonAttempt
-from leornian.modules.item_bank.contracts import PublicQuestion, PythonQuestion
+from leornian.modules.item_bank.contracts import (
+    PublicProgramQuestion,
+    PublicQuestion,
+    PythonQuestion,
+)
 from leornian.shared_kernel.contracts import Contract
+from pydantic import Field, model_validator
 
 
 class TransferRelations(Contract):
@@ -26,7 +30,13 @@ class TransferSummary(Contract):
     id: UUID
     remediation_id: UUID | None
     python_remediation_id: UUID | None
-    kind: Literal["choice", "python_io"]
+    program_remediation_id: UUID | None = Field(
+        default=None, exclude_if=lambda value: value is None,
+    )
+    kind: Literal[
+        "choice", "python_io", "sql_query", "python_project",
+        "project_stdio", "web_project", "http_project",
+    ]
     source_pack_id: UUID
     plan_id: UUID
     plan_revision: int
@@ -66,8 +76,11 @@ class TransferFeedback(TransferAnswer):
 
 class TransferView(Contract):
     transfer: TransferSummary
-    question: PublicQuestion | PythonQuestion | None = None
+    question: PublicQuestion | PythonQuestion | PublicProgramQuestion | None = None
     result: TransferFeedback | None = None
     python_attempt: PythonAttempt | None = None
+    program_attempt: ProgramTransferAttempt | None = Field(
+        default=None, exclude_if=lambda value: value is None,
+    )
     allowed_actions: list[Literal["open", "submit", "cancel"]] = []
     blocked_reason: str | None = None
